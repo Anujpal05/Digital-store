@@ -66,6 +66,27 @@ export const getProduct = async (req, res) => {
   }
 };
 
+//Getting Product By Category
+export const getProductByCategory = async (req, res) => {
+  try {
+    const { category } = req.headers;
+    if (!category) {
+      return res
+        .status(400)
+        .json({ message: "Please provide category field!" });
+    }
+
+    const product = await Product.find({ category: category }).sort({
+      createdAt: -1,
+    });
+    return res
+      .status(200)
+      .json({ message: `Getting ${category} category product`, product });
+  } catch (error) {
+    return res.status(500).json({ message: "Internal server error!" });
+  }
+};
+
 //Update Perticular Product
 export const updateProduct = async (req, res) => {
   try {
