@@ -36,7 +36,7 @@ export const addProduct = async (req, res) => {
 //Get All Products
 export const getAllProduct = async (req, res) => {
   try {
-    const products = await Product.find();
+    const products = await Product.find().sort({ createdAt: -1 });
     if (!products) {
       return res.status(404).json({ message: "Product not found!" });
     }
@@ -79,6 +79,10 @@ export const updateProduct = async (req, res) => {
       category: category,
       price: price,
     });
+
+    if (!product) {
+      return res.status(404).json({ message: "Product not found!" });
+    }
 
     return res
       .status(200)

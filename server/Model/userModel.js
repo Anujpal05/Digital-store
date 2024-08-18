@@ -15,6 +15,12 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    address: {
+      type: String,
+    },
+    phone: {
+      type: Number,
+    },
     role: {
       type: String,
       default: "customer",
@@ -24,18 +30,24 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: "https://cdn-icons-png.flaticon.com/128/3237/3237472.png",
     },
-    favourite: {
-      type: mongoose.Types.ObjectId,
-      ref: "product",
-    },
-    cart: {
-      type: mongoose.Types.ObjectId,
-      ref: "product",
-    },
-    order: {
-      type: mongoose.Types.ObjectId,
-      ref: "order",
-    },
+    favourite: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "product",
+      },
+    ],
+    cart: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "product",
+      },
+    ],
+    order: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "order",
+      },
+    ],
   },
   { timestamps: true }
 );
