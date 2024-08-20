@@ -1,10 +1,12 @@
 import React from 'react'
-import Container from './Pages/Container'
+import Navbar from './Components/Navbar.jsx';
+import Home from "./Pages/Home.jsx";
 
 function App() {
   return (
-    <div>
-      <Container />
+    <div className="  w-screen h-screen overflow-x-hidden">
+      <Navbar />
+      <Home />
     </div>
   )
 }

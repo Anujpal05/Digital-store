@@ -6,11 +6,13 @@ import productRouter from "./Router/productRouter.js";
 import favouriteRouter from "./Router/favouriteRouter.js";
 import cartRouter from "./Router/cartRouter.js";
 import orderRouter from "./Router/orderRoute.js";
+import cors from "cors";
 dotenv.config();
 
 const port = process.env.PORT || 8000;
 const app = express();
 app.use(express.json());
+app.use(cors());
 
 //Connected with database
 connectWithDB();
