@@ -1,12 +1,17 @@
 import React from 'react'
 import Navbar from './Components/Navbar.jsx';
 import Home from "./Pages/Home.jsx";
+import { Route, Routes } from 'react-router-dom';
+import Category from './Pages/Category.jsx';
 
 function App() {
   return (
     <div className="  w-screen h-screen overflow-x-hidden">
       <Navbar />
-      <Home />
+      <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path='/category/:category' element={<Category />} />
+      </Routes>
     </div>
   )
 }

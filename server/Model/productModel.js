@@ -17,17 +17,12 @@ const productSchema = new mongoose.Schema(
     category: {
       type: String,
       default: "general",
-      enum: ["general", "phones", "cloths", "books", "toys"],
+      enum: ["general", "phones", "clothes", "books", "toys"],
     },
     price: {
       type: Number,
       required: true,
     },
-    other: [
-      {
-        type: String,
-      },
-    ],
   },
   { timestamps: true }
 );

@@ -30,6 +30,11 @@ const orderSchema = new mongoose.Schema(
       enum: ["COD", "Online"],
       required: true,
     },
+    other: [
+      {
+        type: String,
+      },
+    ],
   },
   { timestamps: true }
 );
