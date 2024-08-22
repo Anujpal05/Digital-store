@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios'
+import { Link } from 'react-router-dom';
+import { Hourglass } from 'react-loader-spinner';
 
 function LatestCollection({ filter, price, search }) {
     const [product, setproduct] = useState();
@@ -53,8 +55,8 @@ function LatestCollection({ filter, price, search }) {
             <h1 className=' text-2xl font-semibold'><span className=' border-b-4 py-[2px] border-pink-700'>Our Lat</span>est Collection</h1>
             <div className=' gap-5 grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 py-5'>
                 {product && product.map((item, i) => (
-                    <div key={i} className=' bg-gray-50 p-5 flex flex-col gap-2 '>
-                        <div className=' bg-white rounded-sm shadow-md shadow-gray-300 w-full flex justify-center items-center p-4'><img src={item.image} alt="Product Image" className=' h-64' /></div>
+                    <div key={i} className=' group bg-gray-50 p-5 flex flex-col gap-2 '>
+                        <Link to={`/product/${item._id}`} className=' bg-white rounded-sm shadow-md shadow-gray-300 w-full flex justify-center items-center p-4 overflow-hidden'><img src={item.image} alt="Product Image" className=' h-64 group-hover:scale-110 transition-all duration-500' /></Link>
                         <div className=' flex flex-col gap-1 bg-gray-100 p-3 rounded-md'>
                             <p className=' text-xl font-semibold'>{item.title}</p>
                             <p className=' text-md font-semibold text-gray-500'>&#8377; {item.price}</p>
@@ -63,6 +65,19 @@ function LatestCollection({ filter, price, search }) {
                     </div>
                 ))}
             </div>
+            {
+                !product && <div className=' flex justify-center items-center lg:py-28 py-10'>
+                    <Hourglass
+                        visible={true}
+                        height="120"
+                        width="120"
+                        ariaLabel="hourglass-loading"
+                        wrapperStyle={{}}
+                        wrapperClass=""
+                        colors={['#306cce', '#72a1ed']}
+                    />
+                </div>
+            }
         </div>
     )
 }
