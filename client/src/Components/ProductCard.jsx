@@ -40,6 +40,9 @@ const ProductCard = () => {
         fetch();
     }, [product])
 
+    const addToWishList = async () => {
+        console.log(product)
+    }
 
     return (
         <div>
@@ -52,7 +55,7 @@ const ProductCard = () => {
                             </div>
                         </div>
                         <div className=' flex justify-evenly flex-col md:flex-row gap-2 transition-all '>
-                            <button className=' p-2 px-5 border- border-gray-900 bg-gray-200 rounded-full text-xl font-semibold hover:scale-105 hover:bg-gray-300 shadow-md shadow-gray-400 transition-all duration-300 '>Add To WishList</button>
+                            <button className=' p-2 px-5 border- border-gray-900 bg-gray-200 rounded-full text-xl font-semibold hover:scale-105 hover:bg-gray-300 shadow-md shadow-gray-400 transition-all duration-300 ' onClick={addToWishList}>Add To WishList</button>
                             <button className=' p-2 px-5 border-  border-gray-900 bg-blue-400 text-gray-900 rounded-full text-xl font-semibold shadow-md shadow-gray-400 transition-all duration-300 hover:bg-blue-500 hover:scale-105'>Add To Cart</button>
                         </div>
                     </div>

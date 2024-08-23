@@ -1,3 +1,4 @@
+import { generateJWToken } from "../Auth/auth.js";
 import User from "../Model/userModel.js";
 import bcrypt from "bcrypt";
 
@@ -43,13 +44,22 @@ export const loginController = async (req, res) => {
       return res.status(404).json({ message: "User is not found!" });
     }
 
-    await bcrypt.compare(password, existingUser.password, (err, data) => {
+    await bcrypt.compare(password, existingUser.password, async (err, data) => {
       if (data) {
+        const payload = {
+          id: existingUser._id,
+          role: existingUser.role,
+          username: existingUser.username,
+        };
+
+        const token = await generateJWToken(payload);
+
         //Signin successfully
         return res.status(200).json({
           message: "SignIn successfully!",
           id: existingUser._id,
           role: existingUser.role,
+          token: token,
         });
       } else {
         //Invalid Password

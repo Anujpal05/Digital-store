@@ -9,7 +9,7 @@ import { Hourglass } from "react-loader-spinner"
 const AllProduct = () => {
     const [filter, setfilter] = useState('general');
     const [price, setprice] = useState(0);
-    const [search, setSearch] = useState();
+    const [search, setSearch] = useState("");
     const [products, setproducts] = useState("");
 
     //Adding Search feature

@@ -1,20 +1,38 @@
 import React from 'react';
 import logo from "../assets/PixelMart.png";
 import { Link } from 'react-router-dom';
+import { MdOutlineLightMode } from "react-icons/md";
+import { FaUser } from "react-icons/fa";
+import { FaShoppingCart } from "react-icons/fa";
+import { useDispatch, useSelector } from 'react-redux';
+import { authActions } from '../store/auth';
+
+
 
 function Navbar() {
+
+    const isLogin = useSelector(state => state.auth.isLogin);
+    const dispatch = useDispatch();
+    const handleLogOut = () => {
+        dispatch(authActions.logout());
+        localStorage.clear();
+    }
+
     return (
         <div className=' flex justify-between  items-center p-2 lg:px-10 bg-zinc-800 py-2 lg:py-4 text-white font-semibold'>
             <Link to={"/"}><img src={logo} alt="PixelMart Logo" height={100} width={100} /></Link>
             <div className=' lg:flex gap-5 hidden'>
                 <Link to={"/"} className=" cursor-pointer">Home</Link>
                 <Link to={'/all-product'} className=" cursor-pointer">All Products</Link>
-                <h1 className=" cursor-pointer">Cart</h1>
                 <h1 className=" cursor-pointer">About</h1>
+                {isLogin && <h1 className=' cursor-pointer'>Order</h1>}
             </div>
             <div className=' flex lg:gap-5'>
-                <button>Login</button>
-                <button className=' hidden'>LogOut</button>
+                <div className=' text-3xl flex justify-center items-center'><MdOutlineLightMode /></div>
+                {isLogin && <div className=' text-3xl flex justify-center items-center pr-4 '><FaShoppingCart /></div>}
+                <div className=' text-2xl bg-white rounded-full text-black p-2 '><FaUser /></div>
+                {!isLogin && <div className=' flex justify-center items-center '> <Link to={'/login'}>Login</Link></div>}
+                {isLogin && <button className=' outline-none ' onClick={handleLogOut}>LogOut</button>}
             </div>
         </div>
     )
