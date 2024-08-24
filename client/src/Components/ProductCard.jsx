@@ -4,6 +4,8 @@ import { Link, useParams } from 'react-router-dom'
 import Footer from "../Components/Footer";
 import { TbPlayerTrackNextFilled } from "react-icons/tb";
 import { ThreeDots } from "react-loader-spinner"
+import toast from 'react-hot-toast';
+
 
 
 const ProductCard = () => {
@@ -13,12 +15,13 @@ const ProductCard = () => {
     useEffect(() => {
         const fetch = async () => {
             try {
+
                 const data = await axios.get("http://localhost:8080/api/v1/product/getproduct", { headers: { id } });
                 if (data) {
                     await setproduct(data.data.product)
                 }
             } catch (error) {
-                console.log(error);
+                toast.error(error.response.data.message);
             }
         }
         fetch();
@@ -34,14 +37,26 @@ const ProductCard = () => {
                 const filterData = relatedData.data.product.filter(item => item._id != product._id).slice(0, 4);
                 setrelatedProducts(filterData);
             } catch (error) {
-                console.log(error)
+                toast.error(error.response.data.message)
             }
         }
         fetch();
     }, [product])
 
     const addToWishList = async () => {
-        console.log(product)
+        try {
+            const data = await axios.put('http://localhost:8080/api/v1/favourite/add-favourite', {}, {
+                headers:
+                {
+                    productid: id,
+                    userid: localStorage.getItem('userId'),
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            })
+            toast.success(data.data.message)
+        } catch (error) {
+            toast.error(error.response.data.message)
+        }
     }
 
     return (
@@ -91,7 +106,6 @@ const ProductCard = () => {
                                 <div key={i} className=' bg-gray-200 shadow-md shadow-gray-300 min-w-full md:min-w-[50%] lg:min-w-[20%]'>
                                     <div className='group bg-white py-3  '>
                                         <div className=' flex justify-end lg:px-4 p-1'><div className=' bg-pink-600 text-white text-sm lg:text-md font-semibold w-fit lg:px-3 p-1 rounded-full '>{item.category}</div></div>
-
                                         <Link to={`/product/${item._id}`} className=' flex justify-center items-center overflow-hidden'><img src={item.image} alt="Product Image" className=' lg:h-80 h-60 w-auto group-hover:scale-105 transition-all duration-300' /></Link></div>
                                     <div className=' p-4'>
                                         <div className=' flex flex-col justify-center  gap-2 p-1'>

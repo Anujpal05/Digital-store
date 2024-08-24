@@ -7,12 +7,15 @@ import ProductCard from './Components/ProductCard.jsx';
 import AllProduct from './Pages/AllProduct.jsx';
 import Login from './Pages/Login.jsx';
 import SignUp from './Pages/SignUp.jsx';
+import { Toaster } from 'react-hot-toast';
+
 
 function App() {
 
 
   return (
     <div className="  w-screen h-screen overflow-x-hidden">
+      <Toaster />
       <Navbar />
       <Routes>
         <Route path='/' element={<Home />} />

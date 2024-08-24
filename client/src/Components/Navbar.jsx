@@ -6,8 +6,7 @@ import { FaUser } from "react-icons/fa";
 import { FaShoppingCart } from "react-icons/fa";
 import { useDispatch, useSelector } from 'react-redux';
 import { authActions } from '../store/auth';
-
-
+import toast from 'react-hot-toast';
 
 function Navbar() {
 
@@ -16,6 +15,7 @@ function Navbar() {
     const handleLogOut = () => {
         dispatch(authActions.logout());
         localStorage.clear();
+        toast.success("LogOut Successfully!")
     }
 
     return (

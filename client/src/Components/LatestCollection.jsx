@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios'
 import { Link } from 'react-router-dom';
 import { Hourglass } from 'react-loader-spinner';
+import toast from 'react-hot-toast';
 
 function LatestCollection({ filter, price, search }) {
     const [product, setproduct] = useState();
@@ -25,9 +26,8 @@ function LatestCollection({ filter, price, search }) {
                         data ? setproduct(data.data.product) : "";
                     }
                 }
-
             } catch (error) {
-                console.log("Error");
+                toast.error(error.response.data.message);
             }
         }
         fetchData();
@@ -42,7 +42,7 @@ function LatestCollection({ filter, price, search }) {
                     setproduct(filterData);
                 }
             } catch (error) {
-                console.log(error);
+                toast.error(error.response.data.message);
             }
         }
         fetch();

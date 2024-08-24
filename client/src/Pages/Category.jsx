@@ -5,6 +5,7 @@ import Card from '../Components/Card';
 import { Hourglass } from "react-loader-spinner"
 import Footer from '../Components/Footer';
 import { IoSearch } from "react-icons/io5";
+import toast from 'react-hot-toast';
 
 const Category = () => {
     const { category } = useParams();
@@ -12,24 +13,31 @@ const Category = () => {
     const [search, setsearch] = useState("");
     const title = category ? category.charAt(0).toUpperCase() + category.slice(1) : "";
 
+    //Fetching product category-wise and all product data
     useEffect(() => {
-        const fetch = async () => {
-            if (category != 'general') {
-                const data = await axios.get("http://localhost:8080/api/v1/product/product-category-wise", { headers: { category: category } });
-                if (data) {
-                    setproduct(data?.data?.product);
+        try {
+            const fetch = async () => {
+                if (category != 'general') {
+                    const data = await axios.get("http://localhost:8080/api/v1/product/product-category-wise", { headers: { category: category } });
+                    if (data) {
+                        setproduct(data?.data?.product);
+                    }
+                } else {
+                    const data = await axios.get("http://localhost:8080/api/v1/product/getallproduct");
+                    if (data) {
+                        setproduct(data?.data?.products);
+                    }
                 }
-            } else {
-                const data = await axios.get("http://localhost:8080/api/v1/product/getallproduct");
-                if (data) {
-                    setproduct(data?.data?.products);
-                }
-            }
 
+            }
+            fetch();
+        } catch (error) {
+            toast.error(error.response.data.message);
         }
-        fetch();
     }, [])
 
+
+    //Using Search feature
     useEffect(() => {
         const fetch = async () => {
             try {
@@ -39,7 +47,7 @@ const Category = () => {
                     setproduct(filterData);
                 }
             } catch (error) {
-                console.log(error);
+                toast.error(error.response.data.message);
             }
         }
         fetch();

@@ -5,6 +5,7 @@ import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { authActions } from '../store/auth';
+import toast from 'react-hot-toast';
 
 const Login = () => {
     const navigate = useNavigate();
@@ -32,10 +33,11 @@ const Login = () => {
                 });
                 dispatch(authActions.login());
                 localStorage.setItem('isLogin', isLogin);
+                toast.success(res.data.message);
                 navigate("/");
             }
         } catch (error) {
-            console.log(error.response.data.message);
+            toast.error(error.response.data.message);
         }
     }
 
@@ -47,23 +49,23 @@ const Login = () => {
 
     return (
         <div>
-            <div className=' grid grid-cols-2'>
-                <div className=' h-screen flex items-center'>
-                    <img src={loginImg} alt="" className=' h-96' />
+            <div className=' grid lg:grid-cols-2'>
+                <div className=' hidden h-screen lg:flex items-center '>
+                    <img src={loginImg} alt="Login Image" className=' h-96 2xl:h-[60%]' />
                 </div>
-                <div className=' h-screen flex justify-center items-center'>
-                    <div className=' border- border-gray-500 shadow-md shadow-gray-400 p-5 rounded-md '>
-                        <h1 className=' text-2xl py-2 font-semibold text-gray-800 text-center'>Login Page</h1>
-                        <form action="" onSubmit={handleSubmit} className='space-y-5'>
-                            <div className=' flex flex-col '>
-                                <label htmlFor="" className=' text-md font-semibold'>Email</label>
-                                <div className=' border-[2px] border-gray-300 py-1 px-2 rounded-md w-96'>
+                <div className=' h-screen  flex justify-center items-center'>
+                    <div className=' shadow-md shadow-gray-400 p-5 rounded-md '>
+                        <h1 className=' text-2xl py-2 font-semibold text-gray-800 text-center 2xl:text-4xl'>Login Page</h1>
+                        <form action="" onSubmit={handleSubmit} className='space-y-5 2xl:space-y-7'>
+                            <div className=' flex flex-col 2xl:text-2xl'>
+                                <label htmlFor="" className=' text-md font-semibold '>Email</label>
+                                <div className=' border-[2px] border-gray-300 py-1 px-2 rounded-md w-full md:w-96 2xl:w-[600px]'>
                                     <input type="email" name="email" placeholder='Enter Email' value={values.email} onChange={handleValue} className=' w-full outline-none' required />
                                 </div>
                             </div>
-                            <div className=' flex flex-col '>
+                            <div className=' flex flex-col 2xl:text-2xl'>
                                 <label htmlFor="" className=' text-md font-semibold '>Password</label>
-                                <div className=' border-2 border-gray-300 py-1 px-2 rounded-md w-96'>
+                                <div className=' border-2 border-gray-300 py-1 px-2 rounded-md w-full md:w-96 2xl:w-[600px]'>
                                     <input type="password" name="password" placeholder='Enter Password' value={values.password} onChange={handleValue} className=' w-full outline-none' required />
                                 </div>
                             </div>
