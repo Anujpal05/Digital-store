@@ -1,6 +1,6 @@
 import { generateJWToken } from "../Auth/auth.js";
 import User from "../Model/userModel.js";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 
 //Register controller
 export const registerController = async (req, res) => {
