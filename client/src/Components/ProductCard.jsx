@@ -1,17 +1,19 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import Footer from "../Components/Footer";
 import { TbPlayerTrackNextFilled } from "react-icons/tb";
 import { ThreeDots } from "react-loader-spinner"
 import toast from 'react-hot-toast';
-
-
+import { useSelector } from 'react-redux';
 
 const ProductCard = () => {
     const { id } = useParams();
     const [product, setproduct] = useState();
     const [relatedProducts, setrelatedProducts] = useState();
+    const isLogin = useSelector((state) => state.auth.isLogin);
+    const navigate = useNavigate();
+
     useEffect(() => {
         const fetch = async () => {
             try {
@@ -30,14 +32,11 @@ const ProductCard = () => {
     useEffect(() => {
         const fetch = async () => {
             try {
-                if (!product) {
-                    return;
-                }
-                const relatedData = await axios.get("http://localhost:8080/api/v1/product/product-category-wise", { headers: { category: product.category } });
-                const filterData = relatedData.data.product.filter(item => item._id != product._id).slice(0, 4);
+                const relatedData = await axios.get("http://localhost:8080/api/v1/product/product-category-wise", { headers: { category: product?.category } });
+                const filterData = relatedData && relatedData?.data?.product?.filter(item => item?._id != product?._id).slice(0, 4);
                 setrelatedProducts(filterData);
             } catch (error) {
-                toast.error(error.response.data.message)
+                console.log(error.response.data.message)
             }
         }
         fetch();
@@ -45,6 +44,10 @@ const ProductCard = () => {
 
     const addToWishList = async () => {
         try {
+            if (!isLogin) {
+                navigate("/login")
+                return;
+            }
             const data = await axios.put('http://localhost:8080/api/v1/favourite/add-favourite', {}, {
                 headers:
                 {
@@ -54,6 +57,24 @@ const ProductCard = () => {
                 }
             })
             toast.success(data.data.message)
+        } catch (error) {
+            toast.error(error.response.data.message)
+        }
+    }
+
+    const addToCart = async () => {
+        try {
+            if (!isLogin) {
+                navigate("/login")
+                return;
+            }
+            const res = await axios.post("http://localhost:8080/api/v1/cart/add-cart", {}, {
+                headers: {
+                    userid: localStorage.getItem('userId'),
+                    productid: id
+                }
+            })
+            toast.success(res.data.message);
         } catch (error) {
             toast.error(error.response.data.message)
         }
@@ -71,7 +92,7 @@ const ProductCard = () => {
                         </div>
                         <div className=' flex justify-evenly flex-col md:flex-row gap-2 transition-all '>
                             <button className=' p-2 px-5 border- border-gray-900 bg-gray-200 rounded-full text-xl font-semibold hover:scale-105 hover:bg-gray-300 shadow-md shadow-gray-400 transition-all duration-300 ' onClick={addToWishList}>Add To WishList</button>
-                            <button className=' p-2 px-5 border-  border-gray-900 bg-blue-400 text-gray-900 rounded-full text-xl font-semibold shadow-md shadow-gray-400 transition-all duration-300 hover:bg-blue-500 hover:scale-105'>Add To Cart</button>
+                            <button className=' p-2 px-5 border-  border-gray-900 bg-blue-400 text-gray-900 rounded-full text-xl font-semibold shadow-md shadow-gray-400 transition-all duration-300 hover:bg-blue-500 hover:scale-105' onClick={addToCart}>Add To Cart</button>
                         </div>
                     </div>
                     <div className='min-h-[70%] flex flex-col justify-center space-y-5'>

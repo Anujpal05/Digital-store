@@ -32,7 +32,7 @@ const Login = () => {
                     password: ""
                 });
                 dispatch(authActions.login());
-                localStorage.setItem('isLogin', isLogin);
+                localStorage.setItem('isLogin', true);
                 toast.success(res.data.message);
                 navigate("/");
             }

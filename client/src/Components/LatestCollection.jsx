@@ -3,9 +3,12 @@ import axios from 'axios'
 import { Link } from 'react-router-dom';
 import { Hourglass } from 'react-loader-spinner';
 import toast from 'react-hot-toast';
+import { useSelector } from 'react-redux';
 
 function LatestCollection({ filter, price, search }) {
     const [product, setproduct] = useState();
+    const isLogin = useSelector((state) => state.auth.isLogin);
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -49,6 +52,23 @@ function LatestCollection({ filter, price, search }) {
     }, [search])
 
 
+    const addToCart = async (product_id) => {
+        try {
+            if (!isLogin) {
+                navigate("/login")
+                return;
+            }
+            const res = await axios.post("http://localhost:8080/api/v1/cart/add-cart", {}, {
+                headers: {
+                    userid: localStorage.getItem('userId'),
+                    productid: product_id
+                }
+            })
+            toast.success(res.data.message);
+        } catch (error) {
+            toast.error(error.response.data.message)
+        }
+    }
 
     return (
         <div>
@@ -60,7 +80,7 @@ function LatestCollection({ filter, price, search }) {
                         <div className=' flex flex-col gap-1 bg-gray-100 p-3 rounded-md'>
                             <p className=' text-xl font-semibold'>{item.title}</p>
                             <p className=' text-md font-semibold text-gray-500'>&#8377; {item.price}</p>
-                            <button className=' w-full bg-pink-700 hover:bg-pink-800 hover:scale-105 text-gray-50 font-semibold text-center py-2 rounded-md '>Add To Cart</button>
+                            <button className=' w-full bg-pink-700 hover:bg-pink-800 hover:scale-105 text-gray-50 font-semibold text-center py-2 rounded-md ' onClick={() => addToCart(item._id)}>Add To Cart</button>
                         </div>
                     </div>
                 ))}

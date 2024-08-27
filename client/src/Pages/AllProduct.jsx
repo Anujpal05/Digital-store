@@ -4,6 +4,8 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import Footer from '../Components/Footer';
 import { Hourglass } from "react-loader-spinner"
+import { useSelector } from 'react-redux';
+import toast from 'react-hot-toast';
 
 
 const AllProduct = () => {
@@ -11,6 +13,7 @@ const AllProduct = () => {
     const [price, setprice] = useState(0);
     const [search, setSearch] = useState("");
     const [products, setproducts] = useState("");
+    const isLogin = useSelector((state) => state.auth.isLogin);
 
     //Adding Search feature
     useEffect(() => {
@@ -55,6 +58,25 @@ const AllProduct = () => {
         fetch();
     }, [search])
 
+    const addToCart = async (product_id) => {
+        try {
+            if (!isLogin) {
+                navigate("/login")
+                return;
+            }
+            const res = await axios.post("http://localhost:8080/api/v1/cart/add-cart", {}, {
+                headers: {
+                    userid: localStorage.getItem('userId'),
+                    productid: product_id
+                }
+            })
+            toast.success(res.data.message);
+        } catch (error) {
+            toast.error(error.response.data.message)
+        }
+    }
+
+
     return (
         <div >
             <div className=' min-h-screen'>
@@ -83,7 +105,7 @@ const AllProduct = () => {
                                         <div className=' py-3 space-y-2'>
                                             <h1 className=' text-xl font-semibold text-gray-800'>{item.title}</h1>
                                             <p className=' text-md font-semibold text-gray-600'>Price: &#8377; {item.price}</p>
-                                            <div className=' bg-pink-700 py-1 text-center text-xl font-semibold rounded-full hover:scale-105 transition-all duration-300 '>Add To Cart</div>
+                                            <div className=' bg-pink-700 py-1 text-center text-xl font-semibold rounded-full hover:scale-105 transition-all duration-300 ' onClick={() => addToCart(item._id)}>Add To Cart</div>
                                         </div>
                                     </div>
                                 ))
