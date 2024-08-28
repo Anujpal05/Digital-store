@@ -18,7 +18,7 @@ const ProductCard = () => {
         const fetch = async () => {
             try {
 
-                const data = await axios.get("http://localhost:8080/api/v1/product/getproduct", { headers: { id } });
+                const data = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/v1/product/getproduct`, { headers: { id } });
                 if (data) {
                     await setproduct(data.data.product)
                 }
@@ -32,7 +32,7 @@ const ProductCard = () => {
     useEffect(() => {
         const fetch = async () => {
             try {
-                const relatedData = await axios.get("http://localhost:8080/api/v1/product/product-category-wise", { headers: { category: product?.category } });
+                const relatedData = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/v1/product/product-category-wise`, { headers: { category: product?.category } });
                 const filterData = relatedData && relatedData?.data?.product?.filter(item => item?._id != product?._id).slice(0, 4);
                 setrelatedProducts(filterData);
             } catch (error) {
@@ -48,7 +48,7 @@ const ProductCard = () => {
                 navigate("/login")
                 return;
             }
-            const data = await axios.put('http://localhost:8080/api/v1/favourite/add-favourite', {}, {
+            const data = await axios.put(`${import.meta.env.VITE_SERVER_URL}/api/v1/favourite/add-favourite`, {}, {
                 headers:
                 {
                     productid: id,
@@ -68,7 +68,7 @@ const ProductCard = () => {
                 navigate("/login")
                 return;
             }
-            const res = await axios.post("http://localhost:8080/api/v1/cart/add-cart", {}, {
+            const res = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/cart/add-cart`, {}, {
                 headers: {
                     userid: localStorage.getItem('userId'),
                     productid: id

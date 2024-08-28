@@ -2,11 +2,12 @@ import axios from 'axios';
 import React from 'react'
 import toast from 'react-hot-toast';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 const Card = ({ item }) => {
 
     const isLogin = useSelector((state) => state.auth.isLogin);
+    const navigate = useNavigate();
 
     const addToCart = async (product_id) => {
         try {
@@ -14,7 +15,7 @@ const Card = ({ item }) => {
                 navigate("/login")
                 return;
             }
-            const res = await axios.post("http://localhost:8080/api/v1/cart/add-cart", {}, {
+            const res = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/cart/add-cart`, {}, {
                 headers: {
                     userid: localStorage.getItem('userId'),
                     productid: product_id

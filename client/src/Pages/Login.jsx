@@ -21,7 +21,7 @@ const Login = () => {
     const handleSubmit = async (e) => {
         try {
             e.preventDefault();
-            const res = await axios.post("http://localhost:8080/api/v1/user/login", values);
+            const res = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/user/login`, values);
 
             if (res.data) {
                 localStorage.setItem('userId', res.data.id);

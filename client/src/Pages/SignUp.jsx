@@ -17,7 +17,7 @@ const SignUp = () => {
     const handleSubmit = async (e) => {
         try {
             e.preventDefault();
-            const res = await axios.post("http://localhost:8080/api/v1/user/register", values);
+            const res = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/user/register`, values);
             toast.success(res.data.message);
             navigate("/login");
         } catch (error) {

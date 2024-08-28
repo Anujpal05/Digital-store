@@ -18,12 +18,12 @@ const Category = () => {
         try {
             const fetch = async () => {
                 if (category != 'general') {
-                    const data = await axios.get("http://localhost:8080/api/v1/product/product-category-wise", { headers: { category: category } });
+                    const data = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/v1/product/product-category-wise`, { headers: { category: category } });
                     if (data) {
                         setproduct(data?.data?.product);
                     }
                 } else {
-                    const data = await axios.get("http://localhost:8080/api/v1/product/getallproduct");
+                    const data = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/v1/product/getallproduct`);
                     if (data) {
                         setproduct(data?.data?.products);
                     }
@@ -41,7 +41,7 @@ const Category = () => {
     useEffect(() => {
         const fetch = async () => {
             try {
-                const data = await axios.get("http://localhost:8080/api/v1/product/product-category-wise", { headers: { category: category } });
+                const data = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/v1/product/product-category-wise`, { headers: { category: category } });
                 let filterData = data && data.data.product.filter(item => item.category.includes(search?.toLowerCase()) || item.title?.toLowerCase().includes(search?.toLowerCase()) || item.desc.toLowerCase().includes(search?.toLowerCase()) || item.price == search);
                 if (filterData) {
                     setproduct(filterData);

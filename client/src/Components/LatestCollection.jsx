@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Hourglass } from 'react-loader-spinner';
 import toast from 'react-hot-toast';
 import { useSelector } from 'react-redux';
@@ -8,12 +8,13 @@ import { useSelector } from 'react-redux';
 function LatestCollection({ filter, price, search }) {
     const [product, setproduct] = useState();
     const isLogin = useSelector((state) => state.auth.isLogin);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 if (filter == "general") {
-                    const data = await axios.get("http://localhost:8080/api/v1/product/getallproduct");
+                    const data = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/v1/product/getallproduct`);
                     if (price != 0) {
                         const filterData = data.data.products.filter(item => item.price < price);
                         filterData ? setproduct(filterData) : "";
@@ -21,7 +22,7 @@ function LatestCollection({ filter, price, search }) {
                         data ? setproduct(data.data.products) : "";
                     }
                 } else {
-                    const data = await axios.get("http://localhost:8080/api/v1/product/product-category-wise", { headers: { category: filter } });
+                    const data = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/v1/product/product-category-wise`, { headers: { category: filter } });
                     if (price != 0) {
                         const filterData = data.data.product.filter(item => item.price < price);
                         filterData ? setproduct(filterData) : "";
@@ -39,7 +40,7 @@ function LatestCollection({ filter, price, search }) {
     useEffect(() => {
         const fetch = async () => {
             try {
-                const data = await axios.get("http://localhost:8080/api/v1/product/getallproduct");
+                const data = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/v1/product/getallproduct`);
                 let filterData = data && data.data.products.filter(item => item.category.includes(search.toLowerCase()) || item.title.toLowerCase().includes(search.toLowerCase()) || item.desc.toLowerCase().includes(search.toLowerCase()) || item.price == search);
                 if (filterData) {
                     setproduct(filterData);
@@ -58,7 +59,7 @@ function LatestCollection({ filter, price, search }) {
                 navigate("/login")
                 return;
             }
-            const res = await axios.post("http://localhost:8080/api/v1/cart/add-cart", {}, {
+            const res = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/cart/add-cart`, {}, {
                 headers: {
                     userid: localStorage.getItem('userId'),
                     productid: product_id
