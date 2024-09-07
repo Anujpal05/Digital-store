@@ -97,7 +97,7 @@ export const updateUser = async (req, res) => {
         .json({ message: "Address must be greater than 9" });
     }
 
-    if (phone.length != 10) {
+    if (phone.toString().length != 10) {
       return res
         .status(400)
         .json({ message: "Phone no. must be exactly 10 digits " });
@@ -130,6 +130,24 @@ export const getAllUser = async (req, res) => {
     return res
       .status(200)
       .json({ message: "Getting All User information!", allUsers });
+  } catch (error) {
+    return res.status(500).json({ message: "Internal server error!" });
+  }
+};
+
+export const getUser = async (req, res) => {
+  try {
+    const { userid } = req.headers;
+    if (!userid) {
+      return res.status(404).json({ message: "Please, Provide userId! " });
+    }
+
+    const user = await User.findById(userid);
+    if (!user) {
+      return res.status(404).json({ message: "User not found!" });
+    }
+
+    return res.status(200).json({ message: "User found!", user });
   } catch (error) {
     return res.status(500).json({ message: "Internal server error!" });
   }

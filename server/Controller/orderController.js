@@ -1,3 +1,4 @@
+import { populate } from "dotenv";
 import Order from "../Model/orderModel.js";
 import Product from "../Model/productModel.js";
 import User from "../Model/userModel.js";
@@ -6,11 +7,10 @@ import User from "../Model/userModel.js";
 export const placedOrder = async (req, res) => {
   try {
     const { userid, productid } = req.headers;
-    const { paymentMode } = req.body;
+    const { paymentMode, quantity, bill } = req.body;
 
     const user = await User.findById(userid);
     const product = await Product.findById(productid);
-
     if (!user) {
       return res.status(404).json({ message: "User not found!" });
     }
@@ -23,6 +23,7 @@ export const placedOrder = async (req, res) => {
       user: userid,
       product: productid,
       paymentMode: paymentMode,
+      other: { quantity, bill },
     });
     await newOrder.save();
     await user.updateOne({
@@ -38,8 +39,10 @@ export const placedOrder = async (req, res) => {
 export const getUserOrders = async (req, res) => {
   try {
     const { userid } = req.headers;
-    const user = await User.findById(userid).populate("order");
-
+    const user = await User.findById(userid).populate({
+      path: "order",
+      populate: { path: "product" },
+    });
     if (!user) {
       return res.status(404).json({ message: "User not found!" });
     }

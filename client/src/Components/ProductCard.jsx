@@ -80,6 +80,23 @@ const ProductCard = () => {
         }
     }
 
+    const placeOrder = async () => {
+
+        navigate(`/place-order/productid/${id}`);
+        // try {
+        //     const res = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/order/placed-order`, {}, {
+        //         headers: {
+        //             userid: localStorage.getItem('userId'),
+        //             productid: id
+        //         }
+        //     })
+
+        //     toast.success(res.data.message);
+        // } catch (error) {
+        //     toast.error(error.response.data.message)
+        // }
+    }
+
     return (
         <div>
             {product && <div>
@@ -112,7 +129,7 @@ const ProductCard = () => {
                             </select></div>}
                             <div className=' text-xl font-semibold text-gray-700 '>Available : 20</div>
                         </div>
-                        <button className=' p-2 bg-pink-700 text-gray-200 font-bold text-xl w-full rounded-full hover:bg-pink-600 shadow-md shadow-gray-400'>Buy Now</button>
+                        <button className=' p-2 bg-pink-700 text-gray-200 font-bold text-xl w-full rounded-full hover:bg-pink-600 shadow-md shadow-gray-400' onClick={placeOrder}>Buy Now</button>
                         <div>
 
                         </div>
