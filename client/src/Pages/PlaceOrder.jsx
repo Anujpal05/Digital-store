@@ -96,6 +96,7 @@ const PlaceOrder = () => {
                 }
                 const data = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/order/placed-order`, { paymentMode: values.mode, quantity: values.quantity, bill: product.price * values.quantity }, { headers: { userid: userid, productid: id } });
                 toast.success(data?.data?.message);
+
             }
         } catch (error) {
             toast.error(error.response.data.message);

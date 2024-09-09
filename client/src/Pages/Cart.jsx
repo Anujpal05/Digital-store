@@ -15,9 +15,9 @@ const Cart = () => {
     const [cartProducts, setCartProducts] = useState();
     const [loader, setloader] = useState(true);
     const [total, setTotal] = useState(0);
-    const [length, setlength] = useState(0);
     const [menu, setmenu] = useState('flex');
-    const [count, setcount] = useState(0);
+    const [quantity, setquantity] = useState(1);
+    const [products, setproducts] = useState([]);
     const navigate = useNavigate();
 
     const headers = {
@@ -30,6 +30,11 @@ const Cart = () => {
                 const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/v1/cart/get-all-cart`, { headers });
                 setCartProducts(response.data.user.cart)
                 setloader(false)
+                let productArray = cartProducts.map(item => ({
+                    product: item._id,
+                    quantity: 1
+                }))
+                setproducts(productArray);
             } catch (error) {
                 toast.error(error.response.data.message || "Server Error!")
             }
@@ -49,7 +54,13 @@ const Cart = () => {
     }, [cartProducts])
 
     const placeOrder = async () => {
-        toast.success("Coming Soon...");
+        try {
+
+            console.log(products)
+            // const data = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/order/placed-orders`, {})
+        } catch (error) {
+        }
+
     }
 
 
@@ -67,6 +78,12 @@ const Cart = () => {
         } catch (error) {
             toast.error(error.response.data.message)
         }
+    }
+
+    const changeQuantity = (e, id) => {
+        setquantity(Number(e.target.value));
+        setproducts(prevItems => prevItems.map(item => item._id == id ? { ...item, quantity: Number(e.target.value) } : item));
+        console.log(products)
     }
 
     return (
@@ -100,6 +117,17 @@ const Cart = () => {
                             <Link to={`/product/${items._id}`} className=' order-1 md:order-none '>
                                 <img src={items.image} alt='product' className=' h-20 min-w-14 ' />
                             </Link>
+                            <div>
+                                <span className=' font-semibold'>No. Of Item : </span>
+                                <select name="quantity" onChange={(e) => changeQuantity(e, items._id)} id="" className=' outline-none border-2 bg-gray-200'>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
+                            </div>
+
                             <Link to={`/product/${items._id}`} className='col-span-3 order-2 md:order-none '>
                                 <div className=' space-y-1  '>
                                     <p className=' text-xl  font-semibold'>{items.title.slice(0, 50)} </p>
@@ -121,6 +149,16 @@ const Cart = () => {
                                         <Link to={`/product/${items._id}`} className=''>
                                             <img src={items.image} alt='product' className=' h-28' />
                                         </Link>
+                                        <div className=' flex flex-col'>
+                                            <span className=' font-semibold'>Quantity : </span>
+                                            <select name="quantity" id="" onChange={(e) => changeQuantity(e, items._id)} className=' outline-none border-2 bg-gray-200'>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                            </select>
+                                        </div>
                                         <button className='w-10 bg-red-100 hover:bg-red-200 text-red-600 h-10 text-2xl flex justify-center items-center rounded ' onClick={() => removeCartBook(items._id)}><AiFillDelete /></button>
                                     </div>
                                 </div>

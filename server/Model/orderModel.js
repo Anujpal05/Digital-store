@@ -7,11 +7,19 @@ const orderSchema = new mongoose.Schema(
       ref: "user",
       required: true,
     },
-    product: {
-      type: mongoose.Types.ObjectId,
-      ref: "product",
-      required: true,
-    },
+    products: [
+      {
+        product: {
+          type: mongoose.Types.ObjectId,
+          ref: "product",
+          required: true,
+        },
+        others: {
+          type: Object,
+          default: {},
+        },
+      },
+    ],
     orderStatus: {
       type: String,
       default: "Order Placed",

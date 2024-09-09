@@ -29,7 +29,7 @@ function Navbar() {
                 <Link to={"/"} className=" cursor-pointer">Home</Link>
                 <Link to={'/all-product'} className=" cursor-pointer">All Products</Link>
                 <h1 className=" cursor-pointer" onClick={handleData}>About</h1>
-                {isLogin && <h1 className=' cursor-pointer' onClick={handleData}>Order</h1>}
+                {isLogin && <Link to={'/myorder'} className=' cursor-pointer' >Order</Link>}
             </div>
             <div className=' flex lg:gap-5'>
                 <div className=' text-3xl flex justify-center items-center' onClick={handleData}><MdOutlineLightMode /></div>

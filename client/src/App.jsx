@@ -10,6 +10,7 @@ import SignUp from './Pages/SignUp.jsx';
 import { Toaster } from 'react-hot-toast';
 import Cart from './Pages/Cart.jsx';
 import PlaceOrder from './Pages/PlaceOrder.jsx';
+import Order from './Pages/Order.jsx';
 
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
         <Route path='/signup' element={<SignUp />} />
         <Route path='/cart' element={<Cart />} />
         <Route path='/place-order/productid/:id' element={<PlaceOrder />} />
+        <Route path='/myorder' element={<Order />} />
       </Routes>
     </div>
   )

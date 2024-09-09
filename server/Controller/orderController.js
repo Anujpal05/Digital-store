@@ -3,6 +3,35 @@ import Order from "../Model/orderModel.js";
 import Product from "../Model/productModel.js";
 import User from "../Model/userModel.js";
 
+export const placeOrders = async (req, res) => {
+  try {
+    const { userid } = req.headers;
+    const { paymentMode, bill, products } = req.body;
+    const user = await User.findById(userid);
+    if (!user) {
+      return res.status(404).json({ message: "User not found!" });
+    }
+
+    if (!products) {
+      return res.status(404).json({ message: "Products not found!" });
+    }
+
+    const newOrder = new Order({
+      user: userid,
+      products: products,
+      paymentMode: paymentMode,
+      other: { bill },
+    });
+    await newOrder.save();
+    await user.updateOne({
+      $push: { order: newOrder._id },
+    });
+    return res.status(200).json({ message: "Order successfully!", newOrder });
+  } catch (error) {
+    return res.status(500).json({ message: "Internal server error!" });
+  }
+};
+
 //Place Order
 export const placedOrder = async (req, res) => {
   try {
@@ -21,10 +50,11 @@ export const placedOrder = async (req, res) => {
 
     const newOrder = new Order({
       user: userid,
-      product: productid,
+      products: [{ product: productid, others: { quantity } }],
       paymentMode: paymentMode,
-      other: { quantity, bill },
+      other: { bill },
     });
+    console.log(newOrder);
     await newOrder.save();
     await user.updateOne({
       $push: { order: newOrder._id },
@@ -41,12 +71,12 @@ export const getUserOrders = async (req, res) => {
     const { userid } = req.headers;
     const user = await User.findById(userid).populate({
       path: "order",
-      populate: { path: "product" },
+      populate: { path: "products", populate: { path: "product" } },
     });
+
     if (!user) {
       return res.status(404).json({ message: "User not found!" });
     }
-    const order = await Order.find({ user: userid }).populate("user");
 
     return res.status(200).json({ message: "Getting user's all order", user });
   } catch (error) {
