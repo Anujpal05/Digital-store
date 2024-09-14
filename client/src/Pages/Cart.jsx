@@ -18,7 +18,9 @@ const Cart = () => {
     const [menu, setmenu] = useState('flex');
     const [quantity, setquantity] = useState(1);
     const [products, setproducts] = useState([]);
+    const [bill, setbill] = useState(0);
     const navigate = useNavigate();
+    const [flag, setflag] = useState(false);
 
     const headers = {
         authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -28,19 +30,28 @@ const Cart = () => {
         const fetch = async () => {
             try {
                 const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/v1/cart/get-all-cart`, { headers });
-                setCartProducts(response.data.user.cart)
+                setCartProducts(response?.data?.user?.cart)
                 setloader(false)
-                let productArray = cartProducts.map(item => ({
-                    product: item._id,
-                    quantity: 1
-                }))
-                setproducts(productArray);
             } catch (error) {
-                toast.error(error.response.data.message || "Server Error!")
+                console.error(error?.response?.data?.message || "Server Error!")
             }
         }
         fetch();
+    }, [flag])
+
+    useEffect(() => {
+        try {
+            let productArray = cartProducts && cartProducts.map(item => ({
+                product: item._id,
+                quantity: 1,
+                bill: item.price
+            }))
+            setproducts(productArray);
+        } catch (error) {
+            console.log(error);
+        }
     }, [cartProducts])
+
 
     useEffect(() => {
         if (cartProducts && cartProducts.length > 0) {
@@ -54,13 +65,8 @@ const Cart = () => {
     }, [cartProducts])
 
     const placeOrder = async () => {
-        try {
-
-            console.log(products)
-            // const data = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/order/placed-orders`, {})
-        } catch (error) {
-        }
-
+        localStorage.setItem('products', JSON.stringify(products));
+        navigate('/place-order-from-cart');
     }
 
 
@@ -74,16 +80,16 @@ const Cart = () => {
                     }
                 });
                 toast.success(response.data.message);
+                setflag(true);
             }
         } catch (error) {
             toast.error(error.response.data.message)
         }
     }
 
-    const changeQuantity = (e, id) => {
-        setquantity(Number(e.target.value));
-        setproducts(prevItems => prevItems.map(item => item._id == id ? { ...item, quantity: Number(e.target.value) } : item));
-        console.log(products)
+    const changeQuantity = async (e, id) => {
+        await setquantity(Number(e.target.value));
+        await setproducts(prevItems => prevItems.map(item => item.product === id ? { ...item, quantity: quantity } : item));
     }
 
     return (
@@ -101,8 +107,8 @@ const Cart = () => {
             </div>}
             {cartProducts && cartProducts.length == 0 && <>
                 <div className='h-screen flex flex-col justify-center items-center'>
-                    <p className=' text-5xl  font-semibold p-3'>Empty Cart</p>
-                    <img src={cartImg} alt='cart Image' className=' h-48' />
+                    <p className='text-3xl md:text-5xl text-gray-800  font-semibold p-3'>Empty Cart</p>
+                    <img src={cartImg} alt='cart Image' className='h-36 md:h-48 lg:h-56' />
                 </div>
             </>}
             {cartProducts && cartProducts.length > 0 && <div className='  p-5'>

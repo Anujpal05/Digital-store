@@ -1,14 +1,15 @@
 import axios from 'axios';
 import React, { useEffect, useId, useState } from 'react'
 import toast from 'react-hot-toast';
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 
 const PlaceOrder = () => {
     const { id } = useParams();
     const [product, setproduct] = useState();
     const [error, setError] = useState(false);
-    const [visible, setvisible] = useState('flex')
+    const [visible, setvisible] = useState('flex');
+    const [productDetails, setproductDetails] = useState();
     const [values, setValues] = useState({
         username: "",
         address: "",
@@ -16,21 +17,33 @@ const PlaceOrder = () => {
         quantity: 1,
         mode: "Online"
     });
+    const [total, settotal] = useState(0);
+    const navigate = useNavigate();
 
     const userid = localStorage.getItem("userId");
-
-
-
-
+    const products = JSON.parse(localStorage.getItem('products'));
 
 
     useEffect(() => {
         const fetch = async () => {
             try {
-                const data = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/v1/product/getproduct`, { headers: { id } });
-                if (data) {
-                    await setproduct(data?.data?.product)
+                if (id) {
+                    const data = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/v1/product/getproduct`, { headers: { id } });
+                    if (data) {
+                        await setproduct(data?.data?.product)
+                    }
+                    localStorage.removeItem('products')
                 }
+
+                if (!products) {
+                    navigate('/cart');
+                }
+
+                if (!id) {
+                    const res = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/v1/product/getallproduct`);
+                    await setproductDetails(res.data.products.filter((item) => products.some((product => product.product === item._id))))
+                }
+
                 const user = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/v1/user/get-user`, { headers: { userid } });
                 if (user) {
                     setValues({
@@ -47,7 +60,20 @@ const PlaceOrder = () => {
             }
         }
         fetch();
+
     }, [])
+
+    useEffect(() => {
+        try {
+            {
+                const totalAmount = productDetails.reduce((acc, item) => acc + item.price, 0);
+                settotal(totalAmount)
+            }
+        } catch (error) {
+
+        }
+    }, [productDetails])
+
 
 
     const updateUser = async (e) => {
@@ -87,7 +113,7 @@ const PlaceOrder = () => {
         }
     }
 
-    const PlaceOrder = async (e) => {
+    const placeOrder = async (e) => {
         try {
             e.preventDefault();
             if (values.mode === 'COD') {
@@ -103,15 +129,50 @@ const PlaceOrder = () => {
         }
     }
 
+    const placeOrders = async (e) => {
+        try {
+            e.preventDefault();
+            if (values.mode === 'COD') {
+                console.log(products)
+                const data = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/order/placed-orders`, { paymentMode: values.mode, bill: total, products }, { headers: { userid } });
+                navigate('/myorder')
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const handleSubmit = (e) => {
+        if (products) {
+            placeOrders(e);
+        } else {
+            placeOrder(e);
+        }
+    }
+
 
     return (
-        <div className=' flex justify-center items-center p-20'>
-            {product && values && <div className=' border-2 w-96  min-h-[70vh] flex flex-col justify-evenly items-center'>
+        <div className=' flex justify-center items-center p-10'>
+            {values && <div className=' border-2 w-96  min-h-[70vh] flex flex-col justify-evenly items-center'>
                 <div className=' p-3 pb-5'>
-                    <div >
+                    {product && <div >
                         <p className='  text-gray-500 font-semibold'><span className=' text-gray-700'>Product Name:</span> {product.title} </p>
                         <p className=' text-gray-500 font-semibold'><span className=' text-gray-700'>Price:</span> &#8377;  {product.price * values.quantity}</p>
-                    </div>
+                    </div>}
+                    {productDetails && products && products.map((item, i) => (
+                        <div key={i}>
+                            <p className='  text-gray-500 font-semibold'><span className=' text-gray-700'>Product Name:</span> {productDetails[i].title} </p>
+                            <p className=' text-gray-500 font-semibold'><span className=' text-gray-700'>Price:</span> &#8377;  {productDetails[i].price * item.quantity}</p>
+                            <hr className=' border-1 my-1' />
+                        </div>
+                    ))}
+                    {productDetails && products &&
+                        <div className=' flex gap-2'>
+                            <p className=' font-semibold '>Total bill : </p>
+                            <div className=' text-gray-500 font-semibold'>&#8377; {total}</div>
+                        </div>
+                    }
+
                 </div>
                 <div className=' w-full'>
                     <form action="" className={`  flex-col justify-center px-10 p-4 gap-3 w-full ${visible == 'hidden' ? 'hidden' : 'flex'}`} onSubmit={updateUser}>
@@ -126,7 +187,7 @@ const PlaceOrder = () => {
                     </form>
                 </div>
                 <div className=' '>
-                    <form action="" className={`flex flex-col gap-20 ${visible == 'hidden' ? 'flex' : 'hidden'} `} onSubmit={PlaceOrder}>
+                    <form action="" className={`flex flex-col gap-20 ${visible == 'hidden' ? 'flex' : 'hidden'} `} onSubmit={handleSubmit}>
                         <div className=' flex flex-col gap-4  '>
                             <div className=' flex gap-5'>
                                 <p className=' text-md font-semibold'>Payment Mode :</p>
@@ -135,10 +196,10 @@ const PlaceOrder = () => {
                                     <option value="COD">cash on delivery</option>
                                 </select>
                             </div>
-                            <div className=' flex gap-5'>
+                            {!products && <div className=' flex gap-5'>
                                 <p className=' text-md font-semibold'>Quantity :</p>
                                 <input type="number" name="quantity" value={values.quantity} onChange={noOfProduct} className=' bg-gray-100 border-2 rounded-md outline-none px-2  w-14' />
-                            </div>
+                            </div>}
                         </div>
                         <div className=''><button type='submit' className=' p-2 bg-green-500 rounded-md font-semibold w-full '  >Next</button> </div>
                     </form>

@@ -11,6 +11,8 @@ import { Toaster } from 'react-hot-toast';
 import Cart from './Pages/Cart.jsx';
 import PlaceOrder from './Pages/PlaceOrder.jsx';
 import Order from './Pages/Order.jsx';
+import OrderDetails from './Pages/OrderDetails.jsx';
+import Footer from './Components/Footer.jsx';
 
 
 function App() {
@@ -29,8 +31,11 @@ function App() {
         <Route path='/signup' element={<SignUp />} />
         <Route path='/cart' element={<Cart />} />
         <Route path='/place-order/productid/:id' element={<PlaceOrder />} />
+        <Route path='/place-order-from-cart' element={<PlaceOrder />} />
         <Route path='/myorder' element={<Order />} />
+        <Route path='/order-details/:orderid' element={<OrderDetails />} />
       </Routes>
+      <Footer />
     </div>
   )
 }

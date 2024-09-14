@@ -3,6 +3,7 @@ import Order from "../Model/orderModel.js";
 import Product from "../Model/productModel.js";
 import User from "../Model/userModel.js";
 
+//place order from cart
 export const placeOrders = async (req, res) => {
   try {
     const { userid } = req.headers;
@@ -15,7 +16,6 @@ export const placeOrders = async (req, res) => {
     if (!products) {
       return res.status(404).json({ message: "Products not found!" });
     }
-
     const newOrder = new Order({
       user: userid,
       products: products,
@@ -26,13 +26,18 @@ export const placeOrders = async (req, res) => {
     await user.updateOne({
       $push: { order: newOrder._id },
     });
-    return res.status(200).json({ message: "Order successfully!", newOrder });
+    for (const item of products) {
+      await user.updateOne({
+        $pull: { cart: item.product },
+      });
+    }
+    return res.status(200).json({ message: "Order placed successfully!" });
   } catch (error) {
     return res.status(500).json({ message: "Internal server error!" });
   }
 };
 
-//Place Order
+//Place Order direct
 export const placedOrder = async (req, res) => {
   try {
     const { userid, productid } = req.headers;
@@ -54,7 +59,7 @@ export const placedOrder = async (req, res) => {
       paymentMode: paymentMode,
       other: { bill },
     });
-    console.log(newOrder);
+
     await newOrder.save();
     await user.updateOne({
       $push: { order: newOrder._id },
@@ -84,6 +89,27 @@ export const getUserOrders = async (req, res) => {
   }
 };
 
+//get order
+export const getOrder = async (req, res) => {
+  try {
+    const { orderid } = req.headers;
+    if (!orderid) {
+      return res.status(404).json({ message: "Order id not found!" });
+    }
+    const order = await Order.findById(orderid)
+      .populate("user")
+      .populate("products.product");
+    if (!order) {
+      return res.status(404).json({ message: "Order not found!" });
+    }
+    return res
+      .status(200)
+      .json({ message: "Order found successfully!", order });
+  } catch (error) {
+    return res.status(500).json({ message: "Internal server error!" });
+  }
+};
+
 //Update Order Status
 export const updateOrderStatus = async (req, res) => {
   try {
@@ -98,6 +124,20 @@ export const updateOrderStatus = async (req, res) => {
     });
 
     return res.status(200).json({ message: "Order is updated successfully!" });
+  } catch (error) {
+    return res.status(500).json({ message: "Internal server error!" });
+  }
+};
+
+export const getAllOrders = async (req, res) => {
+  try {
+    const orders = await Order.find();
+    if (!orders) {
+      return res.status(404).json({ message: "Orders not found", orders });
+    }
+    return res
+      .status(200)
+      .json({ message: "All Orders get successfully!", orders });
   } catch (error) {
     return res.status(500).json({ message: "Internal server error!" });
   }
