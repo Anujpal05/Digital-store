@@ -13,6 +13,8 @@ import PlaceOrder from './Pages/PlaceOrder.jsx';
 import Order from './Pages/Order.jsx';
 import OrderDetails from './Pages/OrderDetails.jsx';
 import Footer from './Components/Footer.jsx';
+import Dashboard from './Pages/Dashboard.jsx';
+import AddProduct from './Pages/AddProduct.jsx';
 
 
 function App() {
@@ -34,6 +36,8 @@ function App() {
         <Route path='/place-order-from-cart' element={<PlaceOrder />} />
         <Route path='/myorder' element={<Order />} />
         <Route path='/order-details/:orderid' element={<OrderDetails />} />
+        <Route path='/admin-dashboard' element={<Dashboard />} />
+        <Route path='/add-product' element={<AddProduct />} />
       </Routes>
       <Footer />
     </div>

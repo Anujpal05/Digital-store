@@ -13,10 +13,13 @@ import { RxCross2 } from "react-icons/rx";
 
 function Navbar() {
 
+    const [isOpen, setisOpen] = useState(false);
     const isLogin = useSelector(state => state.auth.isLogin);
+    const userRole = useSelector(state => state.auth.role);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const [isOpen, setisOpen] = useState(false);
+
+    //Logout
     const handleLogOut = () => {
         setisOpen(!isOpen);
         dispatch(authActions.logout());
@@ -29,6 +32,7 @@ function Navbar() {
         toast.success('Coming soon...')
     }
 
+    //Handle visibility of navbar for small device
     const isToggle = () => {
         setisOpen(!isOpen);
     }
@@ -43,6 +47,7 @@ function Navbar() {
                         <Link to={'/all-product'} className=" cursor-pointer">All Products</Link>
                         <h1 className=" cursor-pointer" onClick={handleData}>About</h1>
                         {isLogin && <Link to={'/myorder'} className=' cursor-pointer' >Order</Link>}
+                        {userRole === 'admin' && <Link to={'/admin-dashboard'}>Admin</Link>}
                     </div>
                     <div className=' flex lg:gap-5 md:gap-3 gap-3'>
                         <div className=' text-3xl flex justify-center items-center' onClick={handleData}><MdOutlineLightMode /></div>
@@ -54,7 +59,8 @@ function Navbar() {
                     </div>
                 </div>
             </div>
-            <div className=' py-6'></div>
+            <div className='py-7 lg:py-9'></div>
+            {/* For Responsive Navbar in small device */}
             <div className={`bg-zinc-900  h-screen z-30 w-[70%] min-[375px]:w-[50%] fixed top-14  right-0 transform transition-transform duration-500 ease-in-out ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
                 <button className=' outline-none text-2xl text-gray-50 p-3 cursor-pointer' onClick={isToggle}><RxCross2 /></button>
                 <div>
