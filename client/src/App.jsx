@@ -15,6 +15,8 @@ import OrderDetails from './Pages/OrderDetails.jsx';
 import Footer from './Components/Footer.jsx';
 import Dashboard from './Pages/Dashboard.jsx';
 import AddProduct from './Pages/AddProduct.jsx';
+import AllOrders from './Pages/AllOrders.jsx';
+import NotFound from './Pages/NotFound.jsx';
 
 
 function App() {
@@ -36,8 +38,11 @@ function App() {
         <Route path='/place-order-from-cart' element={<PlaceOrder />} />
         <Route path='/myorder' element={<Order />} />
         <Route path='/order-details/:orderid' element={<OrderDetails />} />
-        <Route path='/admin-dashboard' element={<Dashboard />} />
-        <Route path='/add-product' element={<AddProduct />} />
+        <Route path='/admin-dashboard' element={<Dashboard />} >
+          <Route path='add-product' element={<AddProduct />} />
+          <Route path='all-orders' element={<AllOrders />} />
+        </Route>
+        <Route path='*' element={<NotFound />} />
       </Routes>
       <Footer />
     </div>

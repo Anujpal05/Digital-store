@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import loginImg from '../assets/login.png';
-import Footer from '../Components/Footer';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -84,7 +83,6 @@ const Login = () => {
                     </div>
                 </div>
             </div>
-            <Footer />
         </div>
     )
 }

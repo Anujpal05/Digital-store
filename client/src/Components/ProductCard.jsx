@@ -1,7 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import Footer from "../Components/Footer";
 import { TbPlayerTrackNextFilled } from "react-icons/tb";
 import { ThreeDots } from "react-loader-spinner"
 import toast from 'react-hot-toast';
@@ -17,7 +16,6 @@ const ProductCard = () => {
     useEffect(() => {
         const fetch = async () => {
             try {
-
                 const data = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/v1/product/getproduct`, { headers: { id } });
                 if (data) {
                     await setproduct(data.data.product)
@@ -27,7 +25,7 @@ const ProductCard = () => {
             }
         }
         fetch();
-    }, [])
+    }, [id])
 
     useEffect(() => {
         const fetch = async () => {
@@ -40,7 +38,7 @@ const ProductCard = () => {
             }
         }
         fetch();
-    }, [product])
+    }, [product, id])
 
     const addToWishList = async () => {
         try {
@@ -71,7 +69,8 @@ const ProductCard = () => {
             const res = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/cart/add-cart`, {}, {
                 headers: {
                     userid: localStorage.getItem('userId'),
-                    productid: id
+                    productid: id,
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
                 }
             })
             toast.success(res.data.message);
@@ -81,20 +80,7 @@ const ProductCard = () => {
     }
 
     const placeOrder = async () => {
-
         navigate(`/place-order/productid/${id}`);
-        // try {
-        //     const res = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/order/placed-order`, {}, {
-        //         headers: {
-        //             userid: localStorage.getItem('userId'),
-        //             productid: id
-        //         }
-        //     })
-
-        //     toast.success(res.data.message);
-        // } catch (error) {
-        //     toast.error(error.response.data.message)
-        // }
     }
 
     return (
@@ -172,9 +158,6 @@ const ProductCard = () => {
                     />
                 </div>
             }
-            <div className=' pt-16'>
-                <Footer />
-            </div>
         </div>
     )
 }

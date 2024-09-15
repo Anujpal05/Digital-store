@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useId, useState } from 'react'
 import toast from 'react-hot-toast';
 import { useNavigate, useParams } from 'react-router-dom'
+import { Hourglass } from 'react-loader-spinner';
 
 
 const PlaceOrder = () => {
@@ -10,6 +11,7 @@ const PlaceOrder = () => {
     const [error, setError] = useState(false);
     const [visible, setvisible] = useState('flex');
     const [productDetails, setproductDetails] = useState();
+    const [loader, setloader] = useState(true);
     const [values, setValues] = useState({
         username: "",
         address: "",
@@ -44,7 +46,7 @@ const PlaceOrder = () => {
                     await setproductDetails(res.data.products.filter((item) => products.some((product => product.product === item._id))))
                 }
 
-                const user = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/v1/user/get-user`, { headers: { userid } });
+                const user = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/v1/user/get-user`, { headers: { userid: userid, Authorization: `Bearer ${localStorage.getItem('token')}` } });
                 if (user) {
                     setValues({
                         username: user.data.user.username,
@@ -54,6 +56,8 @@ const PlaceOrder = () => {
                         mode: 'Online'
                     })
                 }
+
+                setloader(false);
 
             } catch (error) {
                 toast.error(error.response.data?.message);
@@ -70,7 +74,7 @@ const PlaceOrder = () => {
                 settotal(totalAmount)
             }
         } catch (error) {
-
+            console.log(error);
         }
     }, [productDetails])
 
@@ -79,19 +83,13 @@ const PlaceOrder = () => {
     const updateUser = async (e) => {
         e.preventDefault();
         try {
-            const data = await axios.put(`${import.meta.env.VITE_SERVER_URL}/api/v1/user/update-user`, values, { headers: { id: userid } });
+            const data = await axios.put(`${import.meta.env.VITE_SERVER_URL}/api/v1/user/update-user`, values, { headers: { id: userid, Authorization: `Bearer ${localStorage.getItem('token')}` } });
             toast.success(data.data.message);
             setvisible('hidden');
         } catch (error) {
             toast.error(error.response.data.message);
         }
     }
-
-    // const validateLength = (e) => {
-    //     if (e.target.value > 10) {
-    //         e.target.value = e.target.value.slice(0, 10);
-    //     }
-    // }
 
     const noOfProduct = (e) => {
         let { name, value } = e.target;
@@ -120,7 +118,7 @@ const PlaceOrder = () => {
                 if (values.quantity === 0) {
                     setValues({ ...values, quantity: 1 });
                 }
-                const data = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/order/placed-order`, { paymentMode: values.mode, quantity: values.quantity, bill: product.price * values.quantity }, { headers: { userid: userid, productid: id } });
+                const data = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/order/placed-order`, { paymentMode: values.mode, quantity: values.quantity, bill: product.price * values.quantity }, { headers: { userid: userid, productid: id, Authorization: `Bearer ${localStorage.getItem('token')}` } });
                 toast.success(data?.data?.message);
 
             }
@@ -134,11 +132,12 @@ const PlaceOrder = () => {
             e.preventDefault();
             if (values.mode === 'COD') {
                 console.log(products)
-                const data = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/order/placed-orders`, { paymentMode: values.mode, bill: total, products }, { headers: { userid } });
+                const data = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/order/placed-orders`, { paymentMode: values.mode, bill: total, products }, { headers: { userid: userid, Authorization: `Bearer ${localStorage.getItem('token')}` } });
                 navigate('/myorder')
+                toast.success(data?.data?.message);
             }
         } catch (error) {
-            console.log(error)
+            toast.error(error.response.data.message);
         }
     }
 
@@ -153,7 +152,18 @@ const PlaceOrder = () => {
 
     return (
         <div className=' flex justify-center items-center p-10'>
-            {values && <div className=' border-2 w-96  min-h-[70vh] flex flex-col justify-evenly items-center'>
+            {loader && <div className=' h-[90vh] flex justify-center items-center'>
+                <Hourglass
+                    visible={loader}
+                    height="100"
+                    width="100"
+                    ariaLabel="hourglass-loading"
+                    wrapperStyle={{}}
+                    wrapperClass=""
+                    colors={['#306cce', '#72a1ed']}
+                />
+            </div>}
+            {values && !loader && <div className=' border-2 w-96  min-h-[70vh] flex flex-col justify-evenly items-center'>
                 <div className=' p-3 pb-5'>
                     {product && <div >
                         <p className='  text-gray-500 font-semibold'><span className=' text-gray-700'>Product Name:</span> {product.title} </p>

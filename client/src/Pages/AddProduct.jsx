@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import Category from './Category';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 const AddProduct = () => {
     const [product, setproduct] = useState({
@@ -9,8 +9,9 @@ const AddProduct = () => {
         desc: "",
         image: "",
         category: "",
-        price: 0
+        price: ""
     })
+    const navigate = useNavigate();
 
     const handleValue = (e) => {
         const { name, value } = e.target;
@@ -20,15 +21,16 @@ const AddProduct = () => {
     const addNewProduct = async (e) => {
         try {
             e.preventDefault();
-            const data = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/product/addproduct`, product);
-            toast.success(data?.data?.message)
+            const data = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/product/addproduct`, product, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
+            toast.success(data?.data?.message);
+            navigate('/all-product');
         } catch (error) {
             toast.error(error?.response?.data?.message);
         }
     }
     return (
-        <div className=' min-h-screen'>
-            <div className=' bg-gray-50 flex justify-center items-center h-[80vh]'>
+        <div className=' min-h-screen '>
+            <div className=' flex justify-center items-center h-[90vh] '>
                 <form action="" className=' flex flex-col justify-center items-center h-fit w-fit p-5 rounded-md  gap-4 bg-gray-100  shadow-md shadow-black  ' onSubmit={addNewProduct}>
                     <p className=' text-2xl text-center text-gray-800 font-semibold'>Add Product</p>
                     <div className=' flex flex-col  '>

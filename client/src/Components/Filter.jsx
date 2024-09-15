@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import { IoSearch } from "react-icons/io5";
 
 function Filter({ filter, setfilter, setprice, setSearch }) {

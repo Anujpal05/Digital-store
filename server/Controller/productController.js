@@ -3,7 +3,13 @@ import Product from "../Model/productModel.js";
 //Add Products
 export const addProduct = async (req, res) => {
   try {
-    const { title, desc, image, category, price } = req.body;
+    const { title, desc, image, category, price, user } = req.body;
+
+    if (!(user.role != "admin" || user.role != "salesman")) {
+      return res
+        .status(403)
+        .json({ message: "You do not have permission to access this page." });
+    }
 
     //Provide all fields
     if (!title || !desc || !image || !price) {
@@ -14,7 +20,6 @@ export const addProduct = async (req, res) => {
     if (price < 0) {
       return res.status(400).json({ message: "Please Enter valid Price!" });
     }
-
     const newProduct = new Product({
       title: title,
       desc: desc,
@@ -90,8 +95,14 @@ export const getProductByCategory = async (req, res) => {
 //Update Perticular Product
 export const updateProduct = async (req, res) => {
   try {
-    const { title, desc, image, category, price } = req.body;
+    const { title, desc, image, category, price, user } = req.body;
     const { id } = req.headers;
+
+    if (!(user.role != "admin" || user.role != "salesman")) {
+      return res
+        .status(403)
+        .json({ message: "You do not have permission to access this page." });
+    }
 
     const product = await Product.findByIdAndUpdate(id, {
       title: title,
@@ -117,6 +128,13 @@ export const updateProduct = async (req, res) => {
 export const deleteProduct = async (req, res) => {
   try {
     const { id } = req.headers;
+    const { user } = req.body;
+
+    if (!(user.role != "admin" || user.role != "salesman")) {
+      return res
+        .status(403)
+        .json({ message: "You do not have permission to access this page." });
+    }
 
     const product = await Product.findByIdAndDelete(id);
     if (!product) {

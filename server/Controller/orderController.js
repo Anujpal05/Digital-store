@@ -114,7 +114,12 @@ export const getOrder = async (req, res) => {
 export const updateOrderStatus = async (req, res) => {
   try {
     const { orderid } = req.headers;
-    const { orderStatus } = req.body;
+    const { orderStatus, user } = req.body;
+    if (!(user.role != "admin" || user.role != "salesman")) {
+      return res
+        .status(403)
+        .json({ message: "You do not have permission to access this page." });
+    }
     const order = await Order.findById(orderid);
     if (!order) {
       return res.status(404).json({ message: "Order not found!" });
@@ -131,6 +136,12 @@ export const updateOrderStatus = async (req, res) => {
 
 export const getAllOrders = async (req, res) => {
   try {
+    const { user } = req.body;
+    if (!(user.role != "admin" || user.role != "salesman")) {
+      return res
+        .status(403)
+        .json({ message: "You do not have permission to access this page." });
+    }
     const orders = await Order.find();
     if (!orders) {
       return res.status(404).json({ message: "Orders not found", orders });

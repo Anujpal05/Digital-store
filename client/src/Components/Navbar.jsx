@@ -21,7 +21,6 @@ function Navbar() {
 
     //Logout
     const handleLogOut = () => {
-        setisOpen(!isOpen);
         dispatch(authActions.logout());
         localStorage.clear();
         toast.success("LogOut Successfully!");
@@ -69,7 +68,7 @@ function Navbar() {
                         <Link to={'/all-product'} className=" cursor-pointer" onClick={isToggle}>All Products</Link>
                         <h1 className=" cursor-pointer" onClick={isToggle}>About</h1>
                         {isLogin && <Link to={'/myorder'} className=' cursor-pointer' onClick={isToggle} >Order</Link>}
-                        {isLogin && <button className=' outline-none justify-center items-center bg-blue-500 px-4 py-2 rounded-md font-semibold cursor-pointer' onClick={handleLogOut}>LogOut</button>}
+                        {isLogin && <button className=' outline-none justify-center items-center bg-blue-500 px-4 py-2 rounded-md font-semibold cursor-pointer' onClick={() => { handleLogOut(); isToggle() }}>LogOut</button>}
                     </div>
                 </div>
             </div>

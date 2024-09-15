@@ -27,8 +27,16 @@ export const registerController = async (req, res) => {
     });
 
     await newUser.save();
+    const payload = {
+      id: newUser._id,
+      username: newUser.username,
+      role: newUser.role,
+    };
+    const token = generateJWToken(payload);
 
-    return res.status(200).json({ message: "User registered successfully!" });
+    return res
+      .status(200)
+      .json({ message: "User registered successfully!", token });
   } catch (error) {
     return res.status(500).json({ message: "Internal server error!" });
   }
@@ -120,6 +128,12 @@ export const updateUser = async (req, res) => {
 //Getting all user
 export const getAllUser = async (req, res) => {
   try {
+    const { user } = req.body;
+    if (!(user.role != "admin" || user.role != "salesman")) {
+      return res
+        .status(403)
+        .json({ message: "You do not have permission to access this page." });
+    }
     const allUsers = await User.find()
       .select("-password")
       .sort({ createdAt: -1 });

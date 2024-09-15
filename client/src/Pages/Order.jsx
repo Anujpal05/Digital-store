@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import toast from 'react-hot-toast';
 import { Link } from 'react-router-dom';
 import orderImg from '../assets/order.png'
+import { Hourglass } from 'react-loader-spinner'
 
 const Order = () => {
     const userid = localStorage.getItem('userId');
@@ -11,7 +12,7 @@ const Order = () => {
     useEffect(() => {
         const fetch = async () => {
             try {
-                const data = await axios.get("http://localhost:8080/api/v1/order/get-user-order", { headers: { userid } });
+                const data = await axios.get("http://localhost:8080/api/v1/order/get-user-order", { headers: { userid, Authorization: `Bearer ${localStorage.getItem('token')}` } });
                 await setuser(data?.data?.user);
             } catch (error) {
                 toast.error(error.response.data.message);
@@ -25,6 +26,19 @@ const Order = () => {
 
     return (
         <div className=' px-5 py-2'>
+            {!user &&
+                <div className=' h-[90vh] flex justify-center items-center'>
+                    <Hourglass
+                        visible={true}
+                        height="100"
+                        width="100"
+                        ariaLabel="hourglass-loading"
+                        wrapperStyle={{}}
+                        wrapperClass=""
+                        colors={['#306cce', '#72a1ed']}
+                    />
+                </div>
+            }
             {user && user.order.length === 0 && <div className='flex flex-col justify-center items-center h-[90vh] '>
                 <p className=' text-3xl md:text-5xl text-gray-800 font-semibold text-center'> You have no any order</p>
                 <img src={orderImg} alt="" className=' h-40' />

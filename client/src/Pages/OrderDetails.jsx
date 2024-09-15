@@ -1,10 +1,12 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
+import { Hourglass } from 'react-loader-spinner'
 import { Link, useParams } from 'react-router-dom'
 
 const OrderDetails = () => {
     const orderid = useParams();
     const [order, setorder] = useState([]);
+    const [loader, setloader] = useState(true);
     const [date, setdate] = useState({
         orderDate: "",
         orderTime: ""
@@ -12,8 +14,9 @@ const OrderDetails = () => {
     useEffect(() => {
         const fetch = async () => {
             try {
-                const data = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/v1/order/get-order`, { headers: orderid })
+                const data = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/v1/order/get-order`, { headers: { orderid: orderid.orderid, Authorization: `Bearer ${localStorage.getItem('token')}` } })
                 setorder(data.data.order);
+                setloader(false);
             } catch (error) {
                 console.log(error)
             }
@@ -43,7 +46,20 @@ const OrderDetails = () => {
 
     return (
         <div>
-            {order &&
+            {loader &&
+                <div className=' h-[90vh] flex justify-center items-center'>
+                    <Hourglass
+                        visible={loader}
+                        height="100"
+                        width="100"
+                        ariaLabel="hourglass-loading"
+                        wrapperStyle={{}}
+                        wrapperClass=""
+                        colors={['#306cce', '#72a1ed']}
+                    />
+                </div>
+            }
+            {order && !loader &&
                 <div className=' p-2 px-10'>
                     <p className=' text-3xl md:text-4xl font-semibold text-gray-800 text-center p-2'>Order Details</p>
                     <div className=' flex flex-col md:flex-row justify-between md:items-center bg-gray-50 p-2'>

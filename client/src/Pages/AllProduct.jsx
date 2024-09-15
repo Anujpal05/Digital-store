@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import Filter from '../Components/Filter'
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
-import Footer from '../Components/Footer';
 import { Hourglass } from "react-loader-spinner"
 import { useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
@@ -50,6 +49,7 @@ const AllProduct = () => {
                 let filterData = data && data.data.products.filter(item => item.category.includes(search?.toLowerCase()) || item.title?.toLowerCase().includes(search?.toLowerCase()) || item.desc.toLowerCase().includes(search?.toLowerCase()) || item.price == search);
                 if (filterData) {
                     setproducts(filterData);
+                    setloader(false);
                 }
             } catch (error) {
                 console.log(error);
@@ -67,7 +67,8 @@ const AllProduct = () => {
             const res = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/cart/add-cart`, {}, {
                 headers: {
                     userid: localStorage.getItem('userId'),
-                    productid: product_id
+                    productid: product_id,
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
                 }
             })
             toast.success(res.data.message);
@@ -105,7 +106,7 @@ const AllProduct = () => {
                                         <div className=' py-3 space-y-2'>
                                             <h1 className=' text-xl font-semibold text-gray-800'>{item.title}</h1>
                                             <p className=' text-md font-semibold text-gray-600'>Price: &#8377; {item.price}</p>
-                                            <div className=' bg-pink-700 py-1 text-center text-xl font-semibold rounded-full hover:scale-105 transition-all duration-300 ' onClick={() => addToCart(item._id)}>Add To Cart</div>
+                                            <div className=' bg-pink-700 py-1 text-center text-xl font-semibold rounded-full hover:scale-105 transition-all duration-300 cursor-pointer' onClick={() => addToCart(item._id)}>Add To Cart</div>
                                         </div>
                                     </div>
                                 ))
@@ -126,10 +127,6 @@ const AllProduct = () => {
                         </div>
                     }
                 </div>
-            </div>
-
-            <div className=' pt-10'>
-                <Footer />
             </div>
         </div>
     )

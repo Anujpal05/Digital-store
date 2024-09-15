@@ -5,7 +5,6 @@ import { Hourglass } from "react-loader-spinner";
 import cartImg from '../assets/emptyCart.png';
 import { Link, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import ProductCard from '../Components/ProductCard';
 import { GiHamburgerMenu } from "react-icons/gi";
 import { CgMenuGridR } from "react-icons/cg";
 
@@ -76,7 +75,8 @@ const Cart = () => {
                 const response = await axios.put(`${import.meta.env.VITE_SERVER_URL}/api/v1/cart/remove-cart`, {}, {
                     headers: {
                         productid: product_id,
-                        userid: localStorage.getItem("userId")
+                        userid: localStorage.getItem("userId"),
+                        Authorization: `Bearer ${localStorage.getItem('token')}`
                     }
                 });
                 toast.success(response.data.message);
@@ -94,7 +94,7 @@ const Cart = () => {
 
     return (
         <div className='  min-h-screen h-auto '>
-            {loader && <div className=' w-full h-screen flex justify-center items-center '>
+            {loader && <div className=' w-full h-[90vh] flex justify-center items-center '>
                 <Hourglass
                     visible={loader}
                     height="100"

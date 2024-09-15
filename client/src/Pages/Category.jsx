@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import Card from '../Components/Card';
 import { Hourglass } from "react-loader-spinner"
-import Footer from '../Components/Footer';
 import { IoSearch } from "react-icons/io5";
 import toast from 'react-hot-toast';
 
@@ -77,7 +76,6 @@ const Category = () => {
                     colors={['#306cce', '#72a1ed']}
                 />
             </div>}
-            <Footer />
         </div>
     )
 }

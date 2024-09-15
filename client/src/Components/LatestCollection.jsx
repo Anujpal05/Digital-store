@@ -62,7 +62,8 @@ function LatestCollection({ filter, price, search }) {
             const res = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/cart/add-cart`, {}, {
                 headers: {
                     userid: localStorage.getItem('userId'),
-                    productid: product_id
+                    productid: product_id,
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
                 }
             })
             toast.success(res.data.message);

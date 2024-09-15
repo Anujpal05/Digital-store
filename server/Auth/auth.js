@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 
 export const generateJWToken = async (payload) => {
-  return await jwt.sign({ payload }, process.env.SECRET_KEY);
+  return await jwt.sign(payload, process.env.SECRET_KEY);
 };
 
 export const authenticationToken = async (req, res, next) => {
@@ -14,7 +14,7 @@ export const authenticationToken = async (req, res, next) => {
     if (err) {
       return res.status(401).json({ message: "Invalid Token!" });
     } else {
-      req.user = user;
+      req.body.user = user;
       next();
     }
   });
