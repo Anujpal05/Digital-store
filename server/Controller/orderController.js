@@ -128,7 +128,9 @@ export const updateOrderStatus = async (req, res) => {
       $set: { orderStatus: orderStatus },
     });
 
-    return res.status(200).json({ message: "Order is updated successfully!" });
+    return res
+      .status(200)
+      .json({ message: "Order Status updated successfully!" });
   } catch (error) {
     return res.status(500).json({ message: "Internal server error!" });
   }
@@ -142,13 +144,41 @@ export const getAllOrders = async (req, res) => {
         .status(403)
         .json({ message: "You do not have permission to access this page." });
     }
-    const orders = await Order.find();
+    const orders = await Order.find()
+      .populate("user")
+      .select("-password")
+      .sort({ createdAt: -1 });
     if (!orders) {
       return res.status(404).json({ message: "Orders not found", orders });
     }
     return res
       .status(200)
       .json({ message: "All Orders get successfully!", orders });
+  } catch (error) {
+    return res.status(500).json({ message: "Internal server error!" });
+  }
+};
+
+export const updatePaymentStatus = async (req, res) => {
+  try {
+    const { orderid } = req.headers;
+    const { paymentStatus, user } = req.body;
+    if (!(user.role != "admin" || user.role != "salesman")) {
+      return res
+        .status(403)
+        .json({ message: "You do not have permission to access this page." });
+    }
+    const order = await Order.findById(orderid);
+    if (!order) {
+      return res.status(404).json({ message: "Order not found!" });
+    }
+    await order.updateOne({
+      $set: { paymentStatus: paymentStatus },
+    });
+
+    return res
+      .status(200)
+      .json({ message: "Payment Status updated successfully!" });
   } catch (error) {
     return res.status(500).json({ message: "Internal server error!" });
   }

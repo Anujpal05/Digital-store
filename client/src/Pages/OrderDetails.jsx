@@ -60,7 +60,7 @@ const OrderDetails = () => {
                 </div>
             }
             {order && !loader &&
-                <div className=' p-2 px-10'>
+                <div className=' p-2 md:px-10 px-5'>
                     <p className=' text-3xl md:text-4xl font-semibold text-gray-800 text-center p-2'>Order Details</p>
                     <div className=' flex flex-col md:flex-row justify-between md:items-center bg-gray-50 p-2'>
                         <p className=' text-xl font-semibold'>Order id: <span className=' text-base text-gray-700 font-semibold'>{order._id}</span></p>
@@ -69,6 +69,13 @@ const OrderDetails = () => {
                             {date.orderTime && <p className=' text-xl font-semibold'>Time: <span className=' text-base text-gray-700 font-semibold'>{date.orderTime}</span></p>}
                         </div>
                     </div>
+                    {order.user && <div className=' my-2 bg-gray-100 px-5 p-3'>
+                        <div className=' text-md font-semibold'>Customer Id : <span className=' text-base text-gray-700 '>{order.user._id}</span></div>
+                        <div className=' text-md font-semibold'>Username : <span className=' text-base text-gray-700 '>{order.user.username}</span></div>
+                        <div className=' text-md font-semibold'>Address : <span className=' text-base text-gray-700 '>{order.user.address}</span></div>
+                        <div className=' text-md font-semibold'>Phone no. : <span className=' text-base text-gray-700 '>{order.user.phone}</span></div>
+                        <div className=' text-md font-semibold'>Email Id : <span className=' text-base text-gray-700 '>{order.user.email}</span></div>
+                    </div>}
                     {order.products && order.products.map((item, i) => (
                         <div key={i} className=' bg-gray-50 mb-10 my-2 hover:bg-gray-100 transition-all duration-300'>
                             <Link to={`/product/${item.product._id}`}>
