@@ -46,7 +46,7 @@ function Navbar() {
                         <Link to={'/all-product'} className=" cursor-pointer">All Products</Link>
                         <h1 className=" cursor-pointer" onClick={handleData}>About</h1>
                         {isLogin && <Link to={'/myorder'} className=' cursor-pointer' >Order</Link>}
-                        {userRole === 'admin' && <Link to={'/admin-dashboard'}>Admin</Link>}
+                        {(userRole === 'admin' || userRole === 'salesman') && <Link to={'/admin-dashboard'}>Admin</Link>}
                     </div>
                     <div className=' flex lg:gap-5 md:gap-3 gap-3'>
                         <div className=' text-3xl flex justify-center items-center' onClick={handleData}><MdOutlineLightMode /></div>

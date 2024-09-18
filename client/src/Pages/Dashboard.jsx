@@ -4,11 +4,11 @@ import { Outlet } from 'react-router-dom'
 
 function Dashboard() {
     return (
-        <div className=' min-h-screen w-screen flex'>
-            <div className=' w-[20%]'>
+        <div className=' min-h-screen w-screen flex flex-col lg:flex-row'>
+            <div className=' lg:w-[20%] w-full'>
                 <Sidebar />
             </div>
-            <div className=' w-[80%]'>
+            <div className=' lg:w-[80%]'>
                 <Outlet />
             </div>
         </div>

@@ -1,18 +1,20 @@
 import Product from "../Model/productModel.js";
+import Salesman from "../Model/salesmanModel.js";
+import User from "../Model/userModel.js";
 
 //Add Products
 export const addProduct = async (req, res) => {
   try {
     const { title, desc, image, category, price, user } = req.body;
 
-    if (!(user.role != "admin" || user.role != "salesman")) {
+    if (user.role != "admin" && user.role != "salesman") {
       return res
         .status(403)
         .json({ message: "You do not have permission to access this page." });
     }
 
     //Provide all fields
-    if (!title || !desc || !image || !price) {
+    if (!title || !desc || !image || !price || !user.id) {
       return res.status(400).json({ message: "Please provide all fields!" });
     }
 
@@ -26,6 +28,7 @@ export const addProduct = async (req, res) => {
       image: image,
       category: category,
       price: price,
+      supplierId: user.id,
     });
 
     //save new product to database
@@ -98,7 +101,7 @@ export const updateProduct = async (req, res) => {
     const { title, desc, image, category, price, user } = req.body;
     const { id } = req.headers;
 
-    if (!(user.role != "admin" || user.role != "salesman")) {
+    if (user.role != "admin" && user.role != "salesman") {
       return res
         .status(403)
         .json({ message: "You do not have permission to access this page." });
@@ -143,6 +146,39 @@ export const deleteProduct = async (req, res) => {
     return res
       .status(200)
       .json({ message: "Product is deleted successfully!" });
+  } catch (error) {
+    return res.status(500).json({ message: "Internal server error!" });
+  }
+};
+
+export const getSalesmanProducts = async (req, res) => {
+  try {
+    const { user } = req.body;
+    const { id } = req.headers;
+    if (!(user.role != "admin" || user.role != "salesman")) {
+      return res
+        .status(403)
+        .json({ message: "You do not have permission to access this page." });
+    }
+
+    if (user.role === "salesman") {
+      const products = await Product.find({ supplierId: user.id });
+      if (!products) {
+        return res.status(404).json({ message: "Product not found!" });
+      }
+      return res
+        .status(200)
+        .json({ message: "Salesman's Product found successfully!", products });
+    }
+
+    const products = await Product.find({ supplierId: id });
+    if (!products) {
+      return res.status(404).json({ message: "Product not found!" });
+    }
+
+    return res
+      .status(200)
+      .json({ message: "Salesman's Product found successfully!", products });
   } catch (error) {
     return res.status(500).json({ message: "Internal server error!" });
   }

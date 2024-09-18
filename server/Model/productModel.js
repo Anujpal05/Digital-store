@@ -17,10 +17,22 @@ const productSchema = new mongoose.Schema(
     category: {
       type: String,
       default: "general",
-      enum: ["general", "phones", "clothes", "books", "toys"],
+      enum: [
+        "general",
+        "phones",
+        "clothes",
+        "books",
+        "toys",
+        "electronics gadgets",
+      ],
     },
     price: {
       type: Number,
+      required: true,
+    },
+    supplierId: {
+      type: mongoose.Types.ObjectId,
+      ref: "user",
       required: true,
     },
   },

@@ -10,7 +10,8 @@ const SignUp = () => {
     const [values, setvalues] = useState({
         username: "",
         email: "",
-        password: ""
+        password: "",
+        role: "customer"
     })
 
     //Handle Submit
@@ -56,6 +57,18 @@ const SignUp = () => {
                                 <label htmlFor="" className=' text-md font-semibold '>Password</label>
                                 <div className=' border-2 border-gray-300 py-1 px-2 rounded-md w-full md:w-96 2xl:w-[600px]'>
                                     <input type="password" name="password" placeholder='Enter Password' value={values.password} onChange={handleValue} className=' w-full outline-none' required />
+                                </div>
+                            </div>
+                            <div>
+                                <div action="" className=' flex justify-center items-center gap-5 '>
+                                    <div>
+                                        <input type="radio" name="role" className=' cursor-pointer' onChange={handleValue} id="customer" value="customer" defaultChecked />
+                                        <label className=' text-md font-semibold cursor-pointer px-1' htmlFor="customer">Customer</label>
+                                    </div>
+                                    <div>
+                                        <input type="radio" name="role" className=' cursor-pointer' onChange={handleValue} id="salesman" value="salesman" />
+                                        <label className=' text-md font-semibold cursor-pointer px-1' htmlFor="salesman">Salesman</label>
+                                    </div>
                                 </div>
                             </div>
                             <div>

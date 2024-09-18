@@ -6,6 +6,7 @@ import {
   deleteProduct,
   updateProduct,
   getProductByCategory,
+  getSalesmanProducts,
 } from "../Controller/productController.js";
 import { authenticationToken } from "../Auth/auth.js";
 const router = express.Router();
@@ -16,5 +17,8 @@ router.route("/getproduct").get(getProduct);
 router.route("/updateproduct").put(authenticationToken, updateProduct);
 router.route("/deleteProduct").delete(authenticationToken, deleteProduct);
 router.route("/product-category-wise").get(getProductByCategory);
+router
+  .route("/get-salesman-products")
+  .get(authenticationToken, getSalesmanProducts);
 
 export default router;

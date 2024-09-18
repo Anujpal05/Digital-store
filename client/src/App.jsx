@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import Navbar from './Components/Navbar.jsx';
 import Home from "./Pages/Home.jsx";
 import { Route, Routes } from 'react-router-dom';
@@ -17,11 +17,16 @@ import Dashboard from './Pages/Dashboard.jsx';
 import AddProduct from './Pages/AddProduct.jsx';
 import AllOrders from './Pages/AllOrders.jsx';
 import NotFound from './Pages/NotFound.jsx';
+import AllUsers from './Pages/AllUsers.jsx';
+import { useSelector } from 'react-redux';
+import GetAllSalesman from './Components/GetAllSalesman';
+import SalesmanRequest from './Components/SalesmanRequest';
+import Salesman from './Pages/Salesman.jsx';
+import SalesmanProducts from './Pages/SalesmanProducts';
 
 
 function App() {
-
-
+  const role = useSelector(state => state.auth.role);
   return (
     <div className="  w-screen h-screen overflow-x-hidden">
       <Toaster />
@@ -38,10 +43,16 @@ function App() {
         <Route path='/place-order-from-cart' element={<PlaceOrder />} />
         <Route path='/myorder' element={<Order />} />
         <Route path='/order-details/:orderid' element={<OrderDetails />} />
-        <Route path='/admin-dashboard' element={<Dashboard />} >
+        {(role === 'admin' || role === 'salesman') && <Route path='/admin-dashboard' element={<Dashboard />} >
           <Route path='add-product' element={<AddProduct />} />
           <Route path='all-orders' element={<AllOrders />} />
-        </Route>
+          {role === 'admin' && <Route path='all-users' element={<AllUsers />} />}
+          {role === 'admin' && <Route path='salesman' element={<Salesman />} >
+            <Route path='all-salesman' element={<GetAllSalesman />} />
+            <Route path='salesman-request' element={<SalesmanRequest />} />
+          </Route>}
+        </Route>}
+        <Route path='/salesman-products/:id' element={<SalesmanProducts />} />
         <Route path='*' element={<NotFound />} />
       </Routes>
       <Footer />

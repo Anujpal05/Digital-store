@@ -26,6 +26,10 @@ const userSchema = new mongoose.Schema(
       default: "customer",
       enum: ["customer", "admin", "salesman"],
     },
+    verify: {
+      type: Boolean,
+      default: true,
+    },
     avatar: {
       type: String,
       default: "https://cdn-icons-png.flaticon.com/128/3237/3237472.png",

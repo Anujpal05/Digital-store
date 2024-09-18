@@ -49,7 +49,6 @@ const AllProduct = () => {
                 let filterData = data && data.data.products.filter(item => item.category.includes(search?.toLowerCase()) || item.title?.toLowerCase().includes(search?.toLowerCase()) || item.desc.toLowerCase().includes(search?.toLowerCase()) || item.price == search);
                 if (filterData) {
                     setproducts(filterData);
-                    setloader(false);
                 }
             } catch (error) {
                 console.log(error);

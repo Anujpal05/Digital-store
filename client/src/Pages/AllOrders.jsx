@@ -5,6 +5,9 @@ import { Hourglass } from 'react-loader-spinner';
 import { FaEdit } from "react-icons/fa";
 import { FaCheck } from "react-icons/fa6";
 import { Link } from 'react-router-dom';
+import orderImg from '../assets/order.png'
+import { IoSearch } from "react-icons/io5";
+import { ThreeDots } from 'react-loader-spinner';
 
 const AllOrders = () => {
     const [orders, setorders] = useState();
@@ -12,7 +15,7 @@ const AllOrders = () => {
     const [paymentStatus, setpaymentStatus] = useState();
     const [options, setoptions] = useState(-1);
     const [term, setterm] = useState(0);
-    const [value, setvalue] = useState("");
+    const [loader, setloader] = useState(false);
 
     useEffect(() => {
         const fetch = async () => {
@@ -72,13 +75,21 @@ const AllOrders = () => {
     const filterOrder = async (e) => {
         try {
             const val = e.target.value;
+            setloader(true);
             if (val) {
                 const data = await axios.get("http://localhost:8080/api/v1/order/get-all-orders", { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
                 let filteredOrder = data && data.data && data.data.orders.filter(item => item.orderStatus.toLowerCase().includes(val.trim().toLowerCase()) || item.paymentMode.toLowerCase().includes(val.trim().toLowerCase()) || item.paymentStatus.toLowerCase().includes(val.trim().toLowerCase()) || item._id.toLowerCase().includes(val.trim().toLowerCase()) || item._id.toLowerCase().includes(val.trim().toLowerCase()) || item.user.address.toLowerCase().includes(val.trim().toLowerCase()) || item.user.email.includes(val.trim().toLowerCase()) || item.user.username.includes(val.trim().toLowerCase()));
-                setorders(filteredOrder)
+                setorders(filteredOrder);
+                ;;
+
+            } else {
+                const data = await axios.get("http://localhost:8080/api/v1/order/get-all-orders", { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
+                setorders(data?.data?.orders);
+                setloader(false);
             }
+            setloader(false);
         } catch (error) {
-            console(error.response.data.message);
+            console(error);
         }
     }
 
@@ -96,12 +107,31 @@ const AllOrders = () => {
                 />
             </div>}
             {orders && <div className=' p-7'>
-                <div className=' w-full' >
-                    <input type="text" name="filter" onChange={(e) => filterOrder(e)} placeholder='Search order id , order Status , payment status , username etc.' className=' w-full p-2 px-5 border-2 border-gray-800 rounded-full text-md outline-none' />
+                <div className=' w-full flex items-center p-2 border-2 border-gray-500 rounded-full gap-2 ' >
+                    <div className=' text-2xl text-gray-400'><IoSearch /></div>
+                    <input type="text" name="filter" onChange={(e) => filterOrder(e)} placeholder='Search order id , order Status , payment status , username etc.' className=' w-full  text-md outline-none' />
                 </div>
-                <h1 className=' text-3xl font-semibold mt-2'>All Orders</h1>
-                <div className=' py-5 gap-5 max-h-screen overflow-auto grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 '>
-                    {orders && orders.map((item, i) => (
+                {
+                    loader && <div className=' my-10 min-w-full flex justify-center items-center'>
+                        <ThreeDots
+                            visible={loader}
+                            height="100"
+                            width="100"
+                            color="#4fa94d"
+                            radius="9"
+                            ariaLabel="three-dots-loading"
+                            wrapperStyle={{}}
+                            wrapperClass=""
+                        />
+                    </div>
+                }
+                {orders.length === 0 && !loader && <div className='flex flex-col justify-center items-center lg:h-[90vh] h-[60vh] '>
+                    <p className=' text-3xl md:text-5xl text-gray-800 font-semibold text-center'> Orders not found</p>
+                    <img src={orderImg} alt="" className=' h-40' />
+                </div>}
+                {orders.length > 0 && !loader && <h1 h1 className=' text-3xl font-semibold mt-2'>All Orders</h1>}
+                <div className=' py-5 gap-5 max-h-[80vh] overflow-auto grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 '>
+                    {orders.length > 0 && !loader && orders.map((item, i) => (
                         <div key={i} className=' bg-gray-200 p-4 rounded-md shadow-md shadow-gray-700 hover:bg-gray-300 transition-all duration-500 h-fit'>
                             <p className=' text-md font-semibold '>Order id: <span className=' text-base text-gray-700'>{item._id}</span></p>
                             <div className=' flex gap-8'>
@@ -155,7 +185,7 @@ const AllOrders = () => {
                     ))}
                 </div>
             </div>}
-        </div>
+        </div >
     )
 }
 

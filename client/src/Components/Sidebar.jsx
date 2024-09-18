@@ -1,13 +1,15 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 function Sidebar() {
+    const role = useSelector(state => state.auth.role);
     return (
-        <div className=' h-screen  bg-gray-200 flex flex-col items-center gap-8 py-20 text-xl font-semibold text-gray-800' >
-            <Link to={'add-product'} >Add Product</Link>
-            <p>Add Salesman</p>
-            <Link to={'all-orders'}>All Orders</Link>
-            <p>All Users</p>
+        <div className=' lg:h-screen bg-gray-200 grid grid-cols-2 text-center md:grid-cols-4 lg:flex lg:flex-col items-center lg:gap-8 lg:py-20 py-3 text-xl font-semibold text-gray-800' >
+            <Link to={'add-product'} className=' p-2'>Add Product</Link>
+            {role === 'admin' && <Link to={'salesman'} className=' p-2'>Salesman</Link>}
+            <Link to={'all-orders'} className=' p-2'>All Orders</Link>
+            {role === 'admin' && <Link to={`all-users`} className=' p-2'>All Users</Link>}
         </div>
     )
 }

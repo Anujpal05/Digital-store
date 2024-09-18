@@ -115,7 +115,7 @@ export const updateOrderStatus = async (req, res) => {
   try {
     const { orderid } = req.headers;
     const { orderStatus, user } = req.body;
-    if (!(user.role != "admin" || user.role != "salesman")) {
+    if (user.role != "admin" && user.role != "salesman") {
       return res
         .status(403)
         .json({ message: "You do not have permission to access this page." });
@@ -139,7 +139,7 @@ export const updateOrderStatus = async (req, res) => {
 export const getAllOrders = async (req, res) => {
   try {
     const { user } = req.body;
-    if (!(user.role != "admin" || user.role != "salesman")) {
+    if (user.role != "admin" && user.role != "salesman") {
       return res
         .status(403)
         .json({ message: "You do not have permission to access this page." });
@@ -163,7 +163,7 @@ export const updatePaymentStatus = async (req, res) => {
   try {
     const { orderid } = req.headers;
     const { paymentStatus, user } = req.body;
-    if (!(user.role != "admin" || user.role != "salesman")) {
+    if (user.role != "admin" && user.role != "salesman") {
       return res
         .status(403)
         .json({ message: "You do not have permission to access this page." });

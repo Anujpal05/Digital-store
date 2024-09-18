@@ -5,7 +5,7 @@ import bcrypt from "bcryptjs";
 //Register controller
 export const registerController = async (req, res) => {
   try {
-    const { username, email, password } = req.body;
+    const { username, email, password, role } = req.body;
     const existingUser = await User.findOne({ email: email });
 
     if (existingUser) {
@@ -19,6 +19,20 @@ export const registerController = async (req, res) => {
     }
 
     const hashPassword = await bcrypt.hash(password, 10);
+
+    if (role === "salesman") {
+      const newUser = new User({
+        username: username,
+        email: email,
+        password: hashPassword,
+        verify: false,
+        role: role,
+      });
+      await newUser.save();
+      return res
+        .status(200)
+        .json({ message: "Your request send successfully!", newUser });
+    }
 
     const newUser = new User({
       username: username,
@@ -50,6 +64,10 @@ export const loginController = async (req, res) => {
 
     if (!existingUser) {
       return res.status(404).json({ message: "User is not found!" });
+    }
+
+    if (existingUser.verify === false) {
+      return res.status(403).json({ message: "Salesman not verified!" });
     }
 
     await bcrypt.compare(password, existingUser.password, async (err, data) => {
@@ -129,12 +147,12 @@ export const updateUser = async (req, res) => {
 export const getAllUser = async (req, res) => {
   try {
     const { user } = req.body;
-    if (!(user.role != "admin" || user.role != "salesman")) {
+    if (user.role != "admin") {
       return res
         .status(403)
         .json({ message: "You do not have permission to access this page." });
     }
-    const allUsers = await User.find()
+    const allUsers = await User.find({ verify: true })
       .select("-password")
       .sort({ createdAt: -1 });
     if (!allUsers) {
@@ -162,6 +180,82 @@ export const getUser = async (req, res) => {
     }
 
     return res.status(200).json({ message: "User found!", user });
+  } catch (error) {
+    return res.status(500).json({ message: "Internal server error!" });
+  }
+};
+
+export const getAllSalesman = async (req, res) => {
+  try {
+    const { user } = req.body;
+    if (user.role != "admin") {
+      return res
+        .status(403)
+        .json({ message: "You do not have permission to access this page." });
+    }
+    const allUsers = await User.find({ verify: true, role: "salesman" })
+      .select("-password")
+      .sort({ createdAt: -1 });
+    if (!allUsers) {
+      return res.status(404).json({ message: "No any salesman exist!" });
+    }
+
+    return res
+      .status(200)
+      .json({ message: "Getting All Salesman information!", allUsers });
+  } catch (error) {
+    return res.status(500).json({ message: "Internal server error!" });
+  }
+};
+
+export const getSalesmanRequest = async (req, res) => {
+  try {
+    const { user } = req.body;
+    if (user.role != "admin") {
+      return res
+        .status(403)
+        .json({ message: "You do not have permission to access this page." });
+    }
+    const allUsers = await User.find({ verify: false, role: "salesman" })
+      .select("-password")
+      .sort({ createdAt: -1 });
+    if (!allUsers) {
+      return res
+        .status(404)
+        .json({ message: "Not get any request for new salesman!" });
+    }
+
+    return res
+      .status(200)
+      .json({ message: "Getting All request for new salesman!", allUsers });
+  } catch (error) {
+    return res.status(500).json({ message: "Internal server error!" });
+  }
+};
+
+export const updateVerification = async (req, res) => {
+  try {
+    const { user, verify } = req.body;
+    const { id } = req.headers;
+    const salesman = await User.findById(id);
+    if (user.role != "admin") {
+      return res
+        .status(403)
+        .json({ message: "You do not have permission to access this page." });
+    }
+
+    if (!salesman) {
+      return res.status(404).json({ message: "Salesman not found!" });
+    }
+    await User.findByIdAndUpdate(id, {
+      verify: verify,
+    });
+
+    if (!verify) {
+      return res.status(200).json({ message: "Salesman Unverified!" });
+    }
+
+    return res.status(200).json({ message: "Salesman verified successfully!" });
   } catch (error) {
     return res.status(500).json({ message: "Internal server error!" });
   }
