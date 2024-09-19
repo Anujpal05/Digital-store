@@ -3,13 +3,13 @@ import Navbar from './Components/Navbar.jsx';
 import Home from "./Pages/Home.jsx";
 import { Route, Routes } from 'react-router-dom';
 import Category from './Pages/Category.jsx';
-import ProductCard from './Components/ProductCard.jsx';
 import AllProduct from './Pages/AllProduct.jsx';
 import Login from './Pages/Login.jsx';
 import SignUp from './Pages/SignUp.jsx';
 import { Toaster } from 'react-hot-toast';
 import Cart from './Pages/Cart.jsx';
 import PlaceOrder from './Pages/PlaceOrder.jsx';
+import ProductDetails from './Components/ProductDetails';
 import Order from './Pages/Order.jsx';
 import OrderDetails from './Pages/OrderDetails.jsx';
 import Footer from './Components/Footer.jsx';
@@ -23,6 +23,7 @@ import GetAllSalesman from './Components/GetAllSalesman';
 import SalesmanRequest from './Components/SalesmanRequest';
 import Salesman from './Pages/Salesman.jsx';
 import SalesmanProducts from './Pages/SalesmanProducts';
+import UpdateProduct from './Pages/UpdateProduct';
 
 
 function App() {
@@ -34,7 +35,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/category/:category' element={<Category />} />
-        <Route path='/product/:id' element={<ProductCard />} />
+        <Route path='/product/:id' element={<ProductDetails />} />
         <Route path='/all-product' element={<AllProduct />} />
         <Route path='/login' element={<Login />} />
         <Route path='/signup' element={<SignUp />} />
@@ -45,14 +46,17 @@ function App() {
         <Route path='/order-details/:orderid' element={<OrderDetails />} />
         {(role === 'admin' || role === 'salesman') && <Route path='/admin-dashboard' element={<Dashboard />} >
           <Route path='add-product' element={<AddProduct />} />
+          <Route index element={<AllOrders />} />
           <Route path='all-orders' element={<AllOrders />} />
           {role === 'admin' && <Route path='all-users' element={<AllUsers />} />}
           {role === 'admin' && <Route path='salesman' element={<Salesman />} >
+            <Route index element={<GetAllSalesman />} />
             <Route path='all-salesman' element={<GetAllSalesman />} />
             <Route path='salesman-request' element={<SalesmanRequest />} />
           </Route>}
         </Route>}
-        <Route path='/salesman-products/:id' element={<SalesmanProducts />} />
+        {(role === 'admin' || role === 'salesman') && <Route path='/salesman-products/:id' element={<SalesmanProducts />} />}
+        {(role === 'admin' || role === 'salesman') && <Route path='/update-product/:id' element={<UpdateProduct />} />}
         <Route path='*' element={<NotFound />} />
       </Routes>
       <Footer />

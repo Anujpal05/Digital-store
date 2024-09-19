@@ -85,7 +85,7 @@ const GetAllSalesman = () => {
                                     <option value={false}>Unverified</option>
                                 </select>
                             </div>}
-                            <div className=' text-center mt-2 p-2 bg-blue-500 rounded-md font-semibold'><Link to={`/salesman-products/${salesman._id}`} className=' '>View Products</Link></div>
+                            <div className=' text-center mt-2 p-2 bg-blue-500 rounded-md font-semibold'><Link to={`/salesman-products/${salesman._id}`} className=' w-full'>View Products</Link></div>
                         </div>
                     ))}
                 </div>

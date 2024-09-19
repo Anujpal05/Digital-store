@@ -5,12 +5,15 @@ import { TbPlayerTrackNextFilled } from "react-icons/tb";
 import { ThreeDots } from "react-loader-spinner"
 import toast from 'react-hot-toast';
 import { useSelector } from 'react-redux';
+import { MdEdit } from "react-icons/md";
+import { MdDelete } from "react-icons/md";
 
-const ProductCard = () => {
+const ProductDetails = () => {
     const { id } = useParams();
     const [product, setproduct] = useState();
     const [relatedProducts, setrelatedProducts] = useState();
     const isLogin = useSelector((state) => state.auth.isLogin);
+    const role = useSelector((state) => state.auth.role)
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -18,7 +21,7 @@ const ProductCard = () => {
             try {
                 const data = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/v1/product/getproduct`, { headers: { id } });
                 if (data) {
-                    await setproduct(data.data.product)
+                    setproduct(data.data.product)
                 }
             } catch (error) {
                 toast.error(error.response.data.message);
@@ -37,7 +40,9 @@ const ProductCard = () => {
                 console.log(error.response.data.message)
             }
         }
-        fetch();
+        if (product) {
+            fetch();
+        }
     }, [product, id])
 
     const addToWishList = async () => {
@@ -83,6 +88,19 @@ const ProductCard = () => {
         navigate(`/place-order/productid/${id}`);
     }
 
+    const deleteProduct = async (e) => {
+        try {
+            e.preventDefault();
+            if (confirm("Are you sure to delete this product?")) {
+                const res = await axios.delete(`${import.meta.env.VITE_SERVER_URL}/api/v1/product/delete-product`, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}`, id: id } });
+                toast.success(res.data.message)
+                navigate('/all-product')
+            }
+        } catch (error) {
+            toast.error(error.response.data.message)
+        }
+    }
+
     return (
         <div>
             {product && <div>
@@ -93,10 +111,14 @@ const ProductCard = () => {
                                 <div className=' xl:h-96 xl:w-96 h-80 md:w-80 w-full bg-white flex justify-center items-center rounded-md '><img src={product.image} alt="" className=' h-full' /></div>
                             </div>
                         </div>
-                        <div className=' flex justify-evenly flex-col md:flex-row gap-2 transition-all '>
-                            <button className=' p-2 px-5 border- border-gray-900 bg-gray-200 rounded-full text-xl font-semibold hover:scale-105 hover:bg-gray-300 shadow-md shadow-gray-400 transition-all duration-300 ' onClick={addToWishList}>Add To WishList</button>
-                            <button className=' p-2 px-5 border-  border-gray-900 bg-blue-400 text-gray-900 rounded-full text-xl font-semibold shadow-md shadow-gray-400 transition-all duration-300 hover:bg-blue-500 hover:scale-105' onClick={addToCart}>Add To Cart</button>
-                        </div>
+                        {<div className=' flex justify-evenly flex-col md:flex-row gap-2 transition-all '>
+                            <button className=' p-2 px-5  bg-gray-200 rounded-full text-xl font-semibold hover:scale-105 hover:bg-gray-300 shadow-md shadow-gray-400 transition-all duration-300 outline-none ' onClick={addToWishList}>Add To WishList</button>
+                            <button className=' p-2 px-5 bg-blue-400 text-gray-900 rounded-full text-xl font-semibold shadow-md shadow-gray-400 transition-all duration-300 outline-none hover:bg-blue-500 hover:scale-105' onClick={addToCart}>Add To Cart</button>
+                        </div>}
+                        {(product.supplierId === localStorage.getItem("userId") || role === 'admin') && <div className=' flex justify-evenly  flex-col md:flex-row gap-2 transition-all '>
+                            <Link to={`/update-product/${product._id}`} className=' p-2 px-5 flex items-center justify-center w-full md:w-fit gap-2  bg-gray-200 rounded-full text-xl font-semibold hover:scale-105 hover:bg-gray-300 shadow-md shadow-gray-400 transition-all duration-300 outline-none ' ><span className=' text-2xl text-blue-500 font-semibold'><MdEdit /></span>Edit</Link>
+                            <button className=' p-2 px-5 flex items-center justify-center w-full md:w-fit gap-2 bg-blue-400 text-gray-900 rounded-full text-xl font-semibold shadow-md shadow-gray-400 transition-all duration-300 outline-none hover:bg-blue-500 hover:scale-105' onClick={deleteProduct}><span className=' text-2xl  text-red-500 font-semibold'><MdDelete /></span>Delete</button>
+                        </div>}
                     </div>
                     <div className='min-h-[70%] flex flex-col justify-center space-y-5'>
                         <p className=' text-3xl font-semibold '>{product.title}</p>
@@ -162,4 +184,4 @@ const ProductCard = () => {
     )
 }
 
-export default ProductCard
+export default ProductDetails
