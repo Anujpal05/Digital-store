@@ -9,7 +9,7 @@ import SignUp from './Pages/SignUp.jsx';
 import { Toaster } from 'react-hot-toast';
 import Cart from './Pages/Cart.jsx';
 import PlaceOrder from './Pages/PlaceOrder.jsx';
-import ProductDetails from './Components/ProductDetails';
+import ProductDetails from './Pages/ProductDetails.jsx';
 import Order from './Pages/Order.jsx';
 import OrderDetails from './Pages/OrderDetails.jsx';
 import Footer from './Components/Footer.jsx';
@@ -24,6 +24,7 @@ import SalesmanRequest from './Components/SalesmanRequest';
 import Salesman from './Pages/Salesman.jsx';
 import SalesmanProducts from './Pages/SalesmanProducts';
 import UpdateProduct from './Pages/UpdateProduct';
+import WatchListProduct from './Pages/WatchListProduct';
 
 
 function App() {
@@ -57,6 +58,7 @@ function App() {
         </Route>}
         {(role === 'admin' || role === 'salesman') && <Route path='/salesman-products/:id' element={<SalesmanProducts />} />}
         {(role === 'admin' || role === 'salesman') && <Route path='/update-product/:id' element={<UpdateProduct />} />}
+        <Route path='/get-watchList' element={<WatchListProduct />} />
         <Route path='*' element={<NotFound />} />
       </Routes>
       <Footer />

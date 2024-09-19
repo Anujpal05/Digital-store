@@ -2,17 +2,12 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import toast from 'react-hot-toast';
 import { useNavigate, useParams } from 'react-router-dom'
+import { Hourglass } from 'react-loader-spinner';
 
 const UpdateProduct = () => {
     const { id } = useParams();
     const navigate = useNavigate();
-    const [product, setproduct] = useState({
-        title: "",
-        desc: "",
-        image: "",
-        category: "",
-        price: ""
-    })
+    const [product, setproduct] = useState()
 
     useEffect(() => {
         const fetch = async () => {
@@ -51,6 +46,17 @@ const UpdateProduct = () => {
     }
     return (
         <div className=' min-h-screen '>
+            {!product && <div className=' h-[80vh] flex justify-center items-center'>
+                <Hourglass
+                    visible={true}
+                    height="100"
+                    width="100"
+                    ariaLabel="hourglass-loading"
+                    wrapperStyle={{}}
+                    wrapperClass=""
+                    colors={['#306cce', '#72a1ed']}
+                />
+            </div>}
             {product && <div className=' flex justify-center items-center min-h-[90vh] pt-5 '>
                 <form action="" className=' flex flex-col justify-center items-center h-fit w-[90%] md:w-fit p-5 rounded-md  gap-4 bg-gray-100  shadow-md shadow-black  ' onSubmit={updateProduct}>
                     <p className=' text-2xl text-center text-gray-800 font-semibold'>Update Product Details</p>

@@ -149,7 +149,7 @@ const ProductDetails = () => {
                     <div className=' flex justify-evenly p-5  gap-5 lg:pl-16 overflow-auto w-screen'>
                         {
                             relatedProducts.map((item, i) => (
-                                <div key={i} className=' bg-gray-200 shadow-md shadow-gray-300 min-w-full md:min-w-[50%] lg:min-w-[20%]'>
+                                <div key={i} className=' bg-gray-200 shadow-md shadow-gray-300 min-w-full md:min-w-[50%] lg:min-w-[40%]'>
                                     <div className='group bg-white py-3  '>
                                         <div className=' flex justify-end lg:px-4 p-1'><div className=' bg-pink-600 text-white text-sm lg:text-md font-semibold w-fit lg:px-3 p-1 rounded-full '>{item.category}</div></div>
                                         <Link to={`/product/${item._id}`} className=' flex justify-center items-center overflow-hidden'><img src={item.image} alt="Product Image" className=' lg:h-80 h-60 w-auto group-hover:scale-105 transition-all duration-300' /></Link></div>

@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import logo from "../assets/PixelMart.png";
 import { Link, useNavigate } from 'react-router-dom';
 import { MdOutlineLightMode } from "react-icons/md";
-import { FaUser } from "react-icons/fa";
 import { FaShoppingCart } from "react-icons/fa";
 import { useDispatch, useSelector } from 'react-redux';
 import { authActions } from '../store/auth';
 import toast from 'react-hot-toast';
 import { IoReorderThreeOutline } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
+import ProfileSidebar from './ProfileSidebar';
+import axios from 'axios';
 
 
 function Navbar() {
@@ -18,6 +19,8 @@ function Navbar() {
     const userRole = useSelector(state => state.auth.role);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const [user, setuser] = useState();
+    const [isVisible, setisVisible] = useState(false);
 
     //Logout
     const handleLogOut = () => {
@@ -31,6 +34,20 @@ function Navbar() {
         toast.success('Coming soon...')
     }
 
+    useEffect(() => {
+        const fetch = async () => {
+            try {
+                const res = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/v1/user/get-user`, { headers: { userid: localStorage.getItem('userId'), Authorization: `Bearer ${localStorage.getItem('token')}` } });
+                if (res) {
+                    setuser(res.data.user);
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        fetch();
+    }, [])
+
     //Handle visibility of navbar for small device
     const isToggle = () => {
         setisOpen(!isOpen);
@@ -38,8 +55,8 @@ function Navbar() {
 
     return (
         <div className=' relative'>
-            <div className=' fixed z-20 w-screen'>
-                <div className=' flex justify-between  items-center p-2 lg:px-10 bg-zinc-800 py-2 lg:py-4 text-white font-semibold ' >
+            <div className=' fixed z-30 w-screen'>
+                <div className=' flex justify-between  items-center p-2 lg:px-10 bg-zinc-800 py-2  text-white font-semibold ' >
                     <Link to={"/"}><img src={logo} alt="PixelMart Logo" height={100} width={100} /></Link>
                     <div className=' md:flex hidden gap-5 '>
                         <Link to={"/"} className=" cursor-pointer" >Home</Link>
@@ -51,16 +68,19 @@ function Navbar() {
                     <div className=' flex lg:gap-5 md:gap-3 gap-3'>
                         <div className=' text-3xl flex justify-center items-center' onClick={handleData}><MdOutlineLightMode /></div>
                         {isLogin && <div className=' text-3xl flex justify-center items-center' ><Link to={"/cart"}><FaShoppingCart /></Link></div>}
-                        <div className=' text-2xl bg-white rounded-full text-black p-2 '><FaUser /></div>
+                        <div className=' text-2xl bg-white rounded-full text-black p-1 cursor-pointer ' onClick={() => setisVisible(!isVisible)}>{user && user.avatar && <img src={user.avatar} alt="user" className='h-10 w-10' />}</div>
                         {!isLogin && <div className=' flex justify-center items-center '> <Link to={'/login'}>Login</Link></div>}
                         {isLogin && <button className=' outline-none hidden md:flex justify-center items-center ' onClick={handleLogOut}>LogOut</button>}
                         {<div className=' text-4xl flex justify-center items-center md:hidden' onClick={isToggle} ><IoReorderThreeOutline /></div>}
                     </div>
                 </div>
             </div>
-            <div className='py-7 lg:py-9'></div>
+            <div className='py-7 '></div>
+            <div>
+                <ProfileSidebar user={user} isVisible={isVisible} setisVisible={setisVisible} />
+            </div>
             {/* For Responsive Navbar in small device */}
-            <div className={`bg-zinc-900  h-screen z-30 w-[70%] min-[375px]:w-[50%] fixed top-14  right-0 transform transition-transform duration-500 ease-in-out ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+            <div className={`bg-zinc-900  h-screen z-30 w-[70%] min-[375px]:w-[50%] fixed top-16  right-0 transform transition-transform duration-500 ease-in-out ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
                 <button className=' outline-none text-2xl text-gray-50 p-3 cursor-pointer' onClick={isToggle}><RxCross2 /></button>
                 <div>
                     <div className='flex flex-col items-center w-full py-3 text-white gap-5 '>
