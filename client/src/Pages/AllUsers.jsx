@@ -8,7 +8,7 @@ const AllUsers = () => {
     useEffect(() => {
         const fetch = async () => {
             try {
-                const data = await axios.get("http://localhost:8080/api/v1/user/get-all-users", { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
+                const data = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/v1/user/get-all-users`, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
                 if (data) {
                     setusers(data?.data?.allUsers);
                 }

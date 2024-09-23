@@ -25,6 +25,7 @@ import Salesman from './Pages/Salesman.jsx';
 import SalesmanProducts from './Pages/SalesmanProducts';
 import UpdateProduct from './Pages/UpdateProduct';
 import WatchListProduct from './Pages/WatchListProduct';
+import UpdateUser from './Pages/UpdateUser';
 
 
 function App() {
@@ -58,6 +59,7 @@ function App() {
         </Route>}
         {(role === 'admin' || role === 'salesman') && <Route path='/salesman-products/:id' element={<SalesmanProducts />} />}
         {(role === 'admin' || role === 'salesman') && <Route path='/update-product/:id' element={<UpdateProduct />} />}
+        <Route path='/user-details' element={<UpdateUser />} />
         <Route path='/get-watchList' element={<WatchListProduct />} />
         <Route path='*' element={<NotFound />} />
       </Routes>

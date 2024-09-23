@@ -20,7 +20,7 @@ const AllOrders = () => {
     useEffect(() => {
         const fetch = async () => {
             try {
-                const data = await axios.get("http://localhost:8080/api/v1/order/get-all-orders", { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
+                const data = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/v1/order/get-all-orders`, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
                 setorders(data?.data?.orders);
             } catch (error) {
                 toast.error(error.response.data.message);
@@ -51,7 +51,7 @@ const AllOrders = () => {
     //updating order status
     const updateOrderStatus = async (id) => {
         try {
-            const data = await axios.put("http://localhost:8080/api/v1/order/update-orderstatus", { orderStatus: status }, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}`, orderid: id } });
+            const data = await axios.put(`${import.meta.env.VITE_SERVER_URL}/api/v1/order/update-orderstatus`, { orderStatus: status }, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}`, orderid: id } });
             setoptions(-1);
             setterm(0);
             toast.success(data.data.message);
@@ -63,7 +63,7 @@ const AllOrders = () => {
     //Updating payment status
     const updatePaymentStatus = async (id) => {
         try {
-            const data = await axios.put("http://localhost:8080/api/v1/order/update-paymentstatus", { paymentStatus: paymentStatus }, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}`, orderid: id } });
+            const data = await axios.put(`${import.meta.env.VITE_SERVER_URL}/api/v1/order/update-paymentstatus`, { paymentStatus: paymentStatus }, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}`, orderid: id } });
             setoptions(-1);
             setterm(0);
             toast.success(data.data.message);
@@ -77,13 +77,13 @@ const AllOrders = () => {
             const val = e.target.value;
             setloader(true);
             if (val) {
-                const data = await axios.get("http://localhost:8080/api/v1/order/get-all-orders", { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
+                const data = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/v1/order/get-all-orders`, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
                 let filteredOrder = data && data.data && data.data.orders.filter(item => item.orderStatus.toLowerCase().includes(val.trim().toLowerCase()) || item.paymentMode.toLowerCase().includes(val.trim().toLowerCase()) || item.paymentStatus.toLowerCase().includes(val.trim().toLowerCase()) || item._id.toLowerCase().includes(val.trim().toLowerCase()) || item._id.toLowerCase().includes(val.trim().toLowerCase()) || item.user.address.toLowerCase().includes(val.trim().toLowerCase()) || item.user.email.includes(val.trim().toLowerCase()) || item.user.username.includes(val.trim().toLowerCase()));
                 setorders(filteredOrder);
                 ;;
 
             } else {
-                const data = await axios.get("http://localhost:8080/api/v1/order/get-all-orders", { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
+                const data = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/v1/order/get-all-orders`, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
                 setorders(data?.data?.orders);
                 setloader(false);
             }

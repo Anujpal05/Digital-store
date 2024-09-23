@@ -12,7 +12,7 @@ const Order = () => {
     useEffect(() => {
         const fetch = async () => {
             try {
-                const data = await axios.get("http://localhost:8080/api/v1/order/get-user-order", { headers: { userid, Authorization: `Bearer ${localStorage.getItem('token')}` } });
+                const data = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/v1/order/get-user-order`, { headers: { userid, Authorization: `Bearer ${localStorage.getItem('token')}` } });
                 await setuser(data?.data?.user);
             } catch (error) {
                 toast.error(error.response.data.message);

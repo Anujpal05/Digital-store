@@ -11,11 +11,10 @@ const SalesmanProducts = () => {
     useEffect(() => {
         const fetch = async () => {
             try {
-                const res = await axios.get("http://localhost:8080/api/v1/product/get-salesman-products", { headers: { Authorization: `Bearer ${localStorage.getItem('token')}`, id: id } });
+                const res = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/v1/product/get-salesman-products`, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}`, id: id } });
                 setproducts(res?.data?.products);
-                console.log(products)
             } catch (error) {
-                console.log(error.data.response.message)
+                toast.error(error.data.response.message)
             }
         }
         fetch()

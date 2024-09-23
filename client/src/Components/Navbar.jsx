@@ -8,8 +8,10 @@ import { authActions } from '../store/auth';
 import toast from 'react-hot-toast';
 import { IoReorderThreeOutline } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
+import { FaUser } from 'react-icons/fa';
 import ProfileSidebar from './ProfileSidebar';
 import axios from 'axios';
+import { useUser } from '../store/context.jsx';
 
 
 function Navbar() {
@@ -21,7 +23,7 @@ function Navbar() {
     const navigate = useNavigate();
     const [user, setuser] = useState();
     const [isVisible, setisVisible] = useState(false);
-
+    const { profilePhoto, setprofilePhoto } = useUser()
     //Logout
     const handleLogOut = () => {
         dispatch(authActions.logout());
@@ -40,6 +42,7 @@ function Navbar() {
                 const res = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/v1/user/get-user`, { headers: { userid: localStorage.getItem('userId'), Authorization: `Bearer ${localStorage.getItem('token')}` } });
                 if (res) {
                     setuser(res.data.user);
+                    setprofilePhoto(res.data.user.avatar)
                 }
             } catch (error) {
                 console.log(error);
@@ -63,12 +66,13 @@ function Navbar() {
                         <Link to={'/all-product'} className=" cursor-pointer">All Products</Link>
                         <h1 className=" cursor-pointer" onClick={handleData}>About</h1>
                         {isLogin && <Link to={'/myorder'} className=' cursor-pointer' >Order</Link>}
-                        {(userRole === 'admin' || userRole === 'salesman') && <Link to={'/admin-dashboard'}>Admin</Link>}
+                        {(userRole === 'admin' || userRole === 'salesman') && isLogin && <Link to={'/admin-dashboard'}>Admin</Link>}
                     </div>
                     <div className=' flex lg:gap-5 md:gap-3 gap-3'>
                         <div className=' text-3xl flex justify-center items-center' onClick={handleData}><MdOutlineLightMode /></div>
                         {isLogin && <div className=' text-3xl flex justify-center items-center' ><Link to={"/cart"}><FaShoppingCart /></Link></div>}
-                        <div className=' text-2xl bg-white rounded-full text-black p-1 cursor-pointer ' onClick={() => setisVisible(!isVisible)}>{user && user.avatar && <img src={user.avatar} alt="user" className='h-10 w-10' />}</div>
+                        {isLogin && user && <div className=' text-2xl bg-white rounded-full text-black p-1 cursor-pointer ' onClick={() => setisVisible(!isVisible)}>{user && user.avatar && <img src={`${import.meta.env.VITE_SERVER_URL}${profilePhoto}`} alt="user" className='h-10 w-10 rounded-full' />}</div>}
+                        {isLogin && !user && <div className=' text-2xl bg-gray-300 rounded-full text-blue-700 p-2 cursor-pointer'> <FaUser /> </div>}
                         {!isLogin && <div className=' flex justify-center items-center '> <Link to={'/login'}>Login</Link></div>}
                         {isLogin && <button className=' outline-none hidden md:flex justify-center items-center ' onClick={handleLogOut}>LogOut</button>}
                         {<div className=' text-4xl flex justify-center items-center md:hidden' onClick={isToggle} ><IoReorderThreeOutline /></div>}

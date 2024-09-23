@@ -6,10 +6,12 @@ import {
   getUser,
   loginController,
   registerController,
+  updateProfile,
   updateUser,
   updateVerification,
 } from "../Controller/userController.js";
 import { authenticationToken } from "../Auth/auth.js";
+import upload from "../multer/multer.js";
 
 const router = express.Router();
 router.route("/register").post(registerController);
@@ -24,4 +26,7 @@ router
 router
   .route("/update-verification")
   .put(authenticationToken, updateVerification);
+router
+  .route("/update-profile")
+  .put(authenticationToken, upload.single("image"), updateProfile);
 export default router;

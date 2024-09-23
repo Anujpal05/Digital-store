@@ -13,7 +13,7 @@ const SalesmanRequest = () => {
     useEffect(() => {
         const fetch = async () => {
             try {
-                const salesman = await axios.get("http://localhost:8080/api/v1/user/get-salesman-request", { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
+                const salesman = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/v1/user/get-salesman-request`, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
                 setsalesmans(salesman?.data?.allUsers);
             } catch (error) {
                 toast.error(error.response.data.message);
@@ -34,7 +34,7 @@ const SalesmanRequest = () => {
 
     const handleVerification = async (id) => {
         try {
-            const data = await axios.put("http://localhost:8080/api/v1/user/update-verification", { verify }, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}`, id: id } });
+            const data = await axios.put(`${import.meta.env.VITE_SERVER_URL}/api/v1/user/update-verification`, { verify }, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}`, id: id } });
             toast.success(data.data.message);
             setoptions(-1);
             setverify(false);

@@ -5,12 +5,16 @@ import './index.css';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from "react-router-dom";
 import store from './store/store.js';
+import { UserProvider } from './store/context';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
+
     <BrowserRouter>
       <Provider store={store}>
-        <App />
+        <UserProvider>
+          <App />
+        </UserProvider>
       </Provider>
     </BrowserRouter>
   </React.StrictMode>,

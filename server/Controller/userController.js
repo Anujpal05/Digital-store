@@ -260,3 +260,50 @@ export const updateVerification = async (req, res) => {
     return res.status(500).json({ message: "Internal server error!" });
   }
 };
+
+export const updateProfile = async (req, res) => {
+  try {
+    const { username, phone, address } = req.body;
+    const { id } = req.headers;
+    const userData = {
+      username,
+      phone,
+      address,
+    };
+
+    if (req.file) {
+      userData.avatar = `/uploads/${req.file.filename}`;
+    }
+
+    if (!username || !phone || !address) {
+      return res
+        .status(400)
+        .json({ message: "Please provide all required fields!" });
+    }
+
+    if (username.length < 5) {
+      return res
+        .status(400)
+        .json({ message: "Username must be greater than 4!" });
+    }
+
+    if (address.length < 10) {
+      return res
+        .status(400)
+        .json({ message: "Address must be greater than 10!" });
+    }
+
+    if (phone.toString().length != 10) {
+      return res
+        .status(400)
+        .json({ message: "Phone number should have exactly 10 digit!" });
+    }
+
+    const user = await User.findByIdAndUpdate(id, userData, { new: true });
+    return res
+      .status(200)
+      .json({ message: "User Profile updated successfully!" });
+  } catch (error) {
+    return res.status(500).json({ message: "Internal server error!" });
+  }
+};
