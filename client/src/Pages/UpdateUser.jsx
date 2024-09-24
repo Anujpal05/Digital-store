@@ -79,7 +79,7 @@ const UpdateUser = () => {
 
 
     return (
-        <div className=' min-h-screen p-5'>
+        <div className=' min-h-screen p-5 overflow-x-hidden py-20'>
             {!user && <div className=' min-h-[50vh] min-w-full flex justify-center items-center'>
                 <ThreeDots
                     visible={true}
@@ -94,34 +94,34 @@ const UpdateUser = () => {
             </div>}
             {user &&
                 <div>
-                    <h1 className=' text-3xl font-semibold text-gray-700 pb-5 text-center   '>User Information</h1>
+                    <h1 className=' text-3xl font-semibold text-gray-700 dark:text-gray-300 pb-5 text-center   '>User Information</h1>
                     <div className=' lg:flex justify-center'>
-                        <form action="" className=' flex flex-col justify-center gap-3 lg:border-2 lg:bg-gray-50 rounded-md xl:w-[50vw] lg:p-5' onSubmit={updateUserData}>
+                        <form action="" className=' flex flex-col justify-center gap-3 lg:border-2 lg:bg-gray-50 dark:bg-gray-800 dark:text-gray-100 dark:border-gray-700 rounded-md xl:w-[50vw] lg:p-5 p-3' onSubmit={updateUserData}>
                             <div className=' w-full flex flex-col items-center justify-center p-5'>
                                 <img src={`${import.meta.env.VITE_SERVER_URL}${profilePhoto}`} name='avatar' alt='avatar' className=' h-40 w-40 rounded-full border-4 border-gray-900 ' />
-                                <input type="file" name="image" id="fileInput" onChange={handleImageUpload} className='' accept='image/*' />
+                                <input type="file" name="image" id="fileInput" onChange={handleImageUpload} className=' dark:text-gray-400' accept='image/*' />
 
                             </div>
                             <div className=' text-lg font-semibold  '>
-                                userId : <span className=' text-base px-1 text-gray-700'>{user.id}</span>
+                                userId : <span className=' text-base px-1 text-gray-700 dark:text-gray-400'>{user.id}</span>
                             </div>
                             <div className=' text-lg font-semibold '>
-                                email : <span className=' text-base px-1 text-gray-700 ' >{user.email}</span>
+                                email : <span className=' text-base px-1 text-gray-700 dark:text-gray-400 ' >{user.email}</span>
                             </div>
                             <div className=' text-lg font-semibold flex flex-col'>
                                 <label htmlFor="username">Username :</label>
-                                <input type="text" name='username' className=' border-2 text-gray-600 text-base px-2 bg-gray-100 p-1 rounded-md outline-none w-full ' value={user.username} onChange={handleChange} required />
+                                <input type="text" name='username' className=' border-2 text-gray-600 text-base px-2 bg-gray-100 dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600 p-1 rounded-md outline-none w-full ' value={user.username} onChange={handleChange} required />
                             </div>
 
                             <div className=' text-lg font-semibold flex flex-col'>
                                 <label htmlFor="phone" >Phone :</label>
-                                <input type="number" name='phone' className=' border-2 text-gray-600 text-base px-2 bg-gray-100 p-1 rounded-md outline-none w-full ' value={user.phone} onChange={handleChange} required />
+                                <input type="number" name='phone' className=' border-2 text-gray-600 text-base px-2 bg-gray-100 dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600 p-1 rounded-md outline-none w-full ' value={user.phone} onChange={handleChange} required />
                             </div>
                             <div className=' text-lg font-semibold flex flex-col'>
                                 <label htmlFor="address">Address :</label>
-                                <input type="text" name='address' className=' border-2 text-gray-600 text-base px-2 bg-gray-100 p-1 rounded-md outline-none w-full ' value={user.address} onChange={handleChange} required />
+                                <input type="text" name='address' className=' border-2 text-gray-600 text-base px-2 bg-gray-100 dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600 p-1 rounded-md outline-none w-full ' value={user.address} onChange={handleChange} required />
                             </div>
-                            <div className=' w-full flex justify-center'><button className=' text-xl font-semibold p-2 px-4 bg-blue-500 rounded-md text-center w-fit text-gray-900 outline-none '>Save</button></div>
+                            <div className=' w-full flex justify-center'><button className=' text-xl font-semibold p-2 px-4 bg-blue-500 dark:bg-blue-600 rounded-md text-center w-fit text-gray-900 outline-none '>Save</button></div>
                         </form>
                     </div>
 

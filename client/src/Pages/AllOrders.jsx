@@ -94,7 +94,7 @@ const AllOrders = () => {
     }
 
     return (
-        <div>
+        <div className=' lg:py-12 '>
             {!orders && <div className=' h-[90vh] flex justify-center items-center'>
                 <Hourglass
                     visible={true}
@@ -107,9 +107,9 @@ const AllOrders = () => {
                 />
             </div>}
             {orders && <div className=' p-7'>
-                <div className=' w-full flex items-center p-2 border-2 border-gray-500 rounded-full gap-2 ' >
-                    <div className=' text-2xl text-gray-400'><IoSearch /></div>
-                    <input type="text" name="filter" onChange={(e) => filterOrder(e)} placeholder='Search order id , order Status , payment status , username etc.' className=' w-full  text-md outline-none' />
+                <div className=' w-full flex items-center p-2 border-2 border-gray-500 rounded-full gap-2 dark:bg-gray-800 ' >
+                    <div className=' text-2xl text-gray-400 '><IoSearch /></div>
+                    <input type="text" name="filter" onChange={(e) => filterOrder(e)} placeholder='Search order id , order Status , payment status , username etc.' className=' w-full  text-md outline-none dark:bg-gray-800 dark:text-gray-100' />
                 </div>
                 {
                     loader && <div className=' my-10 min-w-full flex justify-center items-center'>
@@ -126,17 +126,17 @@ const AllOrders = () => {
                     </div>
                 }
                 {orders.length === 0 && !loader && <div className='flex flex-col justify-center items-center lg:h-[90vh] h-[60vh] '>
-                    <p className=' text-3xl md:text-5xl text-gray-800 font-semibold text-center'> Orders not found</p>
+                    <p className=' text-3xl md:text-5xl text-gray-800 font-semibold text-center dark:text-gray-300'> Orders not found</p>
                     <img src={orderImg} alt="" className=' h-40' />
                 </div>}
-                {orders.length > 0 && !loader && <h1 h1 className=' text-3xl font-semibold mt-2'>All Orders</h1>}
-                <div className=' py-5 gap-5 max-h-[80vh] overflow-auto grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 '>
+                {orders.length > 0 && !loader && <h1 h1 className=' text-3xl font-semibold mt-2 dark:text-gray-200 pb-5'>All Orders</h1>}
+                <div className=' gap-5 max-h-[80vh] lg:overflow-auto dark:scrollbar dark:scrollbar-thumb-gray-700 grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 pb-10 '>
                     {orders.length > 0 && !loader && orders.map((item, i) => (
-                        <div key={i} className=' bg-gray-200 p-4 rounded-md shadow-md shadow-gray-700 hover:bg-gray-300 transition-all duration-500 h-fit'>
-                            <p className=' text-md font-semibold '>Order id: <span className=' text-base text-gray-700'>{item._id}</span></p>
+                        <div key={i} className=' bg-gray-200 dark:bg-gray-800 dark:text-gray-50 p-4 rounded-md shadow-md shadow-gray-700 hover:bg-gray-300 transition-all duration-500 h-fit'>
+                            <p className=' text-md font-semibold '>Order id: <span className=' text-base text-gray-700 dark:text-gray-400'>{item._id}</span></p>
                             <div className=' flex gap-8'>
-                                <p className=' text-md font-semibold '>Date: <span className=' text-base text-gray-700'>{formatDate(item.createdAt)}</span></p>
-                                <p className=' text-md font-semibold '>Time: <span className=' text-base text-gray-700'>{formatTime(item.createdAt)}</span></p>
+                                <p className=' text-md font-semibold '>Date: <span className=' text-base text-gray-700 dark:text-gray-400'>{formatDate(item.createdAt)}</span></p>
+                                <p className=' text-md font-semibold '>Time: <span className=' text-base text-gray-700 dark:text-gray-400'>{formatTime(item.createdAt)}</span></p>
                             </div>
                             <div className=' flex items-center  gap-5'>
                                 <div className=' text-md font-semibold '>Order Status: {item.orderStatus === 'Order Placed' ? <span className='text-base text-blue-600'>{item.orderStatus}</span> : item.orderStatus === 'Out of delivery' ? <span className='text-base text-yellow-600'>{item.orderStatus}</span> : item.orderStatus === 'Delivered' ? <span className='text-base text-green-600'>{item.orderStatus}</span> : <span className='text-base text-red-600'>{item.orderStatus}</span>}
@@ -145,7 +145,7 @@ const AllOrders = () => {
                                 <p className={` text-green-600 text-lg cursor-pointer ${options === i && term == 1 ? 'block' : "hidden"}`} onClick={() => updateOrderStatus(item._id)} ><FaCheck /></p>
                             </div>
                             <div className={`${options === i && term === 1 ? 'flex' : 'hidden'}`}>
-                                <select name="status" id="" defaultValue={item.orderStatus} onChange={(e) => setstatus(e.target.value)} className=" outline-none bg-gray-100 border-[2px] border-gray-400 rounded-md cursor-pointer">
+                                <select name="status" id="" defaultValue={item.orderStatus} onChange={(e) => setstatus(e.target.value)} className=" outline-none bg-gray-100 dark:bg-gray-700 dark:border-gray-600 border-[2px] border-gray-400 rounded-md cursor-pointer">
                                     {[
                                         "Order Placed",
                                         "Out of delivery",
@@ -159,15 +159,15 @@ const AllOrders = () => {
 
 
 
-                            <p className=' text-md font-semibold '>Bill: <span className=' text-base text-gray-700'>&#8377;  {item.other[0].bill}</span></p>
-                            <p className=' text-md font-semibold '>Payment Mode: <span className=' text-base text-gray-700'>{item.paymentMode}</span></p>
+                            <p className=' text-md font-semibold '>Bill: <span className=' text-base text-gray-700 dark:text-gray-200'>&#8377;  {item.other[0].bill}</span></p>
+                            <p className=' text-md font-semibold '>Payment Mode: <span className=' text-base text-gray-700 dark:text-gray-200'>{item.paymentMode}</span></p>
                             <div className=' flex items-center gap-5'>
                                 <p className=' text-md font-semibold '>Payment Status: {item.paymentStatus === 'Paid' ? <span className=' text-base text-green-700'>{item.paymentStatus}</span> : item.paymentStatus === 'Unpaid' ? <span className=' text-base text-blue-700'>{item.paymentStatus}</span> : <span className=' text-base text-red-700'>{item.paymentStatus}</span>}</p>
                                 <p className={` text-blue-600 text-lg cursor-pointer ${options === i && term == 2 ? 'hidden' : "block"}`} onClick={() => { setoptions(i); setterm(2) }} ><FaEdit /></p>
                                 <p className={` text-green-600 text-lg cursor-pointer ${options === i && term == 2 ? 'block' : "hidden"}`} onClick={() => updatePaymentStatus(item._id)} ><FaCheck /></p>
                             </div>
                             <div className={`${options === i && term === 2 ? 'flex' : 'hidden'}`}>
-                                <select name="paymentStatus" defaultValue={item.paymentStatus} onChange={(e) => setpaymentStatus(e.target.value)} className=' outline-none bg-gray-100 border-[2px] font-semibold border-gray-400 rounded-md cursor-pointer'>
+                                <select name="paymentStatus" defaultValue={item.paymentStatus} onChange={(e) => setpaymentStatus(e.target.value)} className=' outline-none bg-gray-100 dark:bg-gray-700 dark:border-gray-600 border-[2px] font-semibold border-gray-400 rounded-md cursor-pointer'>
                                     {[
                                         "Unpaid",
                                         "Paid",
@@ -179,7 +179,7 @@ const AllOrders = () => {
                             </div>
 
                             <Link to={`/order-details/${item._id}`}>
-                                <div className=' w-full p-1 font-semibold bg-blue-500 mt-2 rounded-md text-center'>Order Details</div>
+                                <div className=' w-full p-1 font-semibold bg-blue-500 dark:bg-blue-700 mt-2 rounded-md text-center'>Order Details</div>
                             </Link>
                         </div>
                     ))}

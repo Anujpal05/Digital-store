@@ -151,7 +151,7 @@ const PlaceOrder = () => {
 
 
     return (
-        <div className=' flex justify-center items-center p-10'>
+        <div className=' flex justify-center items-center p-10 py-24  overflow-x-hidden'>
             {loader && <div className=' h-[90vh] flex justify-center items-center'>
                 <Hourglass
                     visible={loader}
@@ -163,23 +163,25 @@ const PlaceOrder = () => {
                     colors={['#306cce', '#72a1ed']}
                 />
             </div>}
-            {values && !loader && <div className=' border-2 w-96  min-h-[70vh] flex flex-col justify-evenly items-center'>
-                <div className=' p-3 pb-5'>
+            {values && !loader && <div className=' border-2 w-96  min-h-[70vh] flex flex-col justify-evenly items-center dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600 rounded-md'>
+                <div className=' p-3 pb-5 '>
                     {product && <div >
-                        <p className='  text-gray-500 font-semibold'><span className=' text-gray-700'>Product Name:</span> {product.title} </p>
-                        <p className=' text-gray-500 font-semibold'><span className=' text-gray-700'>Price:</span> &#8377;  {product.price * values.quantity}</p>
+                        <p className='  text-gray-500 dark:text-gray-400 font-semibold'><span className=' text-gray-700 dark:text-gray-200'>Product Name:</span> {product.title} </p>
+                        <p className=' text-gray-500 dark:text-gray-400 font-semibold'><span className=' text-gray-700 dark:text-gray-200'>Price:</span> &#8377;  {product.price * values.quantity}</p>
                     </div>}
-                    {productDetails && products && products.map((item, i) => (
-                        <div key={i}>
-                            <p className='  text-gray-500 font-semibold'><span className=' text-gray-700'>Product Name:</span> {productDetails[i].title} </p>
-                            <p className=' text-gray-500 font-semibold'><span className=' text-gray-700'>Price:</span> &#8377;  {productDetails[i].price * item.quantity}</p>
-                            <hr className=' border-1 my-1' />
-                        </div>
-                    ))}
+                    <div className=' max-h-52 overflow-auto dark:scrollbar dark:scrollbar-thumb-gray-700'>
+                        {productDetails && products && products.map((item, i) => (
+                            <div key={i}>
+                                <p className='  text-gray-500 dark:text-gray-300 font-semibold'><span className=' text-gray-700 dark:text-gray-200'>Product Name:</span> {productDetails[i].title} </p>
+                                <p className=' text-gray-500 dark:text-gray-300 font-semibold'><span className=' text-gray-700 dark:text-gray-200'>Price:</span> &#8377;  {productDetails[i].price * item.quantity}</p>
+                                <hr className=' border-1 my-1' />
+                            </div>
+                        ))}
+                    </div>
                     {productDetails && products &&
-                        <div className=' flex gap-2'>
-                            <p className=' font-semibold '>Total bill : </p>
-                            <div className=' text-gray-500 font-semibold'>&#8377; {total}</div>
+                        <div className=' flex gap-2 pt-2'>
+                            <p className=' font-semibold dark:text-gray-200 '>Total bill : </p>
+                            <div className=' text-gray-500 font-semibold dark:text-gray-400'>&#8377; {total}</div>
                         </div>
                     }
 
@@ -187,21 +189,21 @@ const PlaceOrder = () => {
                 <div className=' w-full'>
                     <form action="" className={`  flex-col justify-center px-10 p-4 gap-3 w-full ${visible == 'hidden' ? 'hidden' : 'flex'}`} onSubmit={updateUser}>
                         <div className=' text-xl font-semibold text-center'>User Details</div>
-                        <input type="text" name="username" id="" className=' bg-gray-100  rounded-md border-2 outline-none px-2 p-1' placeholder='Enter your username' value={values.username} onChange={handleChange} required />
-                        <textarea type="text" name='address' className=' bg-gray-100 rounded-md border-2 outline-none px-2 p-1' placeholder='Enter your address' value={values.address} onChange={handleChange} required rows={3} />
+                        <input type="text" name="username" id="" className=' bg-gray-100 dark:bg-gray-700 dark:border-gray-600  rounded-md border-2 outline-none px-2 p-1' placeholder='Enter your username' value={values.username} onChange={handleChange} required />
+                        <textarea type="text" name='address' className=' bg-gray-100 dark:bg-gray-700 dark:border-gray-600 rounded-md border-2 outline-none px-2 p-1' placeholder='Enter your address' value={values.address} onChange={handleChange} required rows={3} />
                         <div className=' flex flex-col'>
                             {error && <span className=" text-red-600 text-sm font-semibold">Please enter exactly 10 digits.</span>}
-                            <input type="number" name="phone" id="" className=' bg-gray-100 rounded-md border-2 outline-none px-2 p-1' placeholder='Enter your phone no.' onChange={handleChange} value={values.phone} required />
+                            <input type="number" name="phone" id="" className=' bg-gray-100 dark:bg-gray-700 dark:border-gray-600 rounded-md border-2 outline-none px-2 p-1' placeholder='Enter your phone no.' onChange={handleChange} value={values.phone} required />
                         </div>
-                        <button type='submit' className=' p-2 bg-green-500 rounded-md font-semibold w-full' >Next</button>
+                        <button type='submit' className=' p-2 bg-green-500 rounded-md font-semibold w-full dark:text-gray-950' >Next</button>
                     </form>
                 </div>
                 <div className=' '>
                     <form action="" className={`flex flex-col gap-20 ${visible == 'hidden' ? 'flex' : 'hidden'} `} onSubmit={handleSubmit}>
                         <div className=' flex flex-col gap-4  '>
                             <div className=' flex gap-5'>
-                                <p className=' text-md font-semibold'>Payment Mode :</p>
-                                <select name="mode" value={values.mode} onChange={handleChange} id="" className=' border-2 border-gray-400 outline-none rounded-sm'>
+                                <p className=' text-md font-semibold '>Payment Mode :</p>
+                                <select name="mode" value={values.mode} onChange={handleChange} id="" className=' border-2 border-gray-400 outline-none rounded-sm dark:bg-gray-700 dark:border-gray-600'>
                                     <option value="Online">Online</option>
                                     <option value="COD">cash on delivery</option>
                                 </select>
@@ -211,7 +213,7 @@ const PlaceOrder = () => {
                                 <input type="number" name="quantity" value={values.quantity} onChange={noOfProduct} className=' bg-gray-100 border-2 rounded-md outline-none px-2  w-14' />
                             </div>}
                         </div>
-                        <div className=''><button type='submit' className=' p-2 bg-green-500 rounded-md font-semibold w-full '  >Next</button> </div>
+                        <div className=''><button type='submit' className=' p-2 bg-green-500 rounded-md font-semibold w-full dark:text-gray-950 '  >Next</button> </div>
                     </form>
                 </div>
             </div>}

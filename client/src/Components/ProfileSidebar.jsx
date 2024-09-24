@@ -12,7 +12,7 @@ const ProfileSidebar = ({ user, isVisible, setisVisible }) => {
 
     return (
         <div className={` transition-transform duration-700 z-20 ease-in-out ${isVisible ? "translate-x-0" : "translate-x-full"} w-screen h-screen fixed`} >
-            <div className={` h-screen md:w-96 w-screen fixed right-0 bg-gray-600 z-20 transition-transform duration-700 ease-in-out ${isVisible ? "translate-x-0" : "translate-x-full"} `}>
+            <div className={` h-screen md:w-96 w-screen fixed right-0 bg-gray-600 py-16 dark:bg-gray-700 z-20 transition-transform duration-700 ease-in-out ${isVisible ? "translate-x-0" : "translate-x-full"} `}>
                 <div className=' outline-none text-3xl text-gray-50 p-3 py-5  cursor-pointer ' onClick={() => setisVisible(!isVisible)}>
                     <RxCross2 />
                 </div>

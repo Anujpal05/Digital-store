@@ -12,7 +12,7 @@ function Home() {
     const [search, setSearch] = useState("");
 
     return (
-        <div className=' overflow-x-hidden'>
+        <div className=' overflow-x-hidden w-screen dark:bg-gray-950 pt-7   '>
             <Hero />
             <div className=' pb-20 lg:px-16 px-5'>
                 <ExploreCategory />

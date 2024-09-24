@@ -79,17 +79,17 @@ const AllProduct = () => {
 
     return (
         <div >
-            <div className=' min-h-screen'>
+            <div className=' min-h-screen dark:bg-gray-950 py-20'>
                 <div className=' px-10'>
                     <Filter filter={filter} setfilter={setfilter} setprice={setprice} setSearch={setSearch} />
                 </div>
                 <div>
                     {products && <div className=' px-10'>
-                        <h1 className=' text-2xl font-semibold text-gray-700 py-3'>All Products Collection</h1>
+                        <h1 className=' text-2xl font-semibold text-gray-700 dark:text-gray-200 py-3'>All Products Collection</h1>
                         <div className=' grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-10  '>
                             {
                                 products.map((item, i) => (
-                                    <div key={i} className='bg-gray-200 p-3 rounded-md mb-5'>
+                                    <div key={i} className='bg-gray-200 dark:bg-gray-800 p-3 rounded-md mb-5'>
                                         <div className=' '>
                                             <div className=' group bg-white p-1 '>
                                                 <Link to={`/product/${item._id}`}>
@@ -103,8 +103,8 @@ const AllProduct = () => {
                                             </div>
                                         </div>
                                         <div className=' py-3 space-y-2'>
-                                            <h1 className=' text-xl font-semibold text-gray-800'>{item.title}</h1>
-                                            <p className=' text-md font-semibold text-gray-600'>Price: &#8377; {item.price}</p>
+                                            <h1 className=' text-xl font-semibold text-gray-800 dark:text-gray-300'>{item.title}</h1>
+                                            <p className=' text-md font-semibold text-gray-600 dark:text-gray-400'>Price: &#8377; {item.price}</p>
                                             <div className=' bg-pink-700 py-1 text-center text-xl font-semibold rounded-full hover:scale-105 transition-all duration-300 cursor-pointer' onClick={() => addToCart(item._id)}>Add To Cart</div>
                                         </div>
                                     </div>

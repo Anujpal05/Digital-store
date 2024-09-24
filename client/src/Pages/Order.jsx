@@ -25,7 +25,7 @@ const Order = () => {
 
 
     return (
-        <div className=' px-5 py-2'>
+        <div className=' px-5 py-20 dark:bg-gray-950'>
             {!user &&
                 <div className=' h-[90vh] flex justify-center items-center'>
                     <Hourglass
@@ -44,23 +44,23 @@ const Order = () => {
                 <img src={orderImg} alt="" className=' h-40' />
             </div>}
             {user && user.order.length > 0 && <div>
-                <h1 className=' text-3xl font-semibold text-gray-800 '>Your Orders</h1>
+                <h1 className=' text-3xl font-semibold text-gray-800 dark:text-gray-100'>Your Orders</h1>
                 <div className=' grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1  gap-3 py-4'>
                     {
                         user.order.map((item, i) => (
-                            <div key={i} className={` bg-gray-200 hover:bg-gray-400 ${item?.products?.length != 1 ? `row-span-${Math.round(item?.products?.length / 4) + 1} ` : "row-span-1"}  h-fit transition-all duration-30000 p-2 rounded-md flex flex-col justify-evenly `}>
+                            <div key={i} className={` bg-gray-200 hover:bg-gray-400 dark:bg-gray-800 dark:hover:bg-gray-900 dark:text-gray-100 ${item?.products?.length != 1 ? `row-span-${Math.round(item?.products?.length / 4) + 1} ` : "row-span-1"}  h-fit transition-all duration-30000 p-2 rounded-md flex flex-col justify-evenly `}>
                                 <div>
-                                    <div className='text-sm font-semibold'>Order ID: <span className='text-gray-700'>{item._id}</span></div>
+                                    <div className='text-sm font-semibold'>Order ID: <span className='text-gray-700 dark:text-gray-400'>{item._id}</span></div>
                                 </div>
                                 <hr className=' border-1 border-gray-600 my-2' />
                                 <div className='flex justify-between'>
-                                    <div className=' text-sm font-semibold'>Suppiler : <span className=' text-gray-700'>PixelMart</span></div>
-                                    <div className=' text-sm font-semibold'>Sold to <span className=' text-gray-700'>{user.username}</span></div>
+                                    <div className=' text-sm font-semibold'>Suppiler : <span className=' text-gray-700 dark:text-gray-400'>PixelMart</span></div>
+                                    <div className=' text-sm font-semibold'>Sold to <span className=' text-gray-700 dark:text-gray-400'>{user.username}</span></div>
                                 </div>
                                 <hr className=' border-1 border-gray-600 my-2' />
                                 {item.products && item.products.map((items, j) => (<div key={j}><div className=' flex  items-center gap-3 '>
                                     <img src={items.product.image} alt="" className=' h-16 border-2 border-gray-300' />
-                                    <h1 className=' font-semibold text-gray-800'>{items.product.title}</h1>
+                                    <h1 className=' font-semibold text-gray-800 dark:text-gray-100'>{items.product.title}</h1>
                                 </div>
                                     <hr className=' border-1 border-gray-500 my-2' />
                                 </div>))}

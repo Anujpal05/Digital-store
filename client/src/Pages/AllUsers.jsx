@@ -28,20 +28,20 @@ const AllUsers = () => {
     }
 
     return (
-        <div className=' px-5 p-3'>
+        <div className=' px-5 p-3 lg:py-20'>
             <div>
                 {users && <div>
-                    {users.length === 0 && <div className=' text-3xl font-semibold text-gray-700'>Not found users</div>}
-                    {users.length > 0 && <h1 className=' text-3xl font-semibold text-gray-700'>All Users Details</h1>}
-                    <div className='  grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4 lg:max-h-[90vh] lg:overflow-scroll py-10 my-3'>
+                    {users.length === 0 && <div className=' text-3xl font-semibold text-gray-700 dark:text-gray-200'>Not found users</div>}
+                    {users.length > 0 && <h1 className=' text-3xl font-semibold text-gray-700 dark:text-gray-200 pt-2'>All Users Details</h1>}
+                    <div className='  grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4 lg:max-h-[90vh] lg:overflow-auto lg:dark:scrollbar lg:dark:scrollbar-thumb-gray-700 scrollbar py-6'>
                         {users.length > 0 && users.map((user, i) => (
-                            <div className='bg-gray-200 p-5 rounded-md shadow-sm shadow-gray-900 h-fit' key={i}>
-                                <div className=' text-md font-semibold'>Customer Id : <span className=' text-base text-gray-700'>{user._id}</span></div>
-                                <div className=' text-md font-semibold'>Customer Name : <span className=' text-base text-gray-700'>{user.username}</span></div>
-                                <div className=' text-md font-semibold'>Email : <span className=' text-base text-gray-700'>{user.email}</span></div>
-                                {user.phone && <div className=' text-md font-semibold'>Phone no. <span className=' text-base text-gray-700'>{user.phone}</span></div>}
-                                {user.address && <div className=' text-md font-semibold'>Address: <span className=' text-base text-gray-700'>{user.address}</span></div>}
-                                <div className=' text-md font-semibold'>Registered Date : <span className=' text-base text-gray-700'>{formatDate(user.createdAt)}</span></div>
+                            <div className='bg-gray-200 dark:bg-gray-800 dark:text-gray-100 p-5 rounded-md shadow-sm shadow-gray-900 h-fit' key={i}>
+                                <div className=' text-md font-semibold'>Customer Id : <span className=' text-base text-gray-700 dark:text-gray-500'>{user._id}</span></div>
+                                <div className=' text-md font-semibold'>Customer Name : <span className=' text-base text-gray-700 dark:text-gray-500'>{user.username}</span></div>
+                                <div className=' text-md font-semibold'>Email : <span className=' text-base text-gray-700 dark:text-gray-500'>{user.email}</span></div>
+                                {user.phone && <div className=' text-md font-semibold'>Phone no. <span className=' text-base text-gray-700 dark:text-gray-500'>{user.phone}</span></div>}
+                                {user.address && <div className=' text-md font-semibold'>Address: <span className=' text-base text-gray-700 dark:text-gray-500'>{user.address}</span></div>}
+                                <div className=' text-md font-semibold'>Registered Date : <span className=' text-base text-gray-700 dark:text-gray-500'>{formatDate(user.createdAt)}</span></div>
                             </div>
                         ))}
                     </div>

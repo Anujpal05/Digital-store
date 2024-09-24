@@ -93,7 +93,7 @@ const Cart = () => {
     }
 
     return (
-        <div className='  min-h-screen h-auto '>
+        <div className='  min-h-screen h-auto py-16 overflow-x-hidden'>
             {loader && <div className=' w-full h-[90vh] flex justify-center items-center '>
                 <Hourglass
                     visible={loader}
@@ -107,25 +107,25 @@ const Cart = () => {
             </div>}
             {cartProducts && cartProducts.length == 0 && <>
                 <div className='h-screen flex flex-col justify-center items-center'>
-                    <p className='text-3xl md:text-5xl text-gray-800  font-semibold p-3'>Empty Cart</p>
+                    <p className='text-3xl md:text-5xl text-gray-800 dark:text-gray-200  font-semibold p-3'>Empty Cart</p>
                     <img src={cartImg} alt='cart Image' className='h-36 md:h-48 lg:h-56' />
                 </div>
             </>}
             {cartProducts && cartProducts.length > 0 && <div className='  p-5'>
-                <div className=' flex justify-between items-center text-4xl'>
-                    <h1 className='  font-semibold '>Your Cart</h1>
-                    <div className={`hidden md:${menu === 'flex' ? 'flex' : 'hidden'} `} onClick={() => setmenu('hidden')}><GiHamburgerMenu /></div>
-                    <div className={`hidden md:${menu === 'flex' ? 'hidden' : 'flex'}`} onClick={() => setmenu('flex')}><CgMenuGridR /></div>
+                <div className=' flex justify-between items-center text-4xl pr-5'>
+                    <h1 className='  font-semibold dark:text-gray-200'>Your Cart</h1>
+                    <div className={` dark:text-gray-200 hidden md:${menu === 'flex' ? 'flex' : 'hidden'} `} onClick={() => setmenu('hidden')}><GiHamburgerMenu /></div>
+                    <div className={` dark:text-gray-200 hidden md:${menu === 'flex' ? 'hidden' : 'flex'}`} onClick={() => setmenu('flex')}><CgMenuGridR /></div>
                 </div>
                 {cartProducts.map((items, i) => (
-                    <div key={i} className={` shadow-sm  bg-gray-50 shadow-gray-500  w-full  mt-5 md:${menu === 'flex' ? "hidden" : "flex"} items-center px-5 py-2`}>
+                    <div key={i} className={` shadow-sm  bg-gray-50 dark:bg-gray-800 dark:text-gray-200 shadow-gray-500  w-full  mt-5 md:${menu === 'flex' ? "hidden" : "flex"} items-center px-5 py-2`}>
                         <div className='md:flex justify-between items-center w-full grid grid-cols-3 gap-3 md:gap-8   '>
                             <Link to={`/product/${items._id}`} className=' order-1 md:order-none '>
                                 <img src={items.image} alt='product' className=' h-20 min-w-14 ' />
                             </Link>
                             <div>
                                 <span className=' font-semibold'>No. Of Item : </span>
-                                <select name="quantity" onChange={(e) => changeQuantity(e, items._id)} id="" className=' outline-none border-2 bg-gray-200'>
+                                <select name="quantity" onChange={(e) => changeQuantity(e, items._id)} id="" className=' outline-none border-2 bg-gray-200 dark:bg-gray-700 dark:border-gray-600'>
                                     <option value="1">1</option>
                                     <option value="2">2</option>
                                     <option value="3">3</option>
@@ -140,7 +140,7 @@ const Cart = () => {
                                     <p className=' text-md  font-semibold'>{items.desc.slice(0, 100)}...</p>
                                 </div>
                             </Link>
-                            <div className=' text-2xl  font-semibold order-1 md:order-none text-gray-600 '>&#8377;{items.price}</div>
+                            <div className=' text-2xl  font-semibold order-1 md:order-none text-gray-600 dark:text-gray-400'>&#8377;{items.price}</div>
                             <button className='w-10 mx-8 bg-red-100 md:hidden hover:bg-red-200 order-1 md:order-none text-red-600 h-10 text-2xl flex justify-center items-center rounded' onClick={() => removeCartBook(items._id)}><AiFillDelete /></button>
                         </div>
                         <button className='w-10 mx-8 hidden bg-red-100 hover:bg-red-200 text-red-600 h-10 text-2xl md:flex justify-center items-center rounded' onClick={() => removeCartBook(items._id)}><AiFillDelete /></button>
@@ -148,7 +148,7 @@ const Cart = () => {
                 ))}
                 <div className='grid grid-cols-2 lg:grid-cols-3 gap-4'>
                     {cartProducts.map((items, i) => (
-                        <div key={i} className={` shadow-sm bg-gray-50 shadow-gray-500 mt-5 px-5 py-2 hidden md:${menu === 'flex' ? "flex" : "hidden"}`}>
+                        <div key={i} className={` shadow-sm bg-gray-50 dark:bg-gray-800 dark:text-gray-200 shadow-gray-500 mt-5 px-5 py-2 hidden md:${menu === 'flex' ? "flex" : "hidden"}`}>
                             <div className=' flex flex-col gap-4'>
                                 <div className=''>
                                     <div className='flex justify-between items-center'>
@@ -157,7 +157,7 @@ const Cart = () => {
                                         </Link>
                                         <div className=' flex flex-col'>
                                             <span className=' font-semibold'>Quantity : </span>
-                                            <select name="quantity" id="" onChange={(e) => changeQuantity(e, items._id)} className=' outline-none border-2 bg-gray-200'>
+                                            <select name="quantity" id="" onChange={(e) => changeQuantity(e, items._id)} className=' outline-none border-2 bg-gray-200 dark:bg-gray-700 dark:border-gray-600'>
                                                 <option value="1">1</option>
                                                 <option value="2">2</option>
                                                 <option value="3">3</option>
@@ -171,19 +171,19 @@ const Cart = () => {
                                 <Link to={`/product/${items._id}`} className='col-span-3 order-2 md:order-none '>
                                     <div className=' space-y-1  '>
                                         <p className=' text-xl  font-semibold'>{items.title}</p>
-                                        <p className=' text-md  font-semibold'>{items.desc.slice(0, 100)}...</p>
+                                        <p className=' text-md dark:text-gray-300  font-semibold'>{items.desc.slice(0, 100)}...</p>
                                     </div>
                                 </Link>
-                                <div className=' text-2xl text-gray-600  font-semibold order-1 md:order-none '>&#8377;{items.price}</div>
+                                <div className=' text-2xl text-gray-600 dark:text-gray-400 font-semibold order-1 md:order-none '>&#8377;{items.price}</div>
                             </div>
 
                         </div>
                     ))}
                 </div>
                 <div className=' w-full flex justify-end'>
-                    <div className='  h-36 m-5 w-52 p-2 rounded-md space-y-3 bg-gray-100 shadow-sm shadow-gray-800'>
-                        <h1 className=' text-3xl font-semibold  text-center text-gray-800'>Total Amount</h1>
-                        <div className=' flex justify-between w-full  font-semibold px-3 text-gray-700'>
+                    <div className='  h-36 m-5 w-52 p-2 rounded-md space-y-3 bg-gray-100 dark:bg-gray-800 shadow-sm shadow-gray-800'>
+                        <h1 className=' text-3xl font-semibold  text-center dark:text-gray-300 text-gray-800'>Total Amount</h1>
+                        <div className=' flex justify-between w-full  font-semibold px-3 dark:text-gray-200 text-gray-700'>
                             <p className=''>{cartProducts.length} products</p>
                             <p>&#8377; {total}</p>
                         </div>

@@ -61,31 +61,31 @@ const GetAllSalesman = () => {
                 </div>
             }
             {salesmans && salesmans.length === 0 && <div className=' h-[60vh] md:flex justify-center items-center'>
-                <h1 className='text-2xl md:text-3xl p-3 font-semibold text-gray-700'>Salesman not found</h1>
+                <h1 className='text-2xl md:text-3xl p-3 font-semibold text-gray-700 dark:text-gray-200'>Salesman not found</h1>
             </div>}
             {salesmans && salesmans.length > 0 && <div className=' px-3'>
-                <h1 className=' text-3xl font-semibold text-gray-700 py-5'>All Salesman details </h1>
-                <div className=' grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 '>
+                <h1 className=' text-3xl font-semibold text-gray-700 dark:text-gray-200 py-5'>All Salesman details </h1>
+                <div className=' grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 lg:overflow-auto lg:dark:scrollbar dark:scrollbar-thumb-gray-700'>
                     {salesmans.map((salesman, i) => (
-                        <div className='bg-gray-200 p-5 rounded-md shadow-sm shadow-gray-900 h-fit' key={i}>
-                            <div className=' text-md font-semibold'>Salesman Id : <span className=' text-base text-gray-700'>{salesman._id}</span></div>
-                            <div className=' text-md font-semibold'>Salesman Name : <span className=' text-base text-gray-700'>{salesman.username}</span></div>
-                            <div className=' text-md font-semibold'>Email : <span className=' text-base text-gray-700'>{salesman.email}</span></div>
-                            {salesman.phone && <div className=' text-md font-semibold'>Phone no. <span className=' text-base text-gray-700'>{salesman.phone}</span></div>}
-                            {salesman.address && <div className=' text-md font-semibold'>Address: <span className=' text-base text-gray-700'>{salesman.address}</span></div>}
-                            <div className=' text-md font-semibold'>Registered Date : <span className=' text-base text-gray-700'>{formatDate(salesman.createdAt)}</span></div>
+                        <div className='bg-gray-200 dark:bg-gray-800 dark:text-gray-100 p-5 rounded-md shadow-sm shadow-gray-900 h-fit' key={i}>
+                            <div className=' text-md font-semibold'>Salesman Id : <span className=' text-base text-gray-700 dark:text-gray-400'>{salesman._id}</span></div>
+                            <div className=' text-md font-semibold'>Salesman Name : <span className=' text-base text-gray-700 dark:text-gray-400'>{salesman.username}</span></div>
+                            <div className=' text-md font-semibold'>Email : <span className=' text-base text-gray-700 dark:text-gray-400'>{salesman.email}</span></div>
+                            {salesman.phone && <div className=' text-md font-semibold'>Phone no. <span className=' text-base text-gray-700 dark:text-gray-400'>{salesman.phone}</span></div>}
+                            {salesman.address && <div className=' text-md font-semibold'>Address: <span className=' text-base text-gray-700 dark:text-gray-400'>{salesman.address}</span></div>}
+                            <div className=' text-md font-semibold'>Registered Date : <span className=' text-base text-gray-700 dark:text-gray-400'>{formatDate(salesman.createdAt)}</span></div>
                             <div className=' flex items-center gap-5'>
                                 <div className=' text-md font-semibold'>Verification: {salesman.verify == true ? <span className=' text-base text-green-700'>Verified</span> : <span className=' text-base text-red-600'>Unverified</span>}</div>
                                 <p className={` text-blue-600 text-lg cursor-pointer ${options === i ? 'hidden' : "block"}`} onClick={() => setoptions(i)} ><FaEdit /></p>
                                 <p className={` text-green-600 text-lg cursor-pointer ${options === i ? 'block' : "hidden"}`} onClick={() => handleVerification(salesman._id)} ><FaCheck /></p>
                             </div>
                             {options === i && <div>
-                                <select name="verify" defaultValue={salesman.verify} onChange={(e) => setverify(e.target.value === 'true' ? true : false)} className=' outline-none bg-gray-100 '>
+                                <select name="verify" defaultValue={salesman.verify} onChange={(e) => setverify(e.target.value === 'true' ? true : false)} className=' outline-none bg-gray-100 dark:bg-gray-700 '>
                                     <option value={true} >Verified</option>
                                     <option value={false}>Unverified</option>
                                 </select>
                             </div>}
-                            <div className=' text-center mt-2 p-2 bg-blue-500 rounded-md font-semibold'><Link to={`/salesman-products/${salesman._id}`} className=' w-full'>View Products</Link></div>
+                            <div className=' text-center mt-2 p-2 bg-blue-500 dark:bg-blue-600 rounded-md font-semibold'><Link to={`/salesman-products/${salesman._id}`} className=' w-full'>View Products</Link></div>
                         </div>
                     ))}
                 </div>

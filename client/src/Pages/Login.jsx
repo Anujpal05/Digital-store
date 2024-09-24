@@ -48,34 +48,34 @@ const Login = () => {
 
     return (
         <div>
-            <div className=' grid lg:grid-cols-2'>
+            <div className=' grid lg:grid-cols-2 overflow-x-hidden pt-5'>
                 <div className=' hidden h-screen lg:flex items-center '>
                     <img src={loginImg} alt="Login Image" className=' h-96 2xl:h-[60%]' />
                 </div>
-                <div className=' h-screen  flex justify-center items-center'>
-                    <div className=' shadow-md shadow-gray-400 p-5 rounded-md '>
-                        <h1 className=' text-2xl py-2 font-semibold text-gray-800 text-center 2xl:text-4xl'>Login Page</h1>
+                <div className=' h-screen  flex justify-center items-center px-3 '>
+                    <div className=' shadow-md shadow-gray-400 dark:shadow-gray-600 p-5 rounded-md dark:bg-gray-800 dark:text-gray-200 w-[90vw] md:w-auto'>
+                        <h1 className=' text-2xl py-2 font-semibold text-gray-800 text-center 2xl:text-4xl dark:text-gray-200'>Login Page</h1>
                         <form action="" onSubmit={handleSubmit} className='space-y-5 2xl:space-y-7'>
                             <div className=' flex flex-col 2xl:text-2xl'>
                                 <label htmlFor="" className=' text-md font-semibold '>Email</label>
-                                <div className=' border-[2px] border-gray-300 py-1 px-2 rounded-md w-full md:w-96 2xl:w-[600px]'>
-                                    <input type="email" name="email" placeholder='Enter Email' value={values.email} onChange={handleValue} className=' w-full outline-none' required />
+                                <div className=' border-[2px] border-gray-300 dark:bg-gray-700 dark:border-gray-500 py-1 px-2 rounded-md w-full md:w-96 2xl:w-[600px]'>
+                                    <input type="email" name="email" placeholder='Enter Email' value={values.email} onChange={handleValue} className=' w-full outline-none dark:bg-gray-700' required />
                                 </div>
                             </div>
                             <div className=' flex flex-col 2xl:text-2xl'>
                                 <label htmlFor="" className=' text-md font-semibold '>Password</label>
-                                <div className=' border-2 border-gray-300 py-1 px-2 rounded-md w-full md:w-96 2xl:w-[600px]'>
-                                    <input type="password" name="password" placeholder='Enter Password' value={values.password} onChange={handleValue} className=' w-full outline-none' required />
+                                <div className=' border-2 border-gray-300 dark:bg-gray-700 dark:border-gray-500 py-1 px-2 rounded-md w-full md:w-96 2xl:w-[600px]'>
+                                    <input type="password" name="password" placeholder='Enter Password' value={values.password} onChange={handleValue} className=' w-full outline-none dark:bg-gray-700' required />
                                 </div>
                             </div>
                             <div>
-                                <button type='submit' className=' p-1 w-full rounded-md font-semibold text-xl bg-pink-700 text-gray-200 hover:bg-pink-600
+                                <button type='submit' className=' p-1 w-full rounded-md font-semibold text-xl bg-pink-700 text-gray-200 hover:bg-pink-600 dark:text-gray-950
                             '>Login</button>
                             </div>
                         </form>
-                        <div className=' flex flex-col justify-center items-center py-3'>
+                        <div className=' flex flex-col justify-center items-center py-3 '>
                             <p className=' font-semibold text-lg'>Or</p>
-                            <div className=' flex gap-2 font-semibold text-gray-500'>
+                            <div className=' flex gap-2 font-semibold text-gray-500 dark:text-gray-400'>
                                 <p>Don't have an account?</p>
                                 <Link to={"/signup"} className=' underline hover:text-blue-600 hover:scale-105 transition-all duration-300'>SignUp</Link>
                             </div>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Navbar from './Components/Navbar.jsx';
 import Home from "./Pages/Home.jsx";
 import { Route, Routes } from 'react-router-dom';
@@ -26,43 +26,62 @@ import SalesmanProducts from './Pages/SalesmanProducts';
 import UpdateProduct from './Pages/UpdateProduct';
 import WatchListProduct from './Pages/WatchListProduct';
 import UpdateUser from './Pages/UpdateUser';
+import ScrollToTop from './Components/ScrollToTop';
 
 
 function App() {
   const role = useSelector(state => state.auth.role);
+  const [darkMode, setdarkMode] = useState();
+
+  useEffect(() => {
+    const mode = localStorage.getItem("dark-mode") === 'true';
+    setdarkMode(mode);
+  }, [])
+
+
+  const toggleMode = () => {
+    const mode = !darkMode;
+    setdarkMode(mode);
+    localStorage.setItem('dark-mode', mode)
+  }
+
+
   return (
-    <div className="  w-screen h-screen overflow-x-hidden">
+    <div className={` w-screen h-screen ${darkMode ? 'dark' : ""} `}>
       <Toaster />
-      <Navbar />
-      <Routes>
-        <Route path='/' element={<Home />} />
-        <Route path='/category/:category' element={<Category />} />
-        <Route path='/product/:id' element={<ProductDetails />} />
-        <Route path='/all-product' element={<AllProduct />} />
-        <Route path='/login' element={<Login />} />
-        <Route path='/signup' element={<SignUp />} />
-        <Route path='/cart' element={<Cart />} />
-        <Route path='/place-order/productid/:id' element={<PlaceOrder />} />
-        <Route path='/place-order-from-cart' element={<PlaceOrder />} />
-        <Route path='/myorder' element={<Order />} />
-        <Route path='/order-details/:orderid' element={<OrderDetails />} />
-        {(role === 'admin' || role === 'salesman') && <Route path='/admin-dashboard' element={<Dashboard />} >
-          <Route path='add-product' element={<AddProduct />} />
-          <Route index element={<AllOrders />} />
-          <Route path='all-orders' element={<AllOrders />} />
-          {role === 'admin' && <Route path='all-users' element={<AllUsers />} />}
-          {role === 'admin' && <Route path='salesman' element={<Salesman />} >
-            <Route index element={<GetAllSalesman />} />
-            <Route path='all-salesman' element={<GetAllSalesman />} />
-            <Route path='salesman-request' element={<SalesmanRequest />} />
+      <Navbar toggleMode={toggleMode} />
+      <ScrollToTop />
+      <div className=' dark:bg-gray-950'>
+        <Routes>
+          <Route path='/' element={<Home />} />
+          <Route path='/category/:category' element={<Category />} />
+          <Route path='/product/:id' element={<ProductDetails />} />
+          <Route path='/all-product' element={<AllProduct />} />
+          <Route path='/login' element={<Login />} />
+          <Route path='/signup' element={<SignUp />} />
+          <Route path='/cart' element={<Cart />} />
+          <Route path='/place-order-from-cart' element={<PlaceOrder />} />
+          <Route path='/place-order/productid/:id' element={<PlaceOrder />} />
+          <Route path='/myorder' element={<Order />} />
+          <Route path='/order-details/:orderid' element={<OrderDetails />} />
+          {(role === 'admin' || role === 'salesman') && <Route path='/admin-dashboard' element={<Dashboard />} >
+            <Route path='add-product' element={<AddProduct />} />
+            <Route index element={<AllOrders />} />
+            <Route path='all-orders' element={<AllOrders />} />
+            {role === 'admin' && <Route path='all-users' element={<AllUsers />} />}
+            {role === 'admin' && <Route path='salesman' element={<Salesman />} >
+              <Route index element={<GetAllSalesman />} />
+              <Route path='all-salesman' element={<GetAllSalesman />} />
+              <Route path='salesman-request' element={<SalesmanRequest />} />
+            </Route>}
           </Route>}
-        </Route>}
-        {(role === 'admin' || role === 'salesman') && <Route path='/salesman-products/:id' element={<SalesmanProducts />} />}
-        {(role === 'admin' || role === 'salesman') && <Route path='/update-product/:id' element={<UpdateProduct />} />}
-        <Route path='/user-details' element={<UpdateUser />} />
-        <Route path='/get-watchList' element={<WatchListProduct />} />
-        <Route path='*' element={<NotFound />} />
-      </Routes>
+          {(role === 'admin' || role === 'salesman') && <Route path='/salesman-products/:id' element={<SalesmanProducts />} />}
+          {(role === 'admin' || role === 'salesman') && <Route path='/update-product/:id' element={<UpdateProduct />} />}
+          <Route path='/user-details' element={<UpdateUser />} />
+          <Route path='/get-watchList' element={<WatchListProduct />} />
+          <Route path='*' element={<NotFound />} />
+        </Routes>
+      </div>
       <Footer />
     </div>
   )
