@@ -17,7 +17,7 @@ const ProfileSidebar = ({ user, isVisible, setisVisible }) => {
                     <RxCross2 />
                 </div>
                 {user && <div className=' flex flex-col justify-center items-center py-5 gap-5'>
-                    <div className=' border-8 border-gray-100 rounded-full '><img src={`${import.meta.env.VITE_SERVER_URL}${profilePhoto}`} alt="" className=' h-28 w-28 rounded-full ' /></div>
+                    <div className=' border-8 border-gray-100 rounded-full '><img src={profilePhoto} alt="" className=' h-28 w-28 rounded-full ' /></div>
                     <div className=' flex flex-col text-xl font-semibold text-gray-100 justify-center items-center gap-3'>
                         <p>{user.username}</p>
                         <p>{user.email}</p>

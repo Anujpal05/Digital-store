@@ -2,9 +2,12 @@ import React, { useState } from 'react';
 import loginImg from '../assets/login.png';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { authActions } from '../store/auth';
 import toast from 'react-hot-toast';
+import GoogleSignInBtn from '../Components/GoogleSignInBtn';
+import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
+import { auth } from '../firebase/firebaseConfig';
 
 const Login = () => {
     const navigate = useNavigate();
@@ -13,32 +16,44 @@ const Login = () => {
         email: "",
         password: ""
     })
-
-    const isLogin = useSelector(state => state.auth.isLogin);
+    const [visible, setvisible] = useState(false);
 
     //Handle Submit
     const handleSubmit = async (e) => {
         try {
             e.preventDefault();
             const res = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/user/login`, values);
-
-            if (res.data) {
-                localStorage.setItem('userId', res.data.id);
-                localStorage.setItem('role', res.data.role);
-                localStorage.setItem('token', res.data.token);
-                setvalues({
-                    email: "",
-                    password: ""
-                });
-                dispatch(authActions.login());
-                localStorage.setItem('isLogin', true);
-                toast.success(res.data.message);
-                navigate("/");
+            const result = await signInWithEmailAndPassword(auth, values.email, values.password);
+            console.log(result)
+            const user = result.user;
+            if (user.emailVerified) {
+                if (res.data) {
+                    localStorage.setItem('userId', res.data.id);
+                    localStorage.setItem('role', res.data.role);
+                    localStorage.setItem('token', res.data.token);
+                    dispatch(authActions.login());
+                    localStorage.setItem('isLogin', true);
+                    dispatch(authActions.changeRole(localStorage.getItem('role') ? localStorage.getItem("role") : "customer"));
+                    toast.success(res.data.message);
+                    navigate("/");
+                }
+            } else {
+                toast.error("Email not verified!");
+                signOut(auth)
             }
         } catch (error) {
-            toast.error(error.response.data.message);
+            //show forgot password option if error occurs
+            setvisible(true);
+            // Handle different types of errors for better clarity
+            if (error.response?.data?.message) {
+                toast.error(error.response.data.message); // For backend validation errors
+            } else {
+                toast.error(error.message === "Firebase: Error (auth/invalid-credential)." ? "Invalid Credential!" : error.message);
+            }
+            console.error("Error during registration:", error);
         }
     }
+
 
     //Handle Input value
     const handleValue = (e) => {
@@ -67,12 +82,14 @@ const Login = () => {
                                 <div className=' border-2 border-gray-300 dark:bg-gray-700 dark:border-gray-500 py-1 px-2 rounded-md w-full md:w-96 2xl:w-[600px]'>
                                     <input type="password" name="password" placeholder='Enter Password' value={values.password} onChange={handleValue} className=' w-full outline-none dark:bg-gray-700' required />
                                 </div>
+                                {visible && <Link to={"/reset-password"} className=' font-bold text-blue-500 hover:text-blue-600 text-base pt-1 cursor-pointer'>Forgot Password ?</Link>}
                             </div>
                             <div>
-                                <button type='submit' className=' p-1 w-full rounded-md font-semibold text-xl bg-pink-700 text-gray-200 hover:bg-pink-600 dark:text-gray-950
+                                <button type='submit' className=' outline-none p-1 w-full rounded-md font-semibold text-xl bg-pink-700 text-gray-200 hover:bg-pink-600 dark:text-gray-950 py-2
                             '>Login</button>
                             </div>
                         </form>
+                        <GoogleSignInBtn />
                         <div className=' flex flex-col justify-center items-center py-3 '>
                             <p className=' font-semibold text-lg'>Or</p>
                             <div className=' flex gap-2 font-semibold text-gray-500 dark:text-gray-400'>

@@ -1,6 +1,5 @@
 import { generateJWToken } from "../Auth/auth.js";
 import User from "../Model/userModel.js";
-import bcrypt from "bcryptjs";
 
 //Register controller
 export const registerController = async (req, res) => {
@@ -12,19 +11,19 @@ export const registerController = async (req, res) => {
       return res.status(409).json({ message: "User is already exist!" });
     }
 
-    if (password.length < 5) {
+    if (password.length < 6) {
       return res
         .status(400)
-        .json({ message: "Password must be greater than 4!" });
+        .json({ message: "Password must be greater than 5!" });
     }
 
-    const hashPassword = await bcrypt.hash(password, 10);
+    // const hashPassword = await bcrypt.hash(password, 10);
 
     if (role === "salesman") {
       const newUser = new User({
         username: username,
         email: email,
-        password: hashPassword,
+        // password: hashPassword,
         verify: false,
         role: role,
       });
@@ -37,7 +36,7 @@ export const registerController = async (req, res) => {
     const newUser = new User({
       username: username,
       email: email,
-      password: hashPassword,
+      // password: hashPassword,
     });
 
     await newUser.save();
@@ -59,7 +58,7 @@ export const registerController = async (req, res) => {
 //Login controller
 export const loginController = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email } = req.body;
     const existingUser = await User.findOne({ email: email });
 
     if (!existingUser) {
@@ -70,31 +69,89 @@ export const loginController = async (req, res) => {
       return res.status(403).json({ message: "Salesman not verified!" });
     }
 
-    await bcrypt.compare(password, existingUser.password, async (err, data) => {
-      if (data) {
-        const payload = {
-          id: existingUser._id,
-          role: existingUser.role,
-          username: existingUser.username,
-        };
+    const payload = {
+      id: existingUser._id,
+      role: existingUser.role,
+      username: existingUser.username,
+    };
 
-        const token = await generateJWToken(payload);
+    const token = await generateJWToken(payload);
 
-        //Signin successfully
-        return res.status(200).json({
-          message: "SignIn successfully!",
-          id: existingUser._id,
-          role: existingUser.role,
-          token: token,
-        });
-      } else {
-        //Invalid Password
-        return res.status(400).json({ message: "Invalid credentials" });
-      }
+    //Signin successfully
+    return res.status(200).json({
+      message: "SignIn successfully!",
+      id: existingUser._id,
+      role: existingUser.role,
+      token: token,
     });
   } catch (error) {
     //Internal server error
     return res.status(500).json({ message: "Internal server error!" });
+  }
+};
+
+//Login with Google
+export const loginWithGoogle = async (req, res) => {
+  try {
+    const { username, email, avatar } = req.body;
+    if (!email) {
+      return res
+        .status(400)
+        .json({ message: "Please provide valid user data!" });
+    }
+
+    const data = {
+      email,
+    };
+
+    if (username) {
+      data.username = username;
+    }
+
+    if (avatar) {
+      data.avatar = avatar;
+    }
+
+    const user = await User.findOne({ email });
+
+    //If User not exist
+    if (!user) {
+      const newUser = new User(data);
+
+      await newUser.save();
+
+      const payload = {
+        id: newUser._id,
+        role: newUser.role,
+        username: newUser.username,
+      };
+
+      const token = await generateJWToken(payload);
+
+      return res.status(200).json({
+        message: "New Customer Register successfully!",
+        id: newUser._id,
+        role: newUser.role,
+        token: token,
+      });
+    }
+
+    const payload = {
+      id: user._id,
+      role: user.role,
+      username: user.username,
+    };
+
+    const token = await generateJWToken(payload);
+    //If User exist
+    return res.status(200).json({
+      message: "Customer login successfully!",
+      id: user._id,
+      role: user.role,
+      token: token,
+    });
+  } catch (error) {
+    return res.status(500).json({ message: "Internal server error!", error });
   }
 };
 

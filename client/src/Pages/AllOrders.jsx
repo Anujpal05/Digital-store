@@ -129,7 +129,7 @@ const AllOrders = () => {
                     <p className=' text-3xl md:text-5xl text-gray-800 font-semibold text-center dark:text-gray-300'> Orders not found</p>
                     <img src={orderImg} alt="" className=' h-40' />
                 </div>}
-                {orders.length > 0 && !loader && <h1 h1 className=' text-3xl font-semibold mt-2 dark:text-gray-200 pb-5'>All Orders</h1>}
+                {orders.length > 0 && !loader && <h1 className=' text-3xl font-semibold mt-2 dark:text-gray-200 pb-5'>All Orders</h1>}
                 <div className=' gap-5 max-h-[80vh] lg:overflow-auto dark:scrollbar dark:scrollbar-thumb-gray-700 grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 pb-10 '>
                     {orders.length > 0 && !loader && orders.map((item, i) => (
                         <div key={i} className=' bg-gray-200 dark:bg-gray-800 dark:text-gray-50 p-4 rounded-md shadow-md shadow-gray-700 hover:bg-gray-300 transition-all duration-500 h-fit'>

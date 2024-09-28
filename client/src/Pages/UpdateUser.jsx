@@ -11,6 +11,7 @@ const UpdateUser = () => {
     const { profilePhoto, setprofilePhoto } = useUser();
 
     useEffect(() => {
+
         const fetch = async () => {
             try {
                 const res = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/v1/user/get-user`, { headers: { userid: localStorage.getItem('userId'), Authorization: `Bearer ${localStorage.getItem('token')}` } });
@@ -24,11 +25,10 @@ const UpdateUser = () => {
                         id: res.data.user._id,
                         avatar: res.data.user.avatar
                     })
-                    setprofilePhoto(res.data.user.avatar);
                 }
 
             } catch (error) {
-                console.log(error);
+                console.log(error.response.data.message);
             }
         }
         if (flag === true) {
@@ -65,9 +65,15 @@ const UpdateUser = () => {
                 setflag(true)
             }
             toast.success("Profile updated successfully!");
+
+            if (image) {
+                const userData = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/v1/user/get-user`, { headers: { userid: localStorage.getItem('userId'), Authorization: `Bearer ${localStorage.getItem('token')}` } });
+                if (userData) {
+                    setprofilePhoto(import.meta.env.VITE_SERVER_URL + userData.data.user.avatar);
+                }
+            }
         }
         catch (error) {
-            console.log(error)
             toast.error(error.response.data.message)
         }
     }
@@ -98,7 +104,7 @@ const UpdateUser = () => {
                     <div className=' lg:flex justify-center'>
                         <form action="" className=' flex flex-col justify-center gap-3 lg:border-2 lg:bg-gray-50 dark:bg-gray-800 dark:text-gray-100 dark:border-gray-700 rounded-md xl:w-[50vw] lg:p-5 p-3' onSubmit={updateUserData}>
                             <div className=' w-full flex flex-col items-center justify-center p-5'>
-                                <img src={`${import.meta.env.VITE_SERVER_URL}${profilePhoto}`} name='avatar' alt='avatar' className=' h-40 w-40 rounded-full border-4 border-gray-900 ' />
+                                <img src={profilePhoto} name='avatar' alt='avatar' className=' h-40 w-40 text-center rounded-full border-4 border-gray-900 dark:border-gray-200 ' />
                                 <input type="file" name="image" id="fileInput" onChange={handleImageUpload} className=' dark:text-gray-400' accept='image/*' />
 
                             </div>

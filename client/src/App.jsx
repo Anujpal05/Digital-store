@@ -18,7 +18,7 @@ import AddProduct from './Pages/AddProduct.jsx';
 import AllOrders from './Pages/AllOrders.jsx';
 import NotFound from './Pages/NotFound.jsx';
 import AllUsers from './Pages/AllUsers.jsx';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import GetAllSalesman from './Components/GetAllSalesman';
 import SalesmanRequest from './Components/SalesmanRequest';
 import Salesman from './Pages/Salesman.jsx';
@@ -27,16 +27,40 @@ import UpdateProduct from './Pages/UpdateProduct';
 import WatchListProduct from './Pages/WatchListProduct';
 import UpdateUser from './Pages/UpdateUser';
 import ScrollToTop from './Components/ScrollToTop';
+import axios from 'axios';
+import { useUser } from './store/context';
+import { authActions } from './store/auth';
+import ResetPassword from './Pages/ResetPassword';
 
 
 function App() {
   const role = useSelector(state => state.auth.role);
+  const isLogin = useSelector(state => state.auth.isLogin);
+  const dispatch = useDispatch();
   const [darkMode, setdarkMode] = useState();
+  const { setprofilePhoto } = useUser();
+
+  useEffect(() => {
+    const fetch = async () => {
+      dispatch(authActions.changeRole(localStorage.getItem('role') ? localStorage.getItem("role") : "customer"));
+      if (isLogin === true) {
+        const userData = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/v1/user/get-user`, { headers: { userid: localStorage.getItem('userId'), Authorization: `Bearer ${localStorage.getItem('token')}` } });
+        if (userData) {
+          const avatar = userData.data.user.avatar && userData.data.user.avatar.slice(0, 8) === "/uploads" ? import.meta.env.VITE_SERVER_URL + userData.data.user.avatar : userData.data.user.avatar;
+          setprofilePhoto(avatar)
+        }
+      } else {
+        setprofilePhoto()
+      }
+    }
+    fetch();
+  }, [isLogin])
 
   useEffect(() => {
     const mode = localStorage.getItem("dark-mode") === 'true';
     setdarkMode(mode);
   }, [])
+
 
 
   const toggleMode = () => {
@@ -59,6 +83,7 @@ function App() {
           <Route path='/all-product' element={<AllProduct />} />
           <Route path='/login' element={<Login />} />
           <Route path='/signup' element={<SignUp />} />
+          <Route path='/reset-password' element={<ResetPassword />} />
           <Route path='/cart' element={<Cart />} />
           <Route path='/place-order-from-cart' element={<PlaceOrder />} />
           <Route path='/place-order/productid/:id' element={<PlaceOrder />} />

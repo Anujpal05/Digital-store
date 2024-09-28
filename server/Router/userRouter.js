@@ -5,6 +5,7 @@ import {
   getSalesmanRequest,
   getUser,
   loginController,
+  loginWithGoogle,
   registerController,
   updateProfile,
   updateUser,
@@ -16,6 +17,7 @@ import upload from "../multer/multer.js";
 const router = express.Router();
 router.route("/register").post(registerController);
 router.route("/login").post(loginController);
+router.route("/login-with-google").post(loginWithGoogle);
 router.route("/update-user").put(authenticationToken, updateUser);
 router.route("/get-all-users").get(authenticationToken, getAllUser);
 router.route("/get-user").get(authenticationToken, getUser);

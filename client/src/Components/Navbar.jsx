@@ -13,6 +13,8 @@ import ProfileSidebar from './ProfileSidebar';
 import axios from 'axios';
 import { useUser } from '../store/context.jsx';
 import { IoMoonOutline } from "react-icons/io5";
+import { auth } from '../firebase/firebaseConfig';
+import { signOut } from 'firebase/auth';
 
 
 function Navbar({ toggleMode }) {
@@ -24,14 +26,17 @@ function Navbar({ toggleMode }) {
     const navigate = useNavigate();
     const [user, setuser] = useState();
     const [isVisible, setisVisible] = useState(false);
-    const { profilePhoto, setprofilePhoto } = useUser();
+    const { profilePhoto } = useUser();
 
     //Logout
     const handleLogOut = () => {
         dispatch(authActions.logout());
         localStorage.clear();
         toast.success("LogOut Successfully!");
-        navigate("/")
+        if (auth.currentUser) {
+            signOut(auth)
+        }
+        navigate("/");
     }
 
     const handleData = () => {
@@ -44,21 +49,22 @@ function Navbar({ toggleMode }) {
                 const res = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/v1/user/get-user`, { headers: { userid: localStorage.getItem('userId'), Authorization: `Bearer ${localStorage.getItem('token')}` } });
                 if (res) {
                     setuser(res.data.user);
-                    setprofilePhoto(res.data.user.avatar)
                 }
             } catch (error) {
-                console.log(error);
+                console.log(error.response.data.message);
             }
         }
-        fetch();
-    }, [])
+        if (isLogin === true) {
+            fetch();
+        }
+    }, [isLogin])
+
+
 
     //Handle visibility of navbar for small device
     const isToggle = () => {
         setisOpen(!isOpen);
     }
-
-
 
     return (
         <div className=' relative overflow-x-hidden w-screen'>
@@ -75,7 +81,7 @@ function Navbar({ toggleMode }) {
                     <div className=' flex lg:gap-5 md:gap-3 gap-3'>
                         <div className=' text-3xl flex justify-center items-center' onClick={toggleMode}>{localStorage.getItem('dark-mode') === 'true' ? <span><MdOutlineLightMode /></span> : <span><IoMoonOutline /></span>}</div>
                         {isLogin && <div className=' text-3xl flex justify-center items-center' ><Link to={"/cart"}><FaShoppingCart /></Link></div>}
-                        {isLogin && user && <div className=' bg-white rounded-full text-black p-1 cursor-pointer ' onClick={() => setisVisible(!isVisible)}>{user && user.avatar && <img src={`${import.meta.env.VITE_SERVER_URL}${profilePhoto}`} alt="user" className='h-10 w-10 rounded-full' />}</div>}
+                        {isLogin && user && <div className=' bg-white rounded-full text-black p-1 cursor-pointer ' onClick={() => setisVisible(!isVisible)}>{user && user.avatar && <img src={profilePhoto} alt="user" className='h-10 w-10 rounded-full' />}</div>}
                         {isLogin && !user && <div className=' text-2xl bg-gray-300 rounded-full text-blue-700 p-2 cursor-pointer'> <FaUser /> </div>}
                         {!isLogin && <div className=' flex justify-center items-center '> <Link to={'/login'}>Login</Link></div>}
                         {isLogin && <button className=' outline-none hidden md:flex justify-center items-center ' onClick={handleLogOut}>LogOut</button>}
