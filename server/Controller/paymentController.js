@@ -44,14 +44,12 @@ export const checkout = async (req, res) => {
 
 export const handleWebHook = async (req, res) => {
   try {
-    console.log("webhook....");
     let endpointSecret = process.env.WEBHOOK_SECRET;
     const sig = req.headers["stripe-signature"];
     let event;
 
     try {
       event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
-      console.log(event.type);
     } catch (err) {
       return res.status(400).send(`Webhook Error: ${err.message}`);
     }

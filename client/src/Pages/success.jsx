@@ -1,27 +1,7 @@
-import axios from 'axios';
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom';
 
 const SuccessPage = () => {
-
-    useEffect(() => {
-        const sessionId = localStorage.getItem("stripeSessionId");
-
-        const fetchPaymentStatus = async (sessionId) => {
-            try {
-                const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/v1/payment/session/${sessionId}`, { sessionId: sessionId }, { headers: { 'Content-Type': 'application/json' } });
-                console.log(response)
-            } catch (error) {
-                console.error('Error fetching payment status:', error);
-            }
-        };
-
-        if (sessionId) {
-            fetchPaymentStatus(sessionId);
-        }
-
-    }, [])
-
 
     return (
         <div className=' py-20 px-3 bg-blue-300  min-h-screen'>

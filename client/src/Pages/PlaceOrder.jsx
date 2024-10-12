@@ -132,6 +132,7 @@ const PlaceOrder = () => {
                 }
                 const data = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/order/placed-order`, { paymentMode: values.mode, quantity: values.quantity, bill: product.price * values.quantity }, { headers: { userid: userid, productid: id, Authorization: `Bearer ${localStorage.getItem('token')}` } });
                 toast.success(data?.data?.message);
+                navigate('/myorder')
             }
             if (values.mode === 'Online') {
                 try {
@@ -167,13 +168,13 @@ const PlaceOrder = () => {
                     }
 
                 } catch (error) {
-                    toast.error(error.response.data.message || "Something wrong!")
+                    toast.error(error?.response?.data?.message || "Something wrong!")
                 }
             }
 
             setprocessing(false)
         } catch (error) {
-            toast.error(error.response.data.message || "Something wrong!");
+            toast.error(error?.response?.data?.message || "Something wrong!");
         }
     }
 
@@ -186,7 +187,7 @@ const PlaceOrder = () => {
                 toast.success(data?.data?.message);
             }
         } catch (error) {
-            toast.error(error.response.data.message || "Something wrong!");
+            toast.error(error?.response?.data?.message || "Something wrong!");
         }
     }
 
@@ -237,7 +238,7 @@ const PlaceOrder = () => {
 
                 </div>
                 <div className=' w-full'>
-                    <form action="" className={`  flex-col justify-center px-10 p-4 gap-3 w-full ${visible == 'hidden' ? 'hidden' : 'flex'}`} onSubmit={updateUser}>
+                    <form action="" className={`  flex-col justify-center p-4 gap-3 w-full ${visible == 'hidden' ? 'hidden' : 'flex'}`} onSubmit={updateUser}>
                         <div className=' text-xl font-semibold text-center'>User Details</div>
                         <input type="text" name="username" id="" className=' bg-gray-100 dark:bg-gray-700 dark:border-gray-600  rounded-md border-2 outline-none px-2 p-1' placeholder='Enter your username' value={values.username} onChange={handleChange} required />
                         <textarea type="text" name='address' className=' bg-gray-100 dark:bg-gray-700 dark:border-gray-600 rounded-md border-2 outline-none px-2 p-1' placeholder='Enter your address' value={values.address} onChange={handleChange} required rows={3} />
@@ -250,7 +251,7 @@ const PlaceOrder = () => {
                     </form>
                 </div>
                 <div className=' '>
-                    <form action="" className={`flex flex-col gap-20 ${visible == 'hidden' ? 'flex' : 'hidden'} `} onSubmit={handleSubmit}>
+                    <form action="" className={`flex flex-col gap-20 p-4  ${visible == 'hidden' ? 'flex' : 'hidden'} `} onSubmit={handleSubmit}>
                         <div className=' flex flex-col gap-4  '>
                             <div className=' flex gap-5'>
                                 <p className=' text-md font-semibold '>Payment Mode :</p>
