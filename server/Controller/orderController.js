@@ -7,7 +7,7 @@ import User from "../Model/userModel.js";
 export const placeOrders = async (req, res) => {
   try {
     const { userid } = req.headers;
-    const { paymentMode, bill, products } = req.body;
+    const { paymentMode, bill, products, paymentIntentId } = req.body;
     const user = await User.findById(userid);
     if (!user) {
       return res.status(404).json({ message: "User not found!" });
@@ -21,6 +21,7 @@ export const placeOrders = async (req, res) => {
       products: products,
       paymentMode: paymentMode,
       other: { bill },
+      paymentIntentId: paymentIntentId,
     });
     await newOrder.save();
     await user.updateOne({
@@ -41,7 +42,7 @@ export const placeOrders = async (req, res) => {
 export const placedOrder = async (req, res) => {
   try {
     const { userid, productid } = req.headers;
-    const { paymentMode, quantity, bill } = req.body;
+    const { paymentMode, quantity, bill, paymentIntentId } = req.body;
 
     const user = await User.findById(userid);
     const product = await Product.findById(productid);
@@ -58,13 +59,16 @@ export const placedOrder = async (req, res) => {
       products: [{ product: productid, others: { quantity } }],
       paymentMode: paymentMode,
       other: { bill },
+      paymentIntentId: paymentIntentId,
     });
 
     await newOrder.save();
     await user.updateOne({
       $push: { order: newOrder._id },
     });
-    return res.status(200).json({ message: "Placed New Order!" });
+    return res
+      .status(200)
+      .json({ message: "Placed New Order!", orderId: newOrder._id });
   } catch (error) {
     return res.status(500).json({ message: "Internal server error!" });
   }

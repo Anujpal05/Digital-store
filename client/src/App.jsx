@@ -31,7 +31,13 @@ import axios from 'axios';
 import { useUser } from './store/context';
 import { authActions } from './store/auth';
 import ResetPassword from './Pages/ResetPassword';
+import PaymentCard from './Components/paymentCard';
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
+import Failure from './Pages/Failure';
+import SuccessPage from './Pages/success.jsx';
 
+// const stripePromise = loadStripe(import.meta.env.VITE_PUBLISABLEKEY);
 
 function App() {
   const role = useSelector(state => state.auth.role);
@@ -85,8 +91,8 @@ function App() {
           <Route path='/signup' element={<SignUp />} />
           <Route path='/reset-password' element={<ResetPassword />} />
           <Route path='/cart' element={<Cart />} />
-          <Route path='/place-order-from-cart' element={<PlaceOrder />} />
           <Route path='/place-order/productid/:id' element={<PlaceOrder />} />
+          <Route path='/place-order-from-cart' element={<PlaceOrder />} />
           <Route path='/myorder' element={<Order />} />
           <Route path='/order-details/:orderid' element={<OrderDetails />} />
           {(role === 'admin' || role === 'salesman') && <Route path='/admin-dashboard' element={<Dashboard />} >
@@ -104,7 +110,13 @@ function App() {
           {(role === 'admin' || role === 'salesman') && <Route path='/update-product/:id' element={<UpdateProduct />} />}
           <Route path='/user-details' element={<UpdateUser />} />
           <Route path='/get-watchList' element={<WatchListProduct />} />
+
+          {/* <Route path='/checkout' element={<Elements stripe={stripePromise}>
+            <PaymentCard />
+          </Elements>} /> */}
           <Route path='*' element={<NotFound />} />
+          <Route path='/success' element={<SuccessPage />} />
+          <Route path='/cancel' element={<Failure />} />
         </Routes>
       </div>
       <Footer />

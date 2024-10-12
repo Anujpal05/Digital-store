@@ -26,6 +26,9 @@ const orderSchema = new mongoose.Schema(
       enum: ["Order Placed", "Out of delivery", "Delivered", "Cancelled"],
       required: true,
     },
+    paymentIntentId: {
+      type: String,
+    },
     paymentStatus: {
       type: String,
       default: "Unpaid",
