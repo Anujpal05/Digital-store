@@ -149,29 +149,26 @@ const PlaceOrder = () => {
                             image: product.image,
                             name: product.title,
                             quantity: 1
-                        },
-                        orderId: data?.data?.orderId
-                    }
-
-                    //Call checkout api
-                    const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/payment/checkout`, body, { headers: { 'Content-Type': 'application/json' } })
-
-                    const session = await response.data;
-
-                    if (session) {
-                        const result = await stripe.redirectToCheckout({
-                            sessionId: session.sessionId
-                        });
-                        if (result.error) {
-                            console.log(result.error);
                         }
                     }
 
+                    //Call checkout api
+                    const { data: session } = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/payment/checkout`, body, { headers: { 'Content-Type': 'application/json' } })
+
+                    console.log(session.sessionId)
+                    const sessionId = session.sessionId
+                    if (session) {
+                        const result = await stripe.redirectToCheckout({
+                            sessionId: sessionId
+                        });
+                        if (result.error) {
+                            console.error(result.error);
+                        }
+                    }
                 } catch (error) {
                     toast.error(error?.response?.data?.message || "Something wrong!")
                 }
             }
-
             setprocessing(false)
         } catch (error) {
             toast.error(error?.response?.data?.message || "Something wrong!");
@@ -186,20 +183,55 @@ const PlaceOrder = () => {
                 navigate('/myorder')
                 toast.success(data?.data?.message);
             }
+
+            if (values.mode === 'Online') {
+
+                const stripePromise = loadStripe(import.meta.env.VITE_PUBLISABLEKEY);
+                const stripe = await stripePromise;
+
+                const data = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/order/placed-orders`, { paymentMode: values.mode, bill: total, products }, { headers: { userid: userid, Authorization: `Bearer ${localStorage.getItem('token')}` } });
+                toast.success(data?.data?.message);
+
+                const cartData = JSON.parse(localStorage.getItem("cartProducts"));
+                if (cartData.length === 0) {
+                    throw new Error("Cart is Empty!")
+                }
+                const body = {
+                    products: cartData.map((product) => ({
+                        price: product.price,
+                        image: product.image,
+                        name: product.title,
+                        quantity: 1
+                    })),
+                    orderId: "4525562262"
+                }
+
+                const res = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/payment/checkout-cart`, body, { headers: { 'Content-Type': 'application/json' } })
+                const sessionId = res?.data?.sessionId;
+                if (sessionId) {
+                    const result = await stripe.redirectToCheckout({
+                        sessionId: sessionId
+                    })
+                    if (result.error) {
+                        console.error("Session Error")
+                    }
+                } else {
+                    throw new Error("Session Id not received!")
+                }
+            }
         } catch (error) {
+            console.log(error)
             toast.error(error?.response?.data?.message || "Something wrong!");
         }
     }
 
     const handleSubmit = (e) => {
-        localStorage.removeItem('products')
         if (products) {
             placeOrders(e);
         } else {
             placeOrder(e);
         }
     }
-
 
     return (
         <div className=' flex justify-center items-center p-10 py-24  overflow-x-hidden'>

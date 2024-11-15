@@ -80,11 +80,14 @@ const AllProduct = () => {
     return (
         <div >
             <div className=' min-h-screen dark:bg-gray-950 py-20'>
-                <div className=' px-10'>
+                <div className=' px-5 md:px-10'>
                     <Filter filter={filter} setfilter={setfilter} setprice={setprice} setSearch={setSearch} />
                 </div>
                 <div>
-                    {products && <div className=' px-10'>
+                    {products && products.length == 0 && <div className=' px-5 md:px-10 text-2xl dark:text-gray-50 font-semibold'>
+                        Product Not Found
+                    </div>}
+                    {products && products.length > 0 && <div className=' px-10'>
                         <h1 className=' text-2xl font-semibold text-gray-700 dark:text-gray-200 py-3'>All Products Collection</h1>
                         <div className=' grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-10  '>
                             {

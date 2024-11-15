@@ -57,7 +57,7 @@ const Category = () => {
     }
 
     return (
-        <div className=' lg:px-16 px-5 py-20 dark:bg-gray-950 '>
+        <div className=' lg:px-16 px-5 py-20 dark:bg-gray-950 min-h-screen'>
             <div className=' border-2 border-gray-700 shadow-md dark:bg-gray-800 dark:text-white dark:shadow-gray-700 shadow-gray-300 p-2 rounded-full flex justify-center items-center gap-3'><p className=' text-xl text-gray-500  '><IoSearch /></p><input type="text" placeholder='Search here' name="" className=' w-full outline-none dark:bg-gray-800 ' onChange={handleSearch} /></div>
             <h1 className=' text-2xl font-semibold py-3 dark:text-gray-100'><span className=' py-[2px] border-b-4 border-pink-700'>Our {title && title.slice(0, 3)}</span>{title.slice(3)} Collections</h1>
             <div className=' grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-2 bg-gray-50 dark:bg-gray-900'>

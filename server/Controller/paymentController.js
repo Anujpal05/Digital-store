@@ -7,10 +7,11 @@ const stripe = new Stripe(process.env.STRIPESECRETKEY);
 export const checkout = async (req, res) => {
   try {
     const { product, orderId } = req.body;
+    console.log("hello");
     const lineItems = [
       {
         price_data: {
-          currency: "usd",
+          currency: "inr",
           product_data: {
             name: product.name,
             images: [product.image],
@@ -20,6 +21,47 @@ export const checkout = async (req, res) => {
         quantity: product.quantity,
       },
     ];
+
+    console.log(product);
+    console.log(lineItems);
+
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ["card"],
+      line_items: lineItems,
+      mode: "payment",
+      success_url: "http://localhost:5173/success",
+      cancel_url: "http://localhost:5173/cancel",
+      metadata: {
+        orderId: orderId,
+      },
+    });
+
+    console.log(session);
+
+    return res.status(200).json({
+      message: "Payment session created successfully!",
+      sessionId: session.id,
+      paymentIntent: session.payment_intent,
+    });
+  } catch (error) {
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const checkoutCart = async (req, res) => {
+  try {
+    const { products, orderId } = req.body;
+    const lineItems = products.map((product) => ({
+      price_data: {
+        currency: "inr",
+        product_data: {
+          name: product.name,
+          images: [product.image],
+        },
+        unit_amount: Math.round(product.price * 100),
+      },
+      quantity: product.quantity,
+    }));
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
@@ -33,12 +75,12 @@ export const checkout = async (req, res) => {
     });
 
     return res.status(200).json({
-      message: "Payment completed successfully!",
+      message: "Payment session created successfully!",
       sessionId: session.id,
       paymentIntent: session.payment_intent,
     });
   } catch (error) {
-    return res.status(500).json({ message: "Internal server error" });
+    return res.status(500).json({ message: "Internal server error!" });
   }
 };
 
@@ -47,6 +89,7 @@ export const handleWebHook = async (req, res) => {
     let endpointSecret = process.env.WEBHOOK_SECRET;
     const sig = req.headers["stripe-signature"];
     let event;
+    console.log("Signature : ", sig);
 
     try {
       event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
@@ -54,17 +97,16 @@ export const handleWebHook = async (req, res) => {
       return res.status(400).send(`Webhook Error: ${err.message}`);
     }
 
+    const session = event.data.object;
+    const orderId = session.metadata.orderId;
+
     // payment_intent.payment_failed or checkout.session.async_payment_failed event
     if (
       event.type === "payment_intent.payment_failed" ||
       event.type === "checkout.session.async_payment_failed"
     ) {
-      const paymentIntent = event.data.object;
-      const session = event.data.object;
-
       //Update order status
-      const orderId =
-        paymentIntent.metadata.orderId || session.metadata.orderId;
+      console.log("Payment failed for Order ID: ", orderId);
       if (orderId) {
         await Order.findByIdAndUpdate(orderId, {
           $set: {
@@ -74,9 +116,9 @@ export const handleWebHook = async (req, res) => {
       }
     }
     if (event.type === "checkout.session.completed") {
-      const session = event.data.object;
-      const orderId = session.metadata.orderId;
+      console.log("Payment successful for Order ID:", orderId);
       const order = await Order.findById(orderId);
+
       if (!order) {
         return res.status(404).json({ message: "Order not found!" });
       }
@@ -93,6 +135,6 @@ export const handleWebHook = async (req, res) => {
     return res.status(200).json({ received: true });
   } catch (error) {
     console.log(error);
-    return;
+    return res.status(500).json({ message: "Internal server error!" });
   }
 };

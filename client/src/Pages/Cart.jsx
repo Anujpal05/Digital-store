@@ -65,6 +65,7 @@ const Cart = () => {
 
     const placeOrder = async () => {
         localStorage.setItem('products', JSON.stringify(products));
+        localStorage.setItem('cartProducts', JSON.stringify(cartProducts))
         navigate('/place-order-from-cart');
     }
 

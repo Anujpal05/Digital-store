@@ -70,17 +70,17 @@ function Navbar({ toggleMode }) {
         <div className=' relative overflow-x-hidden w-screen'>
             <div className=' fixed z-30 w-screen'>
                 <div className=' flex justify-between  items-center p-2 lg:px-10 bg-zinc-800  py-2  text-white font-semibold ' >
-                    <Link to={"/"}><img src={logo} alt="PixelMart Logo" height={100} width={100} /></Link>
+                    <Link to={"/"} className=' outline-none'><img src={logo} alt="PixelMart Logo" height={100} width={100} className=' outline-none' /></Link>
                     <div className=' md:flex hidden gap-5 '>
-                        <Link to={"/"} className=" cursor-pointer" >Home</Link>
-                        <Link to={'/all-product'} className=" cursor-pointer">All Products</Link>
-                        <h1 className=" cursor-pointer" onClick={handleData}>About</h1>
-                        {isLogin && <Link to={'/myorder'} className=' cursor-pointer' >Order</Link>}
+                        <Link to={"/"} className=" cursor-pointer outline-none" >Home</Link>
+                        <Link to={'/all-product'} className=" cursor-pointer outline-none">All Products</Link>
+                        <h1 className=" cursor-pointer outline-none" onClick={handleData}>About</h1>
+                        {isLogin && <Link to={'/myorder'} className=' cursor-pointer outline-none' >Order</Link>}
                         {(userRole === 'admin' || userRole === 'salesman') && isLogin && <Link to={'/admin-dashboard'}>Admin</Link>}
                     </div>
                     <div className=' flex lg:gap-5 md:gap-3 gap-3'>
-                        <div className=' text-3xl flex justify-center items-center' onClick={toggleMode}>{localStorage.getItem('dark-mode') === 'true' ? <span><MdOutlineLightMode /></span> : <span><IoMoonOutline /></span>}</div>
-                        {isLogin && <div className=' text-3xl flex justify-center items-center' ><Link to={"/cart"}><FaShoppingCart /></Link></div>}
+                        <div className=' text-3xl flex justify-center items-center outline-none' onClick={toggleMode}>{localStorage.getItem('dark-mode') === 'true' ? <span><MdOutlineLightMode /></span> : <span><IoMoonOutline /></span>}</div>
+                        {isLogin && <div className=' text-3xl flex justify-center items-center' ><Link to={"/cart"} className=' outline-none'><FaShoppingCart /></Link></div>}
                         {isLogin && user && <div className=' bg-white rounded-full text-black p-1 cursor-pointer ' onClick={() => setisVisible(!isVisible)}>{user && user.avatar && <img src={profilePhoto} alt="user" className='h-10 w-10 rounded-full' />}</div>}
                         {isLogin && !user && <div className=' text-2xl bg-gray-300 rounded-full text-blue-700 p-2 cursor-pointer'> <FaUser /> </div>}
                         {!isLogin && <div className=' flex justify-center items-center '> <Link to={'/login'}>Login</Link></div>}
@@ -97,10 +97,10 @@ function Navbar({ toggleMode }) {
                 <button className=' outline-none text-2xl text-gray-50 p-3 cursor-pointer' onClick={isToggle}><RxCross2 /></button>
                 <div>
                     <div className='flex flex-col items-center w-full py-3 text-white gap-5 '>
-                        <Link to={"/"} className=" cursor-pointer" onClick={isToggle}>Home</Link>
-                        <Link to={'/all-product'} className=" cursor-pointer" onClick={isToggle}>All Products</Link>
-                        <h1 className=" cursor-pointer" onClick={isToggle}>About</h1>
-                        {isLogin && <Link to={'/myorder'} className=' cursor-pointer' onClick={isToggle} >Order</Link>}
+                        <Link to={"/"} className=" cursor-pointer outline-none" onClick={isToggle}>Home</Link>
+                        <Link to={'/all-product'} className=" cursor-pointer outline-none" onClick={isToggle}>All Products</Link>
+                        <h1 className=" cursor-pointer outline-none" onClick={isToggle}>About</h1>
+                        {isLogin && <Link to={'/myorder'} className=' cursor-pointer outline-none' onClick={isToggle} >Order</Link>}
                         {isLogin && <button className=' outline-none justify-center items-center bg-blue-500 px-4 py-2 rounded-md font-semibold cursor-pointer' onClick={() => { handleLogOut(); isToggle() }}>LogOut</button>}
                     </div>
                 </div>

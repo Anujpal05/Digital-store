@@ -32,7 +32,7 @@ function Hero() {
     return (
         <div>
             <div>
-                <div className=' relative'>
+                <div className=' relative py-6'>
                     <Slider ref={sliderRef} {...settings}>
                         <div><img src={hero1} alt="hero1" loading='lazy' className=' h-48 lg:h-96 w-screen ' /></div>
                         <div><img src={hero2} alt="hero2" loading='lazy' className=' h-48 lg:h-96 w-screen' /></div>
@@ -40,8 +40,8 @@ function Hero() {
                         <div><img src={hero4} alt="hero4" loading='lazy' className=' h-48 lg:h-96 w-screen ' /></div>
                         <div><img src={hero5} alt="hero5" loading='lazy' className=' h-48 lg:h-96 w-screen ' /></div>
                     </Slider>
-                    <div className='absolute px-1 lg:p-2  rounded-md bg-gray-500 opacity-45 top-16 lg:top-36 hover:opacity-90 hover:scale-105 left-2 ' onClick={prevSlide}><button ><TbPlayerTrackPrevFilled /></button></div>
-                    <div className=' absolute px-1 lg:p-2 rounded-md bg-gray-500 lg:top-36 top-16 opacity-45 hover:opacity-90 hover:scale-105 right-6' onClick={nextSlide}> <button ><TbPlayerTrackNextFilled /></button></div>
+                    <div className='absolute px-1 lg:p-2  rounded-md bg-gray-500 opacity-45 top-[40%] hover:opacity-90 hover:scale-105 left-2 ' onClick={prevSlide}><button ><TbPlayerTrackPrevFilled /></button></div>
+                    <div className=' absolute px-1 lg:p-2 rounded-md bg-gray-500 top-[40%] opacity-45 hover:opacity-90 hover:scale-105 right-6' onClick={nextSlide}> <button ><TbPlayerTrackNextFilled /></button></div>
                 </div>
             </div>
         </div>
