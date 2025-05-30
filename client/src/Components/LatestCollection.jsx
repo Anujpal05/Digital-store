@@ -79,29 +79,27 @@ function LatestCollection({ filter, price, search }) {
                     Product Not Found
                 </div>}
                 {product && product.length > 0 && <div className=' '>
-                    <h1 className=' text-2xl font-semibold dark:text-gray-100'><span className=' border-b-4 py-[2px] border-pink-700'>Our Lat</span>est Collection</h1>
-                    <div className=' gap-5 grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 py-5'>
+                    <h1 className=' text-xl lg:text-2xl font-semibold dark:text-gray-100 pt-2'><span className=' border-b-4 py-[2px] border-pink-700'>Our Lat</span>est Collection</h1>
+                    <div className=' lg:gap-5 gap-2 grid xl:grid-cols-4 md:grid-cols-3 grid-cols-2 py-5'>
                         {product.map((item, i) => (
-                            <div key={i} className=' group bg-gray-50 dark:bg-gray-900 p-5 flex flex-col gap-2 '>
-                                <Link to={`/product/${item._id}`} className=' bg-white  dark:shadow-gray-600     rounded-sm shadow-md shadow-gray-300 w-full flex justify-center items-center p-4 overflow-hidden'><img src={item.image} alt="Product Image" className=' h-64 group-hover:scale-110 transition-all duration-500' /></Link>
-                                <div className=' flex flex-col gap-1 bg-gray-100 dark:bg-gray-800 dark:text-gray-100 p-3 rounded-md'>
-                                    <p className=' text-xl font-semibold'>{item.title}</p>
-                                    <p className=' text-md font-semibold text-gray-500 dark:text-gray-400'>&#8377; {item.price}</p>
-                                    <button className=' w-full bg-pink-700 hover:bg-pink-800 hover:scale-105 text-gray-50 font-semibold text-center py-2 rounded-md ' onClick={() => addToCart(item._id)}>Add To Cart</button>
+                            <div key={i} className=' group bg-gray-100 dark:bg-gray-900 lg:p-5 p-1 flex flex-col gap-2 '>
+                                <Link to={`/product/${item._id}`} className=' bg-white dark:shadow-gray-600 rounded-sm shadow-md shadow-gray-300 w-full flex justify-center items-center p-4 overflow-hidden'><img src={item.image} alt="Product Image" className=' h-auto max-lg:max-h-28 lg:h-40 group-hover:scale-110 transition-all duration-500' /></Link>
+                                <div className=' flex flex-col gap-1 bg-gray-100 dark:bg-gray-800 dark:text-gray-100 lg:p-3 p-1  rounded-md'>
+                                    <p className=' text-[12px] lg:text-xl font-semibold'>{item.title && item.title.substring(0, 50)}...</p>
+                                    <p className=' text-[14px] lg:text-md font-semibold text-gray-500 dark:text-gray-400'>&#8377; {item.price}</p>
+                                    <button className=' w-full bg-pink-700 hover:bg-pink-800 hover:scale-105 text-gray-50 font-semibold text-center lg:py-2 py-[2px] rounded-md text-[16px] lg:text-lg' onClick={() => addToCart(item._id)}>Add To Cart</button>
                                 </div>
                             </div>
                         ))}
                     </div>
                 </div>}
                 {
-                    !product && <div className=' flex justify-center items-center lg:py-28 py-10'>
+                    !product && <div className=' flex justify-center items-center lg:py-28 py-10 h-[50vh]'>
                         <Hourglass
                             visible={true}
-                            height="120"
-                            width="120"
                             ariaLabel="hourglass-loading"
                             wrapperStyle={{}}
-                            wrapperClass=""
+                            wrapperClass=" h-20 w-20 lg:h-24 lg:w-24"
                             colors={['#306cce', '#72a1ed']}
                         />
                     </div>

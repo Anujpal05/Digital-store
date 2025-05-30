@@ -12,6 +12,7 @@ import { dirname } from "path";
 import { fileURLToPath } from "url";
 import paymentRouter from "./Router/paymentRouter.js";
 import { handleWebHook } from "./Controller/paymentController.js";
+import pingRouter from "./Controller/pingRequestController.js";
 dotenv.config();
 
 const port = process.env.PORT || 8000;
@@ -34,6 +35,7 @@ app.use("/api/v1/favourite", favouriteRouter);
 app.use("/api/v1/cart", cartRouter);
 app.use("/api/v1/order", orderRouter);
 app.use("/api/v1/payment", paymentRouter);
+app.use("/api/v1/request", pingRouter);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);

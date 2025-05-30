@@ -32,7 +32,7 @@ function Hero() {
     return (
         <div>
             <div>
-                <div className=' relative py-6'>
+                <div className=' relative py-6 md:py-3'>
                     <Slider ref={sliderRef} {...settings}>
                         <div><img src={hero1} alt="hero1" loading='lazy' className=' h-48 lg:h-96 w-screen ' /></div>
                         <div><img src={hero2} alt="hero2" loading='lazy' className=' h-48 lg:h-96 w-screen' /></div>

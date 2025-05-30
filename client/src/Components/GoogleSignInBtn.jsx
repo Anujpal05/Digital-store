@@ -42,8 +42,8 @@ const GoogleSignInBtn = () => {
         }
     }
     return (
-        <div className=' py-4'>
-            <button className=' border-2 p-1 flex justify-center items-center gap-3 font-semibold w-full bg-gray-100 dark:bg-gray-700 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 dark:border-gray-600 outline-none ' onClick={handleGoogleSignIn}><FcGoogle className='text-3xl' />Sign In With Google</button>
+        <div className=' py-2 lg:py-4'>
+            <button className=' border-2 p-1 flex justify-center items-center gap-3 font-semibold w-full bg-gray-100 dark:bg-gray-700 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 dark:border-gray-600 outline-none ' onClick={handleGoogleSignIn}><FcGoogle className='text-[16px] lg:text-3xl' />Sign In With Google</button>
         </div>
     )
 }

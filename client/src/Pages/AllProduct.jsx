@@ -80,16 +80,16 @@ const AllProduct = () => {
     return (
         <div >
             <div className=' min-h-screen dark:bg-gray-950 py-20'>
-                <div className=' px-5 md:px-10'>
+                <div className=' px-3 md:px-5 lg:px-10'>
                     <Filter filter={filter} setfilter={setfilter} setprice={setprice} setSearch={setSearch} />
                 </div>
                 <div>
                     {products && products.length == 0 && <div className=' px-5 md:px-10 text-2xl dark:text-gray-50 font-semibold'>
                         Product Not Found
                     </div>}
-                    {products && products.length > 0 && <div className=' px-10'>
-                        <h1 className=' text-2xl font-semibold text-gray-700 dark:text-gray-200 py-3'>All Products Collection</h1>
-                        <div className=' grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-10  '>
+                    {products && products.length > 0 && <div className=' px-3 md:px-5 lg:px-10'>
+                        <h1 className=' text-xl lg:text-2xl font-semibold text-gray-700 dark:text-gray-200 py-3'>All Products Collection</h1>
+                        <div className=' grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-3 grid-cols-2 lg:gap-10 gap-2  '>
                             {
                                 products.map((item, i) => (
                                     <div key={i} className='bg-gray-200 dark:bg-gray-800 p-3 rounded-md mb-5'>
@@ -97,18 +97,18 @@ const AllProduct = () => {
                                             <div className=' group bg-white p-1 '>
                                                 <Link to={`/product/${item._id}`}>
                                                     <div className=' flex justify-end pb-2'>
-                                                        <div className=' px-2 py-1 font-semibold bg-pink-700 text-white rounded-full w-fit'>{item.category}</div>
+                                                        <div className=' lg:px-2 lg:py-1 px-1 py-[2px]  text-center  font-semibold bg-pink-700 text-white rounded-full w-fit text-[14px] md:text-md '>{item.category}</div>
                                                     </div>
                                                     <div className=' flex justify-center items-center overflow-hidden'>
-                                                        <img src={item.image} alt="" className=' h-64 group-hover:scale-105 transition-all duration-300 ' />
+                                                        <img src={item.image} alt="" className=' h-auto max-lg:max-h-28 lg:h-40 group-hover:scale-105 transition-all duration-300 ' />
                                                     </div>
                                                 </Link>
                                             </div>
                                         </div>
                                         <div className=' py-3 space-y-2'>
-                                            <h1 className=' text-xl font-semibold text-gray-800 dark:text-gray-300'>{item.title}</h1>
-                                            <p className=' text-md font-semibold text-gray-600 dark:text-gray-400'>Price: &#8377; {item.price}</p>
-                                            <div className=' bg-pink-700 py-1 text-center text-xl font-semibold rounded-full hover:scale-105 transition-all duration-300 cursor-pointer' onClick={() => addToCart(item._id)}>Add To Cart</div>
+                                            <h1 className=' lg:text-xl font-semibold text-gray-800 dark:text-gray-300'>{item.title && item.title.substring(0, 50)}...</h1>
+                                            <p className=' lg:text-md text-[15px] font-semibold text-gray-600 dark:text-gray-400'>Price: &#8377; {item.price}</p>
+                                            <div className=' bg-pink-700 py-1 text-center lg:text-xl text-base font-semibold rounded-full hover:scale-105 transition-all duration-300 cursor-pointer' onClick={() => addToCart(item._id)}>Add To Cart</div>
                                         </div>
                                     </div>
                                 ))
@@ -119,11 +119,9 @@ const AllProduct = () => {
                         !products && <div className=' py-20 flex justify-center items-center min-w-screen'>
                             <Hourglass
                                 visible={true}
-                                height="120"
-                                width="120"
                                 ariaLabel="hourglass-loading"
                                 wrapperStyle={{}}
-                                wrapperClass=""
+                                wrapperClass=" h-20 w-20 lg:h-24 lg:w-24"
                                 colors={['#306cce', '#72a1ed']}
                             />
                         </div>

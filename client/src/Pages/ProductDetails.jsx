@@ -104,36 +104,36 @@ const ProductDetails = () => {
                     <div className=' space-y-5 '>
                         <div className=' flex justify-center'>
                             <div className='  w-fit p-6 '>
-                                <div className=' xl:h-96 xl:w-96 h-80 md:w-80 w-full bg-white flex justify-center items-center rounded-md '><img src={product.image} alt="" className=' h-full' /></div>
+                                <div className=' xl:h-96 xl:w-96 h-56 w-full bg-white flex justify-center items-center rounded-md '><img src={product.image} alt="" className=' h-full' /></div>
                             </div>
                         </div>
                         {<div className=' flex justify-evenly flex-col md:flex-row gap-2 transition-all '>
-                            <button className=' p-2 px-5  bg-gray-200 dark:bg-gray-500 dark:shadow-gray-700  rounded-full text-xl font-semibold hover:scale-105 hover:bg-gray-300 shadow-md shadow-gray-400 transition-all duration-300 outline-none ' onClick={addToWishList}>Add To WishList</button>
-                            <button className=' p-2 px-5 bg-blue-400 text-gray-900 rounded-full text-xl font-semibold shadow-md shadow-gray-400 transition-all duration-300 outline-none hover:bg-blue-500 hover:scale-105 dark:' onClick={addToCart}>Add To Cart</button>
+                            <button className=' p-1 lg:p-2 px-5  bg-gray-200 dark:bg-gray-500 dark:shadow-gray-700  rounded-full text-lg lg:text-xl font-semibold hover:scale-105 hover:bg-gray-300 shadow-md shadow-gray-400 transition-all duration-300 outline-none ' onClick={addToWishList}>Add To WishList</button>
+                            <button className=' p-1 lg:p-2 px-5 bg-blue-400 text-gray-900 rounded-full text-lg lg:text-xl font-semibold shadow-md shadow-gray-400 transition-all duration-300 outline-none hover:bg-blue-500 hover:scale-105 dark:' onClick={addToCart}>Add To Cart</button>
                         </div>}
                         {(product.supplierId === localStorage.getItem("userId") || role === 'admin') && <div className=' flex justify-evenly  flex-col md:flex-row gap-2 transition-all '>
-                            <Link to={`/update-product/${product._id}`} className=' p-2 px-5 flex items-center justify-center w-full md:w-fit gap-2  bg-gray-200 dark:bg-gray-500 dark:shadow-gray-700   rounded-full text-xl font-semibold hover:scale-105 hover:bg-gray-300 shadow-md shadow-gray-400 transition-all duration-300 outline-none ' ><span className=' text-2xl text-blue-500 font-semibold'><MdEdit /></span>Edit</Link>
-                            <button className=' p-2 px-5 flex items-center justify-center w-full md:w-fit gap-2 bg-blue-400 text-gray-900 rounded-full text-xl font-semibold shadow-md shadow-gray-400 transition-all duration-300 outline-none hover:bg-blue-500 hover:scale-105' onClick={deleteProduct}><span className=' text-2xl  text-red-500 font-semibold'><MdDelete /></span>Delete</button>
+                            <Link to={`/update-product/${product._id}`} className=' p-1 lg:p-2 px-5 flex items-center justify-center w-full md:w-fit gap-2  bg-gray-200 dark:bg-gray-500 dark:shadow-gray-700   rounded-full text-lg lg:text-xl font-semibold hover:scale-105 hover:bg-gray-300 shadow-md shadow-gray-400 transition-all duration-300 outline-none ' ><span className=' text-2xl text-blue-500 font-semibold'><MdEdit /></span>Edit</Link>
+                            <button className=' p-1 lg:p-2 px-5 flex items-center justify-center w-full md:w-fit gap-2 bg-blue-400 text-gray-900 rounded-full text-lg lg:text-xl font-semibold shadow-md shadow-gray-400 transition-all duration-300 outline-none hover:bg-blue-500 hover:scale-105' onClick={deleteProduct}><span className=' text-2xl  text-red-500 font-semibold'><MdDelete /></span>Delete</button>
                         </div>}
                     </div>
-                    <div className='min-h-[70%] flex flex-col justify-center space-y-5 '>
-                        <p className=' text-3xl dark:text-gray-100 font-semibold '>{product.title}</p>
+                    <div className='min-h-[70%] flex flex-col justify-center space-y-3 lg:space-y-5 '>
+                        <p className=' text-lg lg:text-3xl dark:text-gray-100 font-semibold '>{product.title}</p>
                         <div>
-                            <h1 className=' text-2xl font-semibold pb-1'>About</h1>
-                            <p className=' text-md text-gray-700 dark:text-gray-200 font-semibold'>{product.desc}</p>
+                            <h1 className=' text-[16px] lg:text-2xl font-semibold pb-1'>About</h1>
+                            <p className=' max-lg:text-[14px] text-gray-700 dark:text-gray-200 font-semibold'>{product.desc}</p>
                         </div>
-                        <p className=' text-xl font-semibold text-gray-600 dark:text-gray-400'>Price : &#8377; {product.price}</p>
+                        <p className=' text-[16px] first-letter:lg:text-xl font-semibold text-gray-600 dark:text-gray-400'>Price : &#8377; {product.price}</p>
                         <div className=' flex gap-20'>
-                            {product.category == "clothes" && <div className='flex  justify-center items-center gap-2'><p className=' text-lg font-semibold text-gray-700  py-1 dark:text-gray-400'>Size : </p> <select name="size" className=' outline-none border-2 rounded-sm border-gray-500 dark:bg-gray-800 dark:text-gray-100 '>
+                            {product.category == "clothes" && <div className='flex  justify-center items-center gap-2'><p className=' text-[16px] lg:text-lg font-semibold text-gray-700  py-1 dark:text-gray-400'>Size : </p> <select name="size" className=' outline-none border-2 rounded-sm border-gray-500 dark:bg-gray-800 dark:text-gray-100 '>
                                 <option value="S">S</option>
                                 <option value="M">M</option>
                                 <option value="L">L</option>
                                 <option value="XL">XL</option>
                                 <option value="2XL">2XL</option>
                             </select></div>}
-                            <div className=' text-xl font-semibold text-gray-700 dark:text-gray-200 '>Available : 20</div>
+                            <div className=' text-[16px] lg:text-xl font-semibold text-gray-700 dark:text-gray-200 '>Available : 20</div>
                         </div>
-                        <Link to={`/place-order/productid/${id}`} className=' text-center p-2 bg-pink-700 text-gray-200 font-bold text-xl w-full rounded-full hover:bg-pink-600 shadow-md shadow-gray-400 dark:shadow-gray-600 '>Buy Now</Link>
+                        <Link to={`/place-order/productid/${id}`} className=' text-center p-1 lg:p-2 bg-pink-700 text-gray-200 font-bold text-[16px] lg:text-xl w-full rounded-full hover:bg-pink-600 shadow-md shadow-gray-400 dark:shadow-gray-600 '>Buy Now</Link>
                         <div>
 
                         </div>
@@ -141,18 +141,18 @@ const ProductDetails = () => {
                 </div>
                 {relatedProducts && <div>
                     <hr />
-                    <div className=' flex justify-end  items-center pt-10 lg:px-16 px-2' ><Link to={`/category/${product.category}`} className=' border-2 border-black bg-gray-100 dark:bg-gray-800 dark:border-gray-100 dark:text-gray-50 hover:scale-105 font-semibold rounded-full px-2 p-1 flex justify-center items-center gap-1 transition-all duration-300'><p >view more</p><p><TbPlayerTrackNextFilled /></p></Link></div>
+                    <div className=' flex justify-end items-center pt-3 lg:pt-10 lg:px-16 px-2' ><Link to={`/category/${product.category}`} className=' border-2 border-black bg-gray-100 dark:bg-gray-800 dark:border-gray-100 dark:text-gray-50 hover:scale-105 font-semibold rounded-full px-2 p-1 flex justify-center items-center gap-1 max-lg:text-[14px] transition-all duration-300'><p >view more</p><p><TbPlayerTrackNextFilled /></p></Link></div>
                     <div className=' flex justify-evenly p-5  gap-5 lg:pl-16 overflow-auto dark:scrollbar dark:scrollbar-thumb-gray-700 w-screen'>
                         {
                             relatedProducts.map((item, i) => (
                                 <div key={i} className=' bg-gray-200 dark:bg-gray-800 dark:shadow-gray-600 shadow-md shadow-gray-300 min-w-full md:min-w-[50%] lg:min-w-[40%]'>
                                     <div className='group bg-white py-3  '>
                                         <div className=' flex justify-end lg:px-4 p-1'><div className=' bg-pink-600 text-white text-sm lg:text-md font-semibold w-fit lg:px-3 p-1 rounded-full '>{item.category}</div></div>
-                                        <Link to={`/product/${item._id}`} className=' flex justify-center items-center overflow-hidden'><img src={item.image} alt="Product Image" className=' lg:h-80 h-60 w-auto group-hover:scale-105 transition-all duration-300' /></Link></div>
+                                        <Link to={`/product/${item._id}`} className=' flex justify-center items-center overflow-hidden'><img src={item.image} alt="Product Image" className=' lg:h-80 h-48 w-auto group-hover:scale-105 transition-all duration-300' /></Link></div>
                                     <div className=' p-4'>
                                         <div className=' flex flex-col justify-center  gap-2 p-1'>
-                                            <h1 className=' text-lg font-semibold dark:text-gray-200' >{item.title}</h1>
-                                            <p className=' text-md font-semibold text-gray-500 dark:text-gray-400'>Price :&#8377; {item.price}</p>
+                                            <h1 className='text-[16px] lg:text-lg font-semibold dark:text-gray-200' >{item.title}</h1>
+                                            <p className=' text-[16px] lg:text-md font-semibold text-gray-600 dark:text-gray-500'>Price :&#8377; {item.price}</p>
                                         </div>
                                     </div>
                                 </div>

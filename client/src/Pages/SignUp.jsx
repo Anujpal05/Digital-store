@@ -58,25 +58,25 @@ const SignUp = () => {
                 <div className=' h-screen lg:flex items-center hidden'>
                     <img src={loginImg} alt="" className=' h-96 2xl:h-[60%]' />
                 </div>
-                <div className=' min-h-screen flex justify-center items-center sm:p-4 px-3 mt-5'>
+                <div className=' min-h-screen flex justify-center items-center sm:p-4 px-3 mt-10'>
                     <div className=' bg-gray-50 border-gray-500 shadow-md shadow-gray-400 dark:shadow-gray-600 p-5 rounded-md dark:bg-gray-800 dark:text-gray-200 w-[90vw] md:w-auto  '>
-                        <h1 className=' text-2xl py-2 font-semibold text-gray-800 text-center 2xl:text-4xl dark:text-gray-200'>SignUp Page</h1>
-                        <form action="" onSubmit={handleSubmit} className='space-y-5 2xl:space-y-5'>
+                        <h1 className=' text-xl lg:text-2xl py-2 font-semibold text-gray-800 text-center 2xl:text-4xl dark:text-gray-200'>SignUp Page</h1>
+                        <form action="" onSubmit={handleSubmit} className='space-y-2 lg:space-y-5 2xl:space-y-5'>
                             <div className=' flex flex-col 2xl:text-2xl 2xl:space-y-1 '>
-                                <label htmlFor="" className=' text-md font-semibold'>Username</label>
-                                <div className=' border-[2px] border-gray-300 bg-white dark:bg-gray-700 dark:border-gray-600 py-1 px-2 rounded-md w-full md:w-96 2xl:w-[600px]'>
+                                <label htmlFor="" className=' text-[16px] lg:text-md font-semibold'>Username</label>
+                                <div className=' border-[2px] max-lg:text-[14px] border-gray-300 bg-white dark:bg-gray-700 dark:border-gray-600 py-1 px-2 rounded-md w-full md:w-96 2xl:w-[600px]'>
                                     <input type="text" name="username" placeholder='Enter Username' value={values.username} onChange={handleValue} className=' w-full outline-none dark:bg-gray-700' required />
                                 </div>
                             </div>
                             <div className=' flex flex-col 2xl:text-2xl 2xl:space-y-1 '>
-                                <label htmlFor="" className=' text-md font-semibold'>Email</label>
-                                <div className=' border-[2px] border-gray-300 bg-white dark:bg-gray-700 dark:border-gray-600 py-1 px-2 rounded-md w-full md:w-96 2xl:w-[600px]'>
+                                <label htmlFor="" className=' text-[16px] lg:text-md font-semibold'>Email</label>
+                                <div className=' border-[2px] max-lg:text-[14px] border-gray-300 bg-white dark:bg-gray-700 dark:border-gray-600 py-1 px-2 rounded-md w-full md:w-96 2xl:w-[600px]'>
                                     <input type="email" name="email" placeholder='Enter Email' value={values.email} onChange={handleValue} className=' w-full outline-none dark:bg-gray-700' required />
                                 </div>
                             </div>
                             <div className=' flex flex-col 2xl:text-2xl 2xl:space-y-1 '>
-                                <label htmlFor="" className=' text-md font-semibold '>Password</label>
-                                <div className=' border-2 border-gray-300 bg-white dark:bg-gray-700 dark:border-gray-600 py-1 px-2 rounded-md w-full md:w-96 2xl:w-[600px]'>
+                                <label htmlFor="" className=' text-[16px] lg:text-md font-semibold '>Password</label>
+                                <div className=' border-2 max-lg:text-[14px] border-gray-300 bg-white dark:bg-gray-700 dark:border-gray-600 py-1 px-2 rounded-md w-full md:w-96 2xl:w-[600px]'>
                                     <input type="password" name="password" placeholder='Enter Password' value={values.password} onChange={handleValue} className=' w-full outline-none dark:bg-gray-700' required />
                                 </div>
                             </div>
@@ -84,23 +84,23 @@ const SignUp = () => {
                                 <div action="" className=' flex justify-center items-center gap-5 '>
                                     <div>
                                         <input type="radio" name="role" className=' cursor-pointer' onChange={handleValue} id="customer" value="customer" defaultChecked />
-                                        <label className=' text-md font-semibold cursor-pointer px-1' htmlFor="customer">Customer</label>
+                                        <label className=' text-[14px] lg:text-md font-semibold cursor-pointer px-1' htmlFor="customer">Customer</label>
                                     </div>
                                     <div>
                                         <input type="radio" name="role" className=' cursor-pointer' onChange={handleValue} id="salesman" value="salesman" />
-                                        <label className=' text-md font-semibold cursor-pointer px-1' htmlFor="salesman">Salesman</label>
+                                        <label className=' text-[14px] lg:text-md font-semibold cursor-pointer px-1' htmlFor="salesman">Salesman</label>
                                     </div>
                                 </div>
                             </div>
                             <div>
-                                <button type='submit' className=' p-1 w-full rounded-md font-semibold text-xl bg-pink-700 dark:text-gray-950 text-gray-200 hover:bg-pink-600 outline-none py-2
+                                <button type='submit' className=' p-1 w-full rounded-md font-semibold text-[16px] lg:text-xl bg-pink-700 dark:text-gray-950 text-gray-200 hover:bg-pink-600 outline-none py-1 lg:py-2
                             '>SignUp</button>
                             </div>
                         </form>
-                        <GoogleSignInBtn />
-                        <div className=' flex flex-col justify-center items-center py-3'>
-                            <p className=' font-semibold text-lg'>Or</p>
-                            <div className=' flex gap-2 font-semibold text-gray-500 dark:text-gray-400'>
+                        <GoogleSignInBtn className />
+                        <div className=' flex flex-col justify-center items-center py-1 lg:py-3'>
+                            <p className=' font-semibold text-[14px] lg:text-lg'>Or</p>
+                            <div className=' flex gap-2 font-semibold text-gray-500 dark:text-gray-400 max-lg:text-[14px]'>
                                 <p>Already have an account? </p>
                                 <Link to={"/login"} className=' underline hover:text-blue-600 hover:scale-105 transition-all duration-300'>LogIn</Link>
                             </div>

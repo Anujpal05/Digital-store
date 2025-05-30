@@ -7,7 +7,6 @@ const stripe = new Stripe(process.env.STRIPESECRETKEY);
 export const checkout = async (req, res) => {
   try {
     const { product, orderId } = req.body;
-    console.log("hello");
     const lineItems = [
       {
         price_data: {
@@ -22,21 +21,16 @@ export const checkout = async (req, res) => {
       },
     ];
 
-    console.log(product);
-    console.log(lineItems);
-
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       line_items: lineItems,
       mode: "payment",
-      success_url: "http://localhost:5173/success",
-      cancel_url: "http://localhost:5173/cancel",
+      success_url: `${process.env.CLIENT_URL}/success`,
+      cancel_url: `${process.env.CLIENT_URL}/cancel`,
       metadata: {
         orderId: orderId,
       },
     });
-
-    console.log(session);
 
     return res.status(200).json({
       message: "Payment session created successfully!",
@@ -67,8 +61,8 @@ export const checkoutCart = async (req, res) => {
       payment_method_types: ["card"],
       line_items: lineItems,
       mode: "payment",
-      success_url: "http://localhost:5173/success",
-      cancel_url: "http://localhost:5173/cancel",
+      success_url: `${process.env.CLIENT_URL}/success`,
+      cancel_url: `${process.env.CLIENT_URL}/cancel`,
       metadata: {
         orderId: orderId,
       },
@@ -89,7 +83,6 @@ export const handleWebHook = async (req, res) => {
     let endpointSecret = process.env.WEBHOOK_SECRET;
     const sig = req.headers["stripe-signature"];
     let event;
-    console.log("Signature : ", sig);
 
     try {
       event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
@@ -99,37 +92,56 @@ export const handleWebHook = async (req, res) => {
 
     const session = event.data.object;
     const orderId = session.metadata.orderId;
-
+    console.log(event.type);
+    console.log(session.metadata);
     // payment_intent.payment_failed or checkout.session.async_payment_failed event
-    if (
-      event.type === "payment_intent.payment_failed" ||
-      event.type === "checkout.session.async_payment_failed"
-    ) {
-      //Update order status
-      console.log("Payment failed for Order ID: ", orderId);
-      if (orderId) {
-        await Order.findByIdAndUpdate(orderId, {
-          $set: {
-            paymentStatus: "Failed",
-          },
+    switch (event.type) {
+      case "payment_intent.payment_failed":
+      case "checkout.session.async_payment_failed": {
+        //Update order status
+        console.log("Payment failed for Order ID: ", orderId);
+        if (orderId) {
+          await Order.findByIdAndUpdate(orderId, {
+            $set: {
+              paymentStatus: "Failed",
+            },
+          });
+        }
+        break;
+      }
+      case "checkout.session.completed": {
+        console.log("Payment successful for Order ID:", orderId);
+        // const order = await Order.findById(orderId);
+
+        // // if (!order) {
+        // //   return res.status(404).json({ message: "Order not found!" });
+        // // }
+
+        console.log(session.id);
+        const lineItems = await stripe.checkout.sessions.listLineItems(
+          session.id
+        );
+
+        console.log(lineItems);
+
+        lineItems.data.forEach((item) => {
+          console.log("metadata" + item.price.metadata);
+          console.log(item.price.metadata);
+          console.log(item);
         });
-      }
-    }
-    if (event.type === "checkout.session.completed") {
-      console.log("Payment successful for Order ID:", orderId);
-      const order = await Order.findById(orderId);
 
-      if (!order) {
-        return res.status(404).json({ message: "Order not found!" });
+        //Update order payment status
+        // await order.updateOne({
+        //   $set: {
+        //     paymentIntentId: session.payment_intent,
+        //     paymentStatus: "Paid",
+        //   },
+        // });
+        break;
       }
-
-      //Update order payment status
-      await order.updateOne({
-        $set: {
-          paymentIntentId: session.payment_intent,
-          paymentStatus: "Paid",
-        },
-      });
+      default: {
+        break;
+      }
     }
 
     return res.status(200).json({ received: true });

@@ -113,7 +113,7 @@ const Cart = () => {
                 </div>
             </>}
             {cartProducts && cartProducts.length > 0 && <div className='  p-5'>
-                <div className=' flex justify-between items-center text-4xl pr-5'>
+                <div className=' flex justify-between items-center text-xl lg:text-4xl pr-5'>
                     <h1 className='  font-semibold dark:text-gray-200'>Your Cart</h1>
                     <div className={` dark:text-gray-200 hidden md:${menu === 'flex' ? 'flex' : 'hidden'} `} onClick={() => setmenu('hidden')}><GiHamburgerMenu /></div>
                     <div className={` dark:text-gray-200 hidden md:${menu === 'flex' ? 'hidden' : 'flex'}`} onClick={() => setmenu('flex')}><CgMenuGridR /></div>
@@ -124,8 +124,8 @@ const Cart = () => {
                             <Link to={`/product/${items._id}`} className=' order-1 md:order-none '>
                                 <img src={items.image} alt='product' className=' h-20 min-w-14 ' />
                             </Link>
-                            <div>
-                                <span className=' font-semibold'>No. Of Item : </span>
+                            <div className=' flex justify-center items-center mr-1'>
+                                <pre className=' max-text-[14px] font-semibold'>Quantity: </pre>
                                 <select name="quantity" onChange={(e) => changeQuantity(e, items._id)} id="" className=' outline-none border-2 bg-gray-200 dark:bg-gray-700 dark:border-gray-600'>
                                     <option value="1">1</option>
                                     <option value="2">2</option>
@@ -137,12 +137,12 @@ const Cart = () => {
 
                             <Link to={`/product/${items._id}`} className='col-span-3 order-2 md:order-none '>
                                 <div className=' space-y-1  '>
-                                    <p className=' text-xl  font-semibold'>{items.title.slice(0, 50)} </p>
-                                    <p className=' text-md  font-semibold'>{items.desc.slice(0, 100)}...</p>
+                                    <p className=' text-[16px] lg:text-xl  font-semibold'>{items.title.slice(0, 50)} </p>
+                                    <p className=' text-[14px] lg:text-md  font-semibold'>{items.desc.slice(0, 100)}...</p>
                                 </div>
                             </Link>
-                            <div className=' text-2xl  font-semibold order-1 md:order-none text-gray-600 dark:text-gray-400'>&#8377;{items.price}</div>
-                            <button className='w-10 mx-8 bg-red-100 md:hidden hover:bg-red-200 order-1 md:order-none text-red-600 h-10 text-2xl flex justify-center items-center rounded' onClick={() => removeCartBook(items._id)}><AiFillDelete /></button>
+                            <div className=' text-lg lg:text-2xl  font-semibold order-1 md:order-none text-gray-600 dark:text-gray-400'>&#8377;{items.price}</div>
+                            <button className='w-10 mx-8 bg-red-100 md:hidden hover:bg-red-200 order-1 md:order-none text-red-600 h-10 text-xl lg:text-2xl flex justify-center items-center rounded' onClick={() => removeCartBook(items._id)}><AiFillDelete /></button>
                         </div>
                         <button className='w-10 mx-8 hidden bg-red-100 hover:bg-red-200 text-red-600 h-10 text-2xl md:flex justify-center items-center rounded' onClick={() => removeCartBook(items._id)}><AiFillDelete /></button>
                     </div>
@@ -171,24 +171,24 @@ const Cart = () => {
                                 </div>
                                 <Link to={`/product/${items._id}`} className='col-span-3 order-2 md:order-none '>
                                     <div className=' space-y-1  '>
-                                        <p className=' text-xl  font-semibold'>{items.title}</p>
-                                        <p className=' text-md dark:text-gray-300  font-semibold'>{items.desc.slice(0, 100)}...</p>
+                                        <p className=' text-[16px] lg:text-xl  font-semibold'>{items.title}</p>
+                                        <p className=' text-[14px] lg:text-md dark:text-gray-300  font-semibold'>{items.desc.slice(0, 100)}...</p>
                                     </div>
                                 </Link>
-                                <div className=' text-2xl text-gray-600 dark:text-gray-400 font-semibold order-1 md:order-none '>&#8377;{items.price}</div>
+                                <div className=' text-[16px] lg:text-2xl text-gray-600 dark:text-gray-400 font-semibold order-1 md:order-none '>&#8377;{items.price}</div>
                             </div>
 
                         </div>
                     ))}
                 </div>
                 <div className=' w-full flex justify-end'>
-                    <div className='  h-36 m-5 w-52 p-2 rounded-md space-y-3 bg-gray-100 dark:bg-gray-800 shadow-sm shadow-gray-800'>
-                        <h1 className=' text-3xl font-semibold  text-center dark:text-gray-300 text-gray-800'>Total Amount</h1>
-                        <div className=' flex justify-between w-full  font-semibold px-3 dark:text-gray-200 text-gray-700'>
+                    <div className='  max-h-36 m-5 w-52 p-2 rounded-md space-y-3 bg-gray-100 dark:bg-gray-800 shadow-sm shadow-gray-800'>
+                        <h1 className=' text-xl lg:text-3xl font-semibold  text-center dark:text-gray-300 text-gray-800'>Total Amount</h1>
+                        <div className=' flex justify-between w-full max-lg:text-[16px]  font-semibold px-3 dark:text-gray-200 text-gray-700'>
                             <p className=''>{cartProducts.length} products</p>
                             <p>&#8377; {total}</p>
                         </div>
-                        <button className=' bg-blue-400 p-2  font-semibold text-md w-full rounded-md hover:bg-blue-500 outline-none transition-all duration-300' onClick={placeOrder}>Place your order</button>
+                        <button className=' bg-blue-400 text-center p-1 lg:p-2 max-lg:text-[16px] font-semibold text-md w-full rounded-md hover:bg-blue-500 outline-none transition-all duration-300' onClick={placeOrder}>Place your order</button>
                     </div>
                 </div>
             </div>}

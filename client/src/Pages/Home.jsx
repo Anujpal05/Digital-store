@@ -14,7 +14,7 @@ function Home() {
     return (
         <div className=' overflow-x-hidden w-screen dark:bg-gray-950 pt-7   '>
             <Hero />
-            <div className=' pb-20 lg:px-16 px-5'>
+            <div className=' pb-20 lg:px-16 px-3'>
                 <ExploreCategory />
                 <Filter filter={filter} setfilter={setfilter} setprice={setprice} setSearch={setSearch} />
                 <LatestCollection filter={filter} price={price} search={search} />

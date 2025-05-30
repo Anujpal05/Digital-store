@@ -44,7 +44,7 @@ const Order = () => {
                 <img src={orderImg} alt="" className=' h-40' />
             </div>}
             {user && user.order.length > 0 && <div>
-                <h1 className=' text-3xl font-semibold text-gray-800 dark:text-gray-100'>Your Orders</h1>
+                <h1 className=' text-xl lg:text-3xl font-semibold text-gray-800 dark:text-gray-100'>Your Orders</h1>
                 <div className=' grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1  gap-3 py-4'>
                     {
                         user.order.map((item, i) => (
@@ -59,13 +59,13 @@ const Order = () => {
                                 </div>
                                 <hr className=' border-1 border-gray-600 my-2' />
                                 {item.products && item.products.map((items, j) => (<div key={j}><div className=' flex  items-center gap-3 '>
-                                    <img src={items.product.image} alt="" className=' h-16 border-2 border-gray-300' />
-                                    <h1 className=' font-semibold text-gray-800 dark:text-gray-100'>{items.product.title}</h1>
+                                    <img src={items?.product?.image} alt="" className=' h-16 border-2 border-gray-300' />
+                                    <h1 className=' font-semibold text-gray-800 dark:text-gray-100 text-[16px] lg:text-lg'>{items?.product?.title && items?.product?.title?.substring(0, 50)}...</h1>
                                 </div>
                                     <hr className=' border-1 border-gray-500 my-2' />
                                 </div>))}
 
-                                <Link to={`/order-details/${item._id}`} className=' px-2 py-1 bg-blue-500 font-semibold rounded-md w-full hover:bg-blue-600 transition-all duration-300 text-center '>Order Details</Link>
+                                <Link to={`/order-details/${item._id}`} className=' px-2 py-1 bg-blue-500 font-semibold rounded-md w-full hover:bg-blue-600 transition-all duration-300 text-center text-[16px] lg:text-lg '>Order Details</Link>
                             </div>
                         ))
                     }

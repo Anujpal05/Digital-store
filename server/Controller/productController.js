@@ -49,6 +49,11 @@ export const getAllProduct = async (req, res) => {
       return res.status(404).json({ message: "Product not found!" });
     }
 
+    const allProduct = JSON.stringify(products);
+    const s = Buffer.byteLength(allProduct, "utf-8");
+    const size = (s / 1024).toFixed(2);
+
+    console.log(size + " kb");
     return res
       .status(200)
       .json({ message: "All Products get successfully!", products });

@@ -57,22 +57,20 @@ const Category = () => {
     }
 
     return (
-        <div className=' lg:px-16 px-5 py-20 dark:bg-gray-950 min-h-screen'>
-            <div className=' border-2 border-gray-700 shadow-md dark:bg-gray-800 dark:text-white dark:shadow-gray-700 shadow-gray-300 p-2 rounded-full flex justify-center items-center gap-3'><p className=' text-xl text-gray-500  '><IoSearch /></p><input type="text" placeholder='Search here' name="" className=' w-full outline-none dark:bg-gray-800 ' onChange={handleSearch} /></div>
-            <h1 className=' text-2xl font-semibold py-3 dark:text-gray-100'><span className=' py-[2px] border-b-4 border-pink-700'>Our {title && title.slice(0, 3)}</span>{title.slice(3)} Collections</h1>
-            <div className=' grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-2 bg-gray-50 dark:bg-gray-900'>
+        <div className=' lg:px-16 px-3 py-20 dark:bg-gray-950 min-h-screen'>
+            <div className='border-2 border-gray-700 shadow-md dark:bg-gray-800 dark:text-white dark:shadow-gray-700 shadow-gray-300 p-1 lg:p-2 rounded-full flex justify-center items-center gap-3'><div className=' text-lg lg:text-2xl text-gray-500 ml-1'><IoSearch /></div><input type="text" placeholder='Search here' name="" className=' w-full outline-none dark:bg-gray-800 ' onChange={handleSearch} /></div>
+            <h1 className=' text-lg lg:text-2xl font-semibold py-3 dark:text-gray-100'><span className=' py-[2px] border-b-4 border-pink-700'>Our {title && title.slice(0, 3)}</span>{title.slice(3)} Collections</h1>
+            <div className=' grid xl:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-3 bg-gray-50 dark:bg-gray-900'>
                 {product && product.map((item, i) => (
-                    <div key={i}><Card item={item} /></div>
+                    <div key={i} className=' bg-gray-200 dark:bg-gray-800'><Card item={item} /></div>
                 ))}
             </div>
             {!product && <div className=' min-h-screen min-w-full flex justify-center items-center'>
                 <Hourglass
                     visible={true}
-                    height="100"
-                    width="100"
                     ariaLabel="hourglass-loading"
                     wrapperStyle={{}}
-                    wrapperClass=""
+                    wrapperClass=" h-20 w-20 lg:h-24 lg:w-24"
                     colors={['#306cce', '#72a1ed']}
                 />
             </div>}
